@@ -5,4 +5,5 @@
 
 # Note
 - This isn't fully decomp, I don't have the time nor the knowledge of just doing that stuff. 
-- (BEWARE BITCOIN MINER!!!!!!!!!!!)
+  - (BEWARE BITCOIN MINER!!!!!!!!!!)
+  - Ok so, I don't think this is real but just a re-creation thingy. I still think it's the funny.
