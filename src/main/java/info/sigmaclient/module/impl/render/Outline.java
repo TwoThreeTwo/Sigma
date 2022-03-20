@@ -24,7 +24,7 @@ import java.awt.*;
 
 public class Outline extends Module {
 
-    private String TEAM = "TEAM";
+    private final String TEAM = "TEAM";
     private boolean draw = false;
     private int draws = 0;
 
@@ -120,14 +120,12 @@ public class Outline extends Module {
                     Render entityRender = mc.getRenderManager().getEntityRenderObject(entity);
                     if (entityRender != null) {
                         float distance = mc.thePlayer.getDistanceToEntity(entity);
-                        if (entity instanceof EntityLivingBase) {
-                            GlStateManager.disableLighting();
-                            RendererLivingEntity.renderLayers = false;
-                            entityRender.doRender(entity, 0.0, 0.0, 0.0, mc.timer.renderPartialTicks, mc.timer.renderPartialTicks);
-                            RendererLivingEntity.renderLayers = true;
-                            GlStateManager.enableLighting();
+                        GlStateManager.disableLighting();
+                        RendererLivingEntity.renderLayers = false;
+                        entityRender.doRender(entity, 0.0, 0.0, 0.0, mc.timer.renderPartialTicks, mc.timer.renderPartialTicks);
+                        RendererLivingEntity.renderLayers = true;
+                        GlStateManager.enableLighting();
 
-                        }
                     }
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                     GL11.glPopMatrix();

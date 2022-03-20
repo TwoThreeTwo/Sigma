@@ -19,7 +19,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.BufferUtils;
@@ -32,20 +31,21 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class ESP2D extends Module {
 
     public static String TEAM = "TEAM";
-    public static Map<EntityLivingBase, double[]> entityPositionstop = new HashMap();
-    public static Map<EntityLivingBase, double[]> entityPositionsbottom = new HashMap();
+    public static HashMap<EntityPlayer, double[]> entityPositionstop = new HashMap<>();
+    public static HashMap<EntityPlayer, double[]> entityPositionsbottom = new HashMap<>();
     private final String INVISIBLES = "INVISIBLES";
-    private String CUSTOMTAG = "ITEMTAG";
-    private String ITEMS = "ITEMS";
-    private String HEALTH = "HEALTH";
-    private String ARMOR = "ARMOR";
-    private String NAME = "NAMES";
+    private final String CUSTOMTAG = "ITEMTAG";
+    private final String ITEMS = "ITEMS";
+    private final String HEALTH = "HEALTH";
+    private final String ARMOR = "ARMOR";
+    private final String NAME = "NAMES";
     private double gradualFOVModifier;
+
     public ESP2D(ModuleData data) {
         super(data);
         settings.put(NAME, new Setting<>(NAME, false, "Renders player name."));
@@ -58,7 +58,7 @@ public class ESP2D extends Module {
     }
 
     public static Color blendColors(float[] fractions, Color[] colors, float progress) {
-        Color color = null;
+        Color color;
         if (fractions != null) {
             if (colors != null) {
                 if (fractions.length == colors.length) {
@@ -106,8 +106,8 @@ public class ESP2D extends Module {
         float r = (float) ratio;
         float ir = (float) 1.0 - r;
 
-        float rgb1[] = new float[3];
-        float rgb2[] = new float[3];
+        float[] rgb1 = new float[3];
+        float[] rgb2 = new float[3];
 
         color1.getColorComponents(rgb1);
         color2.getColorComponents(rgb2);
@@ -152,21 +152,20 @@ public class ESP2D extends Module {
         if (event instanceof EventRender3D) {
             try {
                 updatePositions();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         if (event instanceof EventRenderGui) {
-            EventRenderGui er = (EventRenderGui) event;
             GlStateManager.pushMatrix();
             ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
             double twoDscale = scaledRes.getScaleFactor() / Math.pow(scaledRes.getScaleFactor(), 2.0D);
             GlStateManager.scale(twoDscale, twoDscale, twoDscale);
-            for (Entity ent : entityPositionstop.keySet()) {
+            for (EntityPlayer ent : entityPositionstop.keySet()) {
                 double[] renderPositions = entityPositionstop.get(ent);
                 double[] renderPositionsBottom = entityPositionsbottom.get(ent);
                 if ((renderPositions[3] > 0.0D) || (renderPositions[3] <= 1.0D)) {
                     GlStateManager.pushMatrix();
-                    if ((((Boolean) settings.get(INVISIBLES).getValue()) || !ent.isInvisible()) && ent instanceof EntityPlayer && !(ent instanceof EntityPlayerSP)) {
+                    if ((((Boolean) settings.get(INVISIBLES).getValue()) || !ent.isInvisible()) && ent != null && !(ent instanceof EntityPlayerSP)) {
                         scale(ent);
                         try {
                             float y = (float) renderPositions[1];
@@ -199,12 +198,12 @@ public class ESP2D extends Module {
                                             try {
                                                 Color axd = new Color(mc.fontRendererObj.colorCode[colorCode]);
                                                 color = Colors.getColor(axd.getRed(), axd.getGreen(), axd.getBlue(), 255);
-                                            } catch (ArrayIndexOutOfBoundsException exception) {
+                                            } catch (ArrayIndexOutOfBoundsException ignored) {
                                             }
                                         }
                                     }
                             }
-                            if (((EntityPlayer) ent).isMurderer) {
+                            if (ent.isMurderer) {
                                 color = Colors.getColor(189, 44, 221);
                             }
                             RenderingUtil.rectangleBordered(x, y, endx, endy, 2.25, Colors.getColor(0, 0, 0, 0), color);
@@ -219,19 +218,19 @@ public class ESP2D extends Module {
                                 font.drawStringWithShadow(renderName + " " + (int) mc.thePlayer.getDistanceToEntity(ent) + "m", (x + meme2), (y - font.getHeight(renderName) - 5), FriendManager.isFriend(ent.getName()) ? Colors.getColor(192, 80, 64) : -1);
                                 GlStateManager.popMatrix();
                             }
-                            if (((EntityPlayer) ent).getCurrentEquippedItem() != null && ((Boolean) settings.get(ITEMS).getValue())) {
+                            if (ent.getCurrentEquippedItem() != null && ((Boolean) settings.get(ITEMS).getValue())) {
                                 GlStateManager.pushMatrix();
                                 GlStateManager.scale(2, 2, 2);
-                                ItemStack stack = ((EntityPlayer) ent).getCurrentEquippedItem();
-                                String customName = ((Boolean) settings.get(CUSTOMTAG).getValue()) ? ((EntityPlayer) ent).getCurrentEquippedItem().getDisplayName() : ((EntityPlayer) ent).getCurrentEquippedItem().getItem().getItemStackDisplayName(stack);
+                                ItemStack stack = ent.getCurrentEquippedItem();
+                                String customName = ((Boolean) settings.get(CUSTOMTAG).getValue()) ? ent.getCurrentEquippedItem().getDisplayName() : ent.getCurrentEquippedItem().getItem().getItemStackDisplayName(stack);
                                 TTFFontRenderer font = Client.fm.getFont("Verdana 12");
-                                float meme2 = ((endx - x) / 2 - (font.getWidth(customName) / 1f));
+                                float meme2 = ((endx - x) / 2 - (font.getWidth(customName)));
                                 font.drawStringWithShadow(customName, (x + meme2) / 2f, (endy + font.getHeight(customName) / 2 * 2f) / 2f, -1);
                                 GlStateManager.popMatrix();
                             }
                             if ((Boolean) settings.get(ARMOR).getValue()) {
                                 float var1 = (endy - y) / 4;
-                                ItemStack stack = ((EntityPlayer) ent).getEquipmentInSlot(4);
+                                ItemStack stack = ent.getEquipmentInSlot(4);
                                 if (stack != null) {
                                     RenderingUtil.rectangleBordered(endx + 1, y + 1, endx + 6, y + var1, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
                                     float diff1 = (y + var1 - 1) - (y + 2);
@@ -239,7 +238,7 @@ public class ESP2D extends Module {
                                     RenderingUtil.rectangle(endx + 2, y + var1 - 1, endx + 5, y + var1 - 1 - (diff1 * percent), Colors.getColor(78, 206, 229));
                                     mc.fontRendererObj.drawStringWithShadow(stack.getMaxDamage() - stack.getItemDamage() + "", endx + 7, (y + var1 - 1 - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
                                 }
-                                ItemStack stack2 = ((EntityPlayer) ent).getEquipmentInSlot(3);
+                                ItemStack stack2 = ent.getEquipmentInSlot(3);
                                 if (stack2 != null) {
                                     RenderingUtil.rectangleBordered(endx + 1, y + var1, endx + 6, y + var1 * 2, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
                                     float diff1 = (y + var1 * 2) - (y + var1 + 2);
@@ -247,7 +246,7 @@ public class ESP2D extends Module {
                                     RenderingUtil.rectangle(endx + 2, (y + var1 * 2), endx + 5, (y + var1 * 2) - (diff1 * percent), Colors.getColor(78, 206, 229));
                                     mc.fontRendererObj.drawStringWithShadow(stack2.getMaxDamage() - stack2.getItemDamage() + "", endx + 7, ((y + var1 * 2) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
                                 }
-                                ItemStack stack3 = ((EntityPlayer) ent).getEquipmentInSlot(2);
+                                ItemStack stack3 = ent.getEquipmentInSlot(2);
                                 if (stack3 != null) {
                                     RenderingUtil.rectangleBordered(endx + 1, y + var1 * 2, endx + 6, y + var1 * 3, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
                                     float diff1 = (y + var1 * 3) - (y + var1 * 2 + 2);
@@ -255,7 +254,7 @@ public class ESP2D extends Module {
                                     RenderingUtil.rectangle(endx + 2, (y + var1 * 3), endx + 5, (y + var1 * 3) - (diff1 * percent), Colors.getColor(78, 206, 229));
                                     mc.fontRendererObj.drawStringWithShadow(stack3.getMaxDamage() - stack3.getItemDamage() + "", endx + 7, ((y + var1 * 3) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
                                 }
-                                ItemStack stack4 = ((EntityPlayer) ent).getEquipmentInSlot(1);
+                                ItemStack stack4 = ent.getEquipmentInSlot(1);
                                 if (stack4 != null) {
                                     RenderingUtil.rectangleBordered(endx + 1, y + var1 * 3, endx + 6, y + var1 * 4, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
                                     float diff1 = (y + var1 * 4) - (y + var1 * 3 + 2);
@@ -264,7 +263,7 @@ public class ESP2D extends Module {
                                     mc.fontRendererObj.drawStringWithShadow(stack4.getMaxDamage() - stack4.getItemDamage() + "", endx + 7, ((y + var1 * 4) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
                                 }
                             }
-                            float health = ((EntityPlayer) ent).getHealth();
+                            float health = ent.getHealth();
                             float[] fractions = new float[]{0f, 0.5f, 1f};
                             Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN};
                             float progress = (health * 5) * 0.01f;
@@ -279,7 +278,7 @@ public class ESP2D extends Module {
                                 font.drawStringWithShadow(nigger, (x - 5 - font.getWidth(nigger) * 2) / 2, ((float) ((int) healthLocation) + font.getHeight(nigger) / 2) / 2, -1);
                                 GlStateManager.popMatrix();
                             }
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                     }
                     GlStateManager.popMatrix();
@@ -311,7 +310,7 @@ public class ESP2D extends Module {
                 if ((convertedPoints[2] >= 0.0D) && (convertedPoints[2] < 1.0D)) {
                     entityPositionstop.put(ent, new double[]{convertedPoints[0], convertedPoints[1], xd, convertedPoints[2]});
                     y = ent.lastTickPosY + ((ent.posY - 2.2) - (ent.lastTickPosY - 2.2)) * pTicks - mc.getRenderManager().viewerPosY;
-                    entityPositionsbottom.put(ent, new double[]{convertTo2D(x, y, z)[0], convertTo2D(x, y, z)[1], xd, convertTo2D(x, y, z)[2]});
+                    entityPositionsbottom.put(ent, new double[]{Objects.requireNonNull(convertTo2D(x, y, z))[0], Objects.requireNonNull(convertTo2D(x, y, z))[1], xd, Objects.requireNonNull(convertTo2D(x, y, z))[2]});
                 }
             }
         }
@@ -323,11 +322,10 @@ public class ESP2D extends Module {
 
     private void scale(Entity ent) {
         float scale = (float) 1;
-        float target = scale * (mc.gameSettings.fovSetting
-                / (mc.gameSettings.fovSetting/*
+        float target = scale/*
          * *
          * mc.thePlayer.getFovModifier()
-         *//* .func_175156_o() */));
+         *//* .func_175156_o() */;
         if ((this.gradualFOVModifier == 0.0D) || (Double.isNaN(this.gradualFOVModifier))) {
             this.gradualFOVModifier = target;
         }

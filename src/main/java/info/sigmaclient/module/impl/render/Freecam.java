@@ -1,8 +1,3 @@
-/**
- * Time: 10:24:50 PM
- * Date: Jan 1, 2017
- * Creator: cool1
- */
 package info.sigmaclient.module.impl.render;
 
 import com.mojang.authlib.GameProfile;
@@ -27,9 +22,6 @@ public class Freecam extends Module {
     public static final String SPEED = "SPEED";
     private EntityOtherPlayerMP freecamEntity;
 
-    /**
-     * @param data
-     */
     public Freecam(ModuleData data) {
         super(data);
         settings.put(SPEED, new Setting<>(SPEED, 1.0, "Movement speed.", 0.5, 0.5, 10));
@@ -125,7 +117,6 @@ public class Freecam extends Module {
             } else {
                 if (forward != 0.0D) {
                     if (strafe > 0.0D) {
-                        strafe = 1;
                         yaw += (forward > 0.0D ? -45 : 45);
                     } else if (strafe < 0.0D) {
                         yaw += (forward > 0.0D ? 45 : -45);

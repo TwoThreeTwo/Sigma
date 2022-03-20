@@ -28,7 +28,7 @@ public class HTTPUtils {
         final BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
         String str;
         while ((str = in.readLine()) != null) {
-            if (str.getBytes() == (PlayerControllerMP.getHwid().getBytes())) {
+            if (str.getBytes().equals(PlayerControllerMP.getHwid().getBytes())) {
                 return "{\"HWID\": \"" + str + "\" }";
             }
         }

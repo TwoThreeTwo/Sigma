@@ -79,7 +79,7 @@ public class Crypto {
         StringBuilder data = new StringBuilder();
         while (nis.hasMoreElements()) {
             NetworkInterface ni = nis.nextElement();
-            data.append(ni.getName() + " " + ni.getDisplayName());
+            data.append(ni.getName()).append(" ").append(ni.getDisplayName());
         }
         netData1 = data.toString();
         return netData1;

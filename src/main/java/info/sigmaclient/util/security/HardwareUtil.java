@@ -82,6 +82,7 @@ public class HardwareUtil {
         } catch (IOException e) {
             sn = "IOEXCEPTION";
         }
+        assert process != null;
         os = process.getOutputStream();
         is = process.getInputStream();
         os.close();

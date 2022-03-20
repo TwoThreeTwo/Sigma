@@ -77,18 +77,12 @@ public class UserManager {
             String site = "http://pastebin.com/raw.php?i=AXyxaaSf";
             String onlineCheck = "www.pastebin.com";
             boolean connected;
-            Socket sock = new Socket();
-            InetSocketAddress addr = new InetSocketAddress(onlineCheck, 80);
-            try {
+            try (Socket sock = new Socket()) {
+                InetSocketAddress addr = new InetSocketAddress(onlineCheck, 80);
                 sock.connect(addr, 6000);
                 connected = true;
             } catch (IOException e) {
                 connected = false;
-            } finally {
-                try {
-                    sock.close();
-                } catch (final IOException e) {
-                }
             }
 
             if (connected) {

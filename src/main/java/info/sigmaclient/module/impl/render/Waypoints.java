@@ -37,13 +37,13 @@ public class Waypoints extends Module {
     public static Map<Waypoint, double[]> waypointMap = new HashMap();
     boolean forward = true;
     private double gradualFOVModifier;
-    private Opacity opacity = new Opacity(0);
-    private String ARROWS = "ARROWS";
-    private String RADIUS = "RADIUS";
+    private final Opacity opacity = new Opacity(0);
+    private final String ARROWS = "ARROWS";
 
     public Waypoints(ModuleData data) {
         super(data);
         settings.put(ARROWS, new Setting<>(ARROWS, true, "Shows arrows for out of FOV waypoints."));
+        String RADIUS = "RADIUS";
         settings.put(RADIUS, new Setting<>(RADIUS, 100, "Radius for arrows.", 10, 30, 500));
     }
 

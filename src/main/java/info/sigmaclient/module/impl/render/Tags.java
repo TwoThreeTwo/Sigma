@@ -25,12 +25,12 @@ import java.text.DecimalFormat;
 
 public class Tags extends Module {
 
-    private String INVISIBLES = "INVISIBLES";
-    private String ARMOR = "ARMOR";
+    private final String INVISIBLES = "INVISIBLES";
+    private final String ARMOR = "ARMOR";
     public Tags(ModuleData data) {
         super(data);
-        settings.put(ARMOR, new Setting(ARMOR, true, "Show armor."));
-        settings.put(INVISIBLES, new Setting(INVISIBLES, false, "Show invisibles."));
+        settings.put(ARMOR, new Setting<>(ARMOR, true, "Show armor."));
+        settings.put(INVISIBLES, new Setting<>(INVISIBLES, false, "Show invisibles."));
     }
 
     @Override

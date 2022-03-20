@@ -1,8 +1,3 @@
-/**
- * Time: 6:29:26 PM
- * Date: Jan 3, 2017
- * Creator: cool1
- */
 package info.sigmaclient.module.impl.render;
 
 import info.sigmaclient.event.Event;
@@ -29,9 +24,6 @@ public class Lines extends Module {
     public static final String SPAWNER = "SPAWNER";
     public static final String PLAYER = "PLAYER";
 
-    /**
-     * @param data
-     */
     public Lines(ModuleData data) {
         super(data);
         settings.put(SIGN, new Setting<>(SIGN, false, "Draw lines at signs."));
@@ -63,7 +55,7 @@ public class Lines extends Module {
             }
         }
         for (Object o : mc.theWorld.loadedTileEntityList) {
-            int color = -1;
+            int color;
             if (o instanceof TileEntityChest && ((Boolean) settings.get(CHEST).getValue())) {
                 TileEntityChest ent = (TileEntityChest) o;
                 color = Colors.getColor(114, 0, 187);

@@ -22,9 +22,6 @@ public class HitIndicator extends Module {
             EventPacket ep = (EventPacket) event;
 
         }
-        if (event instanceof EventRender3D) {
-
-        }
     }
 
 }

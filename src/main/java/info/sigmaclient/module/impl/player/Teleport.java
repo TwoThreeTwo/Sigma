@@ -30,7 +30,6 @@ public class Teleport extends Module {
 
     private boolean canTP;
     private int delay;
-    private BlockPos endPos;
 
     public Teleport(ModuleData data) {
         super(data);
@@ -58,14 +57,14 @@ public class Teleport extends Module {
             if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemFood || mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock) {
                 return;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         if (event instanceof EventUpdate) {
             EventUpdate em = (EventUpdate) event;
             if (em.isPre()) {
                 if (canTP && Mouse.isButtonDown(1) && !mc.thePlayer.isSneaking() && delay == 0 && mc.inGameHasFocus && getBlinkBlock().entityHit == null && !(getBlock(getBlinkBlock().getBlockPos()) instanceof BlockChest)) {
                     event.setCancelled(true);
-                    endPos = getBlinkBlock().getBlockPos();
+                    BlockPos endPos = getBlinkBlock().getBlockPos();
                     final double[] startPos = {mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ};
                     PlayerUtil.blinkToPos(startPos, endPos, 0.0, new double[]{0.3, 0.2});
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(endPos.getX() + 0.5, endPos.getY() - 1.0, endPos.getZ() + 0.5, false));
@@ -103,7 +102,7 @@ public class Teleport extends Module {
                 } else {
                     canTP = false;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }

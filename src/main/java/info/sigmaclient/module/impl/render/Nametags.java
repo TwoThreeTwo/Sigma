@@ -1,5 +1,6 @@
 package info.sigmaclient.module.impl.render;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import info.sigmaclient.Client;
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.EventSystem;
@@ -30,7 +31,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -43,18 +43,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class Nametags extends Module {
 
-    public static Map<EntityLivingBase, double[]> entityPositions = new HashMap();
+    public static HashMap<EntityPlayer, double[]> entityPositions = new HashMap<>();
     public static String ARMOR = "ARMOR";
     public static String HEALTH = "HEALTH";
     public static String IMASPECIALCUNT = "SCALE";
     private final String INVISIBLES = "INVISIBLES";
     private boolean hideInvisibles;
     private double gradualFOVModifier;
-    private Character formatChar = new Character('\247');
+    private final Character formatChar = '\247';
 
     public Nametags(ModuleData data) {
         super(data);
@@ -80,7 +80,7 @@ public class Nametags extends Module {
         if (event instanceof EventRender3D) {
             try {
                 updatePositions();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -89,16 +89,16 @@ public class Nametags extends Module {
             GlStateManager.pushMatrix();
             ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
-            for (Entity ent : entityPositions.keySet()) {
+            for (Object ent : entityPositions.keySet()) {
                 if (ent != mc.thePlayer && ((Boolean) settings.get(INVISIBLES).getValue()) || !ent.isInvisible()) {
 
                     GlStateManager.pushMatrix();
                     if ((ent instanceof EntityPlayer)) {
-                        String str = ent.getDisplayName().getFormattedText();
+                        String str = ((EntityPlayer) ent).getDisplayName().getFormattedText();
                         // System.out.println(str);
-                        str = str.replace(ent.getDisplayName().getFormattedText(), FriendManager.isFriend(ent.getName()) ? "\247b" + FriendManager.getAlias(ent.getName()) : "\247f" + ent.getDisplayName().getFormattedText());
+                        str = str.replace(((EntityPlayer) ent).getDisplayName().getFormattedText(), FriendManager.isFriend(ent.getName()) ? "\247b" + FriendManager.getAlias(ent.getName()) : "\247f" + ent.getDisplayName().getFormattedText());
                         if (((EntityPlayer) ent).isMurderer) {
-                            str = str.replace(ent.getDisplayName().getFormattedText(), "\2475[M] " + ent.getName());
+                            str = str.replace(((EntityPlayer) ent).getDisplayName().getFormattedText(), "\2475[M] " + ent.getName());
                         }
 
                         double[] renderPositions = entityPositions.get(ent);
@@ -118,7 +118,7 @@ public class Nametags extends Module {
                         RenderingUtil.rectangle(-strWidth / 2 - 1, -10.0D, strWidth / 2 + 1, 0, Colors.getColor(0, 130));
                         int x3 = ((int) (renderPositions[0] + -strWidth / 2 - 3) / 2) - 26;
                         int x4 = ((int) (renderPositions[0] + strWidth / 2 + 3) / 2) + 20;
-                        int y1 = ((int) (renderPositions[1] + -30) / 2);
+                        int y1 = ((int) (renderPositions[1] - 30) / 2);
                         int y2 = ((int) (renderPositions[1] + 11) / 2);
                         int mouseY = (er.getResolution().getScaledHeight() / 2);
                         int mouseX = (er.getResolution().getScaledWidth() / 2);
@@ -138,7 +138,7 @@ public class Nametags extends Module {
                                         0, Colors.getColor(0, 130));
                                 font.drawStringWithShadow(healthInfo, strWidth / 2 + 2, (int) -7.0D,
                                         customColor.getRGB());
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
 
                             }
                         }
@@ -284,11 +284,11 @@ public class Nametags extends Module {
                 double y = ent.lastTickPosY + (ent.posY - ent.lastTickPosY) * pTicks - mc.getRenderManager().viewerPosY;
                 double z = ent.lastTickPosZ + (ent.posZ - ent.lastTickPosZ) * pTicks - mc.getRenderManager().viewerPosZ;
                 y += ent.height + 0.2D;
-                if ((convertTo2D(x, y, z)[2] >= 0.0D) && (convertTo2D(x, y, z)[2] < 1.0D)) {
+                if ((Objects.requireNonNull(convertTo2D(x, y, z))[2] >= 0.0D) && (Objects.requireNonNull(convertTo2D(x, y, z))[2] < 1.0D)) {
                     entityPositions.put((EntityPlayer) ent,
-                            new double[]{convertTo2D(x, y, z)[0], convertTo2D(x, y, z)[1],
+                            new double[]{Objects.requireNonNull(convertTo2D(x, y, z))[0], Objects.requireNonNull(convertTo2D(x, y, z))[1],
                                     Math.abs(convertTo2D(x, y + 1.0D, z, ent)[1] - convertTo2D(x, y, z, ent)[1]),
-                                    convertTo2D(x, y, z)[2]});
+                                    Objects.requireNonNull(convertTo2D(x, y, z))[2]});
                 }
             }
         }
@@ -325,5 +325,4 @@ public class Nametags extends Module {
         }
         return null;
     }
-
 }
