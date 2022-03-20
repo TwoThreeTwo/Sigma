@@ -1,8 +1,5 @@
 package net.minecraft.block;
 
-import java.util.Iterator;
-import java.util.Random;
-
 import info.sigmaclient.event.EventSystem;
 import info.sigmaclient.event.impl.EventLiquidCollide;
 import net.minecraft.block.material.Material;
@@ -13,15 +10,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
+
+import java.util.Iterator;
+import java.util.Random;
 
 public abstract class BlockLiquid extends Block {
     public static final PropertyInteger LEVEL = PropertyInteger.create("level", 0, 15);
@@ -34,16 +29,6 @@ public abstract class BlockLiquid extends Block {
         setTickRandomly(true);
     }
 
-    @Override
-    public boolean isPassable(IBlockAccess blockAccess, BlockPos pos) {
-        return blockMaterial != Material.lava;
-    }
-
-    @Override
-    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-        return blockMaterial == Material.water ? BiomeColorHelper.func_180288_c(worldIn, pos) : 16777215;
-    }
-
     /**
      * Returns the percentage of the liquid block that is air, based on the
      * given flow decay of the liquid
@@ -54,6 +39,41 @@ public abstract class BlockLiquid extends Block {
         }
 
         return (p_149801_0_ + 1) / 9.0F;
+    }
+
+    public static double func_180689_a(IBlockAccess p_180689_0_, BlockPos p_180689_1_, Material p_180689_2_) {
+        Vec3 var3 = BlockLiquid.getDynamicLiquidForMaterial(p_180689_2_).func_180687_h(p_180689_0_, p_180689_1_);
+        return var3.xCoord == 0.0D && var3.zCoord == 0.0D ? -1000.0D : Math.atan2(var3.zCoord, var3.xCoord) - (Math.PI / 2D);
+    }
+
+    public static BlockDynamicLiquid getDynamicLiquidForMaterial(Material p_176361_0_) {
+        if (p_176361_0_ == Material.water) {
+            return Blocks.flowing_water;
+        } else if (p_176361_0_ == Material.lava) {
+            return Blocks.flowing_lava;
+        } else {
+            throw new IllegalArgumentException("Invalid material");
+        }
+    }
+
+    public static BlockStaticLiquid getStaticLiquidForMaterial(Material p_176363_0_) {
+        if (p_176363_0_ == Material.water) {
+            return Blocks.water;
+        } else if (p_176363_0_ == Material.lava) {
+            return Blocks.lava;
+        } else {
+            throw new IllegalArgumentException("Invalid material");
+        }
+    }
+
+    @Override
+    public boolean isPassable(IBlockAccess blockAccess, BlockPos pos) {
+        return blockMaterial != Material.lava;
+    }
+
+    @Override
+    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+        return blockMaterial == Material.water ? BiomeColorHelper.func_180288_c(worldIn, pos) : 16777215;
     }
 
     protected int func_176362_e(IBlockAccess p_176362_1_, BlockPos p_176362_2_) {
@@ -269,11 +289,6 @@ public abstract class BlockLiquid extends Block {
         }
     }
 
-    public static double func_180689_a(IBlockAccess p_180689_0_, BlockPos p_180689_1_, Material p_180689_2_) {
-        Vec3 var3 = BlockLiquid.getDynamicLiquidForMaterial(p_180689_2_).func_180687_h(p_180689_0_, p_180689_1_);
-        return var3.xCoord == 0.0D && var3.zCoord == 0.0D ? -1000.0D : Math.atan2(var3.zCoord, var3.xCoord) - (Math.PI / 2D);
-    }
-
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         func_176365_e(worldIn, pos, state);
@@ -349,25 +364,5 @@ public abstract class BlockLiquid extends Block {
     @Override
     protected BlockState createBlockState() {
         return new BlockState(this, new IProperty[]{BlockLiquid.LEVEL});
-    }
-
-    public static BlockDynamicLiquid getDynamicLiquidForMaterial(Material p_176361_0_) {
-        if (p_176361_0_ == Material.water) {
-            return Blocks.flowing_water;
-        } else if (p_176361_0_ == Material.lava) {
-            return Blocks.flowing_lava;
-        } else {
-            throw new IllegalArgumentException("Invalid material");
-        }
-    }
-
-    public static BlockStaticLiquid getStaticLiquidForMaterial(Material p_176363_0_) {
-        if (p_176363_0_ == Material.water) {
-            return Blocks.water;
-        } else if (p_176363_0_ == Material.lava) {
-            return Blocks.lava;
-        } else {
-            throw new IllegalArgumentException("Invalid material");
-        }
     }
 }

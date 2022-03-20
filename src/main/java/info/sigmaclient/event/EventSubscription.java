@@ -1,7 +1,5 @@
 package info.sigmaclient.event;
 
-import net.minecraft.client.Minecraft;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

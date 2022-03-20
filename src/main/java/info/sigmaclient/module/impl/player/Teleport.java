@@ -1,12 +1,12 @@
 package info.sigmaclient.module.impl.player;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.event.impl.EventRender3D;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.util.PlayerUtil;
 import info.sigmaclient.event.RegisterEvent;
+import info.sigmaclient.event.impl.EventRender3D;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
+import info.sigmaclient.util.PlayerUtil;
 import info.sigmaclient.util.RenderingUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -34,6 +34,14 @@ public class Teleport extends Module {
 
     public Teleport(ModuleData data) {
         super(data);
+    }
+
+    public static Block getBlock(final int x, final int y, final int z) {
+        return mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
+
+    public static Block getBlock(final BlockPos pos) {
+        return mc.theWorld.getBlockState(pos).getBlock();
     }
 
     public MovingObjectPosition getBlinkBlock() {
@@ -99,14 +107,6 @@ public class Teleport extends Module {
 
             }
         }
-    }
-
-    public static Block getBlock(final int x, final int y, final int z) {
-        return mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
-    }
-
-    public static Block getBlock(final BlockPos pos) {
-        return mc.theWorld.getBlockState(pos).getBlock();
     }
 
 }

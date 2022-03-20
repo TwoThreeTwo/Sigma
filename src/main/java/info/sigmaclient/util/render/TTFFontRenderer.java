@@ -22,51 +22,43 @@ import java.util.Locale;
  */
 public class TTFFontRenderer {
 
+    /**
+     * The margin on each texture.
+     */
+    private static final int MARGIN = 4;
+    /**
+     * The character that invokes color in a string when rendered.
+     */
+    private static final char COLOR_INVOKER = '\247';
+    /**
+     * The random offset in obfuscated text.
+     */
+    private static int RANDOM_OFFSET = 1;
     private final boolean antiAlias;
     /**
      * The font to be drawn.
      */
     private Font font;
-
     /**
      * If fractional metrics should be used in the font renderer.
      */
     private boolean fractionalMetrics = false;
-
     /**
      * All the character data information (regular).
      */
     private CharacterData[] regularData;
-
     /**
      * All the character data information (bold).
      */
     private CharacterData[] boldData;
-
     /**
      * All the character data information (italics).
      */
     private CharacterData[] italicsData;
-
     /**
      * All the color codes used in minecraft.
      */
     private int[] colorCodes = new int[32];
-
-    /**
-     * The margin on each texture.
-     */
-    private static final int MARGIN = 4;
-
-    /**
-     * The character that invokes color in a string when rendered.
-     */
-    private static final char COLOR_INVOKER = '\247';
-
-    /**
-     * The random offset in obfuscated text.
-     */
-    private static int RANDOM_OFFSET = 1;
 
     public TTFFontRenderer(Font font) {
         this(font, 256);
@@ -149,7 +141,7 @@ public class TTFFontRenderer {
             graphics.setColor(Color.WHITE);
 
             // Enables anti-aliasing so the font doesn't have aliasing.
-            if(antiAlias) {
+            if (antiAlias) {
                 graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -305,7 +297,7 @@ public class TTFFontRenderer {
         Color c = new Color(color /* The hex color code */);
 
         // Sets the color.
-        GL11.glColor4d(c.getRed() / multiplier, c.getGreen() / multiplier, c.getBlue() / multiplier, (color >> 24 & 0xFF) / 255d );
+        GL11.glColor4d(c.getRed() / multiplier, c.getGreen() / multiplier, c.getBlue() / multiplier, (color >> 24 & 0xFF) / 255d);
 
         // Loops through the text.
         for (int i = 0; i < length; i++) {

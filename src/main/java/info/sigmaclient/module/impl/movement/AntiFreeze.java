@@ -20,31 +20,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class AntiFreeze extends Module {
 
-    public AntiFreeze(ModuleData data) {
-        super(data);
-    }
-
     private List<Packet> packets = new CopyOnWriteArrayList<>();
     private boolean sending;
     private int delay;
     private int setBacks;
     private int ticksSinceLastSetBack;
     private boolean unstuck;
+    public AntiFreeze(ModuleData data) {
+        super(data);
+    }
 
     @Override
     @RegisterEvent(events = {EventTick.class, EventPacket.class})
     public void onEvent(Event event) {
         //S08PacketPosLook
-        if(event instanceof EventTick) {
+        if (event instanceof EventTick) {
             delay += 1;
-            if (delay >= 1)
-            {
+            if (delay >= 1) {
                 sending = true;
                 sendPackets();
                 delay = 0;
             }
-        } else if(event instanceof EventPacket) {
-            EventPacket ep = (EventPacket)event;
+        } else if (event instanceof EventPacket) {
+            EventPacket ep = (EventPacket) event;
             if (sending) {
                 return;
             }
@@ -55,19 +53,16 @@ public class AntiFreeze extends Module {
             if ((input) && ((ep.getPacket() instanceof C03PacketPlayer))) {
                 packets.add(ep.getPacket());
             }
-            if ((ep.getPacket() instanceof C02PacketUseEntity))
-            {
+            if ((ep.getPacket() instanceof C02PacketUseEntity)) {
                 packets.add(ep.getPacket());
                 mc.thePlayer.rotationYaw -= 180.0F;
             }
         }
     }
 
-    public void sendPackets()
-    {
+    public void sendPackets() {
         if (packets.size() > 0) {
-            for (Packet packet : packets)
-            {
+            for (Packet packet : packets) {
                 if (((packet instanceof C02PacketUseEntity)) || ((packet instanceof C08PacketPlayerBlockPlacement)) || ((packet instanceof C07PacketPlayerDigging))) {
                     mc.thePlayer.swingItem();
                 }
@@ -78,8 +73,7 @@ public class AntiFreeze extends Module {
         sending = false;
     }
 
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
         sending = true;
         sendPackets();

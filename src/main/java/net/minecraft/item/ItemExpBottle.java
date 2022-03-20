@@ -7,34 +7,34 @@ import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 
 public class ItemExpBottle extends Item {
-	private static final String __OBFID = "CL_00000028";
+    private static final String __OBFID = "CL_00000028";
 
-	public ItemExpBottle() {
-		setCreativeTab(CreativeTabs.tabMisc);
-	}
+    public ItemExpBottle() {
+        setCreativeTab(CreativeTabs.tabMisc);
+    }
 
-	@Override
-	public boolean hasEffect(ItemStack stack) {
-		return true;
-	}
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return true;
+    }
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is
-	 * pressed. Args: itemStack, world, entityPlayer
-	 */
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		if (!playerIn.capabilities.isCreativeMode) {
-			--itemStackIn.stackSize;
-		}
+    /**
+     * Called whenever this item is equipped and the right mouse button is
+     * pressed. Args: itemStack, world, entityPlayer
+     */
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+        if (!playerIn.capabilities.isCreativeMode) {
+            --itemStackIn.stackSize;
+        }
 
-		worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
 
-		if (!worldIn.isRemote) {
-			worldIn.spawnEntityInWorld(new EntityExpBottle(worldIn, playerIn));
-		}
+        if (!worldIn.isRemote) {
+            worldIn.spawnEntityInWorld(new EntityExpBottle(worldIn, playerIn));
+        }
 
-		playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-		return itemStackIn;
-	}
+        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+        return itemStackIn;
+    }
 }

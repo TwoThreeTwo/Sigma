@@ -17,7 +17,7 @@ public class InventoryFilter extends Module {
     public InventoryFilter(ModuleData data) {
         super(data);
         settings.put(BETTER, new Setting<>(BETTER, false, "Only pickup item if it's better."));
-        settings.put(MODE, new Setting<>(MODE, new Options("Filter Mode", "Armor",new String[] {"Weapons", "Blocks", "Armor", "Tools"}), "Filters out items to pickup."));
+        settings.put(MODE, new Setting<>(MODE, new Options("Filter Mode", "Armor", new String[]{"Weapons", "Blocks", "Armor", "Tools"}), "Filters out items to pickup."));
     }
 
     @Override

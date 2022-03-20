@@ -4,7 +4,6 @@ import info.sigmaclient.event.Event;
 import info.sigmaclient.management.command.Command;
 import info.sigmaclient.management.friend.FriendManager;
 import info.sigmaclient.util.misc.ChatUtil;
-import net.minecraft.util.EnumChatFormatting;
 
 public class Friend extends Command {
 
@@ -42,7 +41,7 @@ public class Friend extends Command {
                     return;
                 }
             }
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             printUsage();
         }
         printUsage();

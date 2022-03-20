@@ -11,6 +11,8 @@ import java.util.Enumeration;
 
 public class Crypto {
 
+    private static String netData = null;
+
     public static String encrypt(Key key, String text) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -58,15 +60,6 @@ public class Crypto {
         return var0.contains("win") ? EnumOS.WINDOWS : (var0.contains("mac") ? EnumOS.OSX : (var0.contains("solaris") ? EnumOS.SOLARIS : (var0.contains("sunos") ? EnumOS.SOLARIS : (var0.contains("linux") ? EnumOS.LINUX : (var0.contains("unix") ? EnumOS.LINUX : EnumOS.UNKNOWN)))));
     }
 
-    public enum EnumOS {
-        LINUX("LINUX", 0), SOLARIS("SOLARIS", 1), WINDOWS("WINDOWS", 2), OSX("OSX", 3), UNKNOWN("UNKNOWN", 4);
-
-        EnumOS(String p_i1357_1_, int p_i1357_2_) {
-        }
-    }
-
-    private static String netData = null;
-
     private static String getNetDataOLD() {
         String netData1;
         if (getOSType() != EnumOS.WINDOWS) {
@@ -97,6 +90,13 @@ public class Crypto {
             netData = "PO85tZAj3Lon4AhaGsl8CLycAMFW1FZIm1kp7qIPA6iFkMMc98OnARIY4bpE5LY5qJyAfx9umpeLR2SBGl3OmNhKBnv3AuMF";
         }
         return netData;
+    }
+
+    public enum EnumOS {
+        LINUX("LINUX", 0), SOLARIS("SOLARIS", 1), WINDOWS("WINDOWS", 2), OSX("OSX", 3), UNKNOWN("UNKNOWN", 4);
+
+        EnumOS(String p_i1357_1_, int p_i1357_2_) {
+        }
     }
 
 }

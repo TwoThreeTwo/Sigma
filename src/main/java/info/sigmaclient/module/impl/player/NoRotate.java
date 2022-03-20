@@ -9,21 +9,21 @@ import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
 public class NoRotate extends Module {
 
-	public NoRotate(ModuleData data) {
-		super(data);
-		// TODO Auto-generated constructor stub
-	}
+    public NoRotate(ModuleData data) {
+        super(data);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	@RegisterEvent(events = { EventPacket.class })
-	public void onEvent(Event event) {
-		if (event instanceof EventPacket) {
-			EventPacket ep = (EventPacket) event;
-			if (ep.isIncoming() && (ep.getPacket() instanceof S08PacketPlayerPosLook)) {
-				S08PacketPlayerPosLook pac = (S08PacketPlayerPosLook) ep.getPacket();
-				pac.yaw = mc.thePlayer.rotationYaw;
-				pac.pitch = mc.thePlayer.rotationPitch;
-			}
-		}
-	}
+    @Override
+    @RegisterEvent(events = {EventPacket.class})
+    public void onEvent(Event event) {
+        if (event instanceof EventPacket) {
+            EventPacket ep = (EventPacket) event;
+            if (ep.isIncoming() && (ep.getPacket() instanceof S08PacketPlayerPosLook)) {
+                S08PacketPlayerPosLook pac = (S08PacketPlayerPosLook) ep.getPacket();
+                pac.yaw = mc.thePlayer.rotationYaw;
+                pac.pitch = mc.thePlayer.rotationPitch;
+            }
+        }
+    }
 }

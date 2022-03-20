@@ -22,15 +22,22 @@ import java.net.URL;
 public class UserManager {
 
     private User userStatus = new Default();
+    private String initialHWID;
+    private String username;
+    private String firstUsername;
+    private String secondUsername;
+    private String firstHWID;
+    private String secondHWID;
+    public UserManager() {
+    }
+
+    public static Crypto.EnumOS getOSType() {
+        String var0 = System.getProperty("os.name").toLowerCase();
+        return var0.contains("win") ? Crypto.EnumOS.WINDOWS : (var0.contains("mac") ? Crypto.EnumOS.OSX : (var0.contains("solaris") ? Crypto.EnumOS.SOLARIS : (var0.contains("sunos") ? Crypto.EnumOS.SOLARIS : (var0.contains("linux") ? Crypto.EnumOS.LINUX : (var0.contains("unix") ? Crypto.EnumOS.LINUX : Crypto.EnumOS.UNKNOWN)))));
+    }
 
     public User getUser() {
         return userStatus;
-    }
-
-    private String initialHWID;
-    private String username;
-
-    public UserManager() {
     }
 
     public void checkUserStatus(String username) {
@@ -60,11 +67,6 @@ public class UserManager {
         //Do HWID Checking, if there's no valid user found, they're default.
         statusCheck();
     }
-
-    private String firstUsername;
-    private String secondUsername;
-    private String firstHWID;
-    private String secondHWID;
 
     public void statusCheck() {
         applyStatus(initialHWID, username);
@@ -143,12 +145,6 @@ public class UserManager {
                 Client.instance = null;
             }
         })).start();
-    }
-
-
-    public static Crypto.EnumOS getOSType() {
-        String var0 = System.getProperty("os.name").toLowerCase();
-        return var0.contains("win") ? Crypto.EnumOS.WINDOWS : (var0.contains("mac") ? Crypto.EnumOS.OSX : (var0.contains("solaris") ? Crypto.EnumOS.SOLARIS : (var0.contains("sunos") ? Crypto.EnumOS.SOLARIS : (var0.contains("linux") ? Crypto.EnumOS.LINUX : (var0.contains("unix") ? Crypto.EnumOS.LINUX : Crypto.EnumOS.UNKNOWN)))));
     }
 
 }

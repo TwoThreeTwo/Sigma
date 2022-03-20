@@ -25,7 +25,7 @@ public class CategoryPanel {
     public ArrayList<ColorPreview> colorPreviews;
     public ArrayList<RGBSlider> rgbSliders;
     public Module settingModule;
-    public Expand expand = new Expand(0,0,0,0);
+    public Expand expand = new Expand(0, 0, 0, 0);
 
     public CategoryPanel(String name, CategoryButton categoryButton, float x, float y) {
         this.headerString = name;
@@ -44,20 +44,20 @@ public class CategoryPanel {
     }
 
     public void draw(final float x, final float y) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.categoryPanelDraw(this, x, y);
         }
     }
 
     public void mouseClicked(final int x, final int y, final int button) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.categoryPanelMouseClicked(this, x, y, button);
         }
     }
 
     public void mouseReleased(final int x, final int y, final int button) {
-        for(UI theme : Client.getClickGui().getThemes()) {
-                theme.categoryPanelMouseMovedOrUp(this, x, y, button);
+        for (UI theme : Client.getClickGui().getThemes()) {
+            theme.categoryPanelMouseMovedOrUp(this, x, y, button);
         }
     }
 

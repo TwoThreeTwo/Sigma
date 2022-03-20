@@ -1,14 +1,11 @@
 package info.sigmaclient.module.impl.combat;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.management.friend.FriendManager;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.RotationUtils;
 import info.sigmaclient.util.misc.ChatUtil;
@@ -17,10 +14,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSword;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class AimAssist extends Module {
 
     private EntityLivingBase target;
-
+    private String WEAPON = "WEAPON";
+    private String RANGE = "RANGE";
+    private String HORIZONTAL = "SPEED-H";
+    private String VERTICAL = "SPEED-V";
+    private String FOVYAW = "FOVYAW";
+    private String FOVPITCH = "FOVPITCH";
+    private String X = "RANDOM-XZ";
+    private String Y = "RANDOM-Y";
     public AimAssist(ModuleData data) {
         super(data);
         settings.put(WEAPON, new Setting<>(WEAPON, true, "Checks if you have a sword in hand."));
@@ -32,15 +39,6 @@ public class AimAssist extends Module {
         settings.put(FOVYAW, new Setting<>(FOVYAW, 45, "Yaw FOV check.", 1, 5D, 50));
         settings.put(FOVPITCH, new Setting<>(FOVPITCH, 25, "Vertical FOV check.", 1, 5D, 50));
     }
-
-    private String WEAPON = "WEAPON";
-    private String RANGE = "RANGE";
-    private String HORIZONTAL = "SPEED-H";
-    private String VERTICAL = "SPEED-V";
-    private String FOVYAW = "FOVYAW";
-    private String FOVPITCH = "FOVPITCH";
-    private String X = "RANDOM-XZ";
-    private String Y = "RANDOM-Y";
 
     private int randomNumber() {
         return -1 + (int) (Math.random() * ((1 - (-1)) + 1));

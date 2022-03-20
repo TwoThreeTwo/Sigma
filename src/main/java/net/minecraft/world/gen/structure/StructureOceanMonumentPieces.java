@@ -1,11 +1,6 @@
 package net.minecraft.world.gen.structure;
 
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 import net.minecraft.block.BlockPrismarine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.IEntityLivingData;
@@ -16,12 +11,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class StructureOceanMonumentPieces
-{
+import java.util.*;
+
+public class StructureOceanMonumentPieces {
     private static final String __OBFID = "CL_00001994";
 
-    public static void func_175970_a()
-    {
+    public static void func_175970_a() {
         MapGenStructureIO.registerStructureComponent(StructureOceanMonumentPieces.MonumentBuilding.class, "OMB");
         MapGenStructureIO.registerStructureComponent(StructureOceanMonumentPieces.MonumentCoreRoom.class, "OMCR");
         MapGenStructureIO.registerStructureComponent(StructureOceanMonumentPieces.DoubleXRoom.class, "OMDXR");
@@ -35,35 +30,36 @@ public class StructureOceanMonumentPieces
         MapGenStructureIO.registerStructureComponent(StructureOceanMonumentPieces.SimpleTopRoom.class, "OMSimpleT");
     }
 
-    public static class DoubleXRoom extends StructureOceanMonumentPieces.Piece
-    {
+    interface MonumentRoomFitHelper {
+        boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_);
+
+        StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_);
+    }
+
+    public static class DoubleXRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001983";
 
-        public DoubleXRoom() {}
+        public DoubleXRoom() {
+        }
 
-        public DoubleXRoom(EnumFacing p_i45597_1_, StructureOceanMonumentPieces.RoomDefinition p_i45597_2_, Random p_i45597_3_)
-        {
+        public DoubleXRoom(EnumFacing p_i45597_1_, StructureOceanMonumentPieces.RoomDefinition p_i45597_2_, Random p_i45597_3_) {
             super(1, p_i45597_1_, p_i45597_2_, 2, 1, 1);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             StructureOceanMonumentPieces.RoomDefinition var4 = this.field_175830_k.field_175965_b[EnumFacing.EAST.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var5 = this.field_175830_k;
 
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 8, 0, var4.field_175966_c[EnumFacing.DOWN.getIndex()]);
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, var5.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (var5.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var5.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 4, 1, 7, 4, 6, field_175828_a);
             }
 
-            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 8, 4, 1, 14, 4, 6, field_175828_a);
             }
 
@@ -85,33 +81,27 @@ public class StructureOceanMonumentPieces
             this.func_175811_a(worldIn, field_175825_e, 6, 2, 3, p_74875_3_);
             this.func_175811_a(worldIn, field_175825_e, 9, 2, 3, p_74875_3_);
 
-            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 0, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 1, 0, 12, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 1, 7, 12, 2, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 15, 1, 3, 15, 2, 4, field_175822_f, field_175822_f, false);
             }
 
@@ -119,46 +109,39 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class DoubleXYRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class DoubleXYRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001982";
 
-        public DoubleXYRoom() {}
+        public DoubleXYRoom() {
+        }
 
-        public DoubleXYRoom(EnumFacing p_i45596_1_, StructureOceanMonumentPieces.RoomDefinition p_i45596_2_, Random p_i45596_3_)
-        {
+        public DoubleXYRoom(EnumFacing p_i45596_1_, StructureOceanMonumentPieces.RoomDefinition p_i45596_2_, Random p_i45596_3_) {
             super(1, p_i45596_1_, p_i45596_2_, 2, 2, 1);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             StructureOceanMonumentPieces.RoomDefinition var4 = this.field_175830_k.field_175965_b[EnumFacing.EAST.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var5 = this.field_175830_k;
             StructureOceanMonumentPieces.RoomDefinition var6 = var5.field_175965_b[EnumFacing.UP.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var7 = var4.field_175965_b[EnumFacing.UP.getIndex()];
 
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 8, 0, var4.field_175966_c[EnumFacing.DOWN.getIndex()]);
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, var5.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (var6.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var6.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 8, 1, 7, 8, 6, field_175828_a);
             }
 
-            if (var7.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var7.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 8, 8, 1, 14, 8, 6, field_175828_a);
             }
 
-            for (int var8 = 1; var8 <= 7; ++var8)
-            {
+            for (int var8 = 1; var8 <= 7; ++var8) {
                 IBlockState var9 = field_175826_b;
 
-                if (var8 == 2 || var8 == 6)
-                {
+                if (var8 == 2 || var8 == 6) {
                     var9 = field_175828_a;
                 }
 
@@ -192,63 +175,51 @@ public class StructureOceanMonumentPieces
             this.func_175811_a(worldIn, field_175825_e, 10, 4, 2, p_74875_3_);
             this.func_175811_a(worldIn, field_175825_e, 10, 4, 5, p_74875_3_);
 
-            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 0, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 1, 0, 12, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 1, 7, 12, 2, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 15, 1, 3, 15, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 5, 0, 4, 6, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 5, 7, 4, 6, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 5, 3, 0, 6, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 5, 0, 12, 6, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 11, 5, 7, 12, 6, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 15, 5, 3, 15, 6, 4, field_175822_f, field_175822_f, false);
             }
 
@@ -256,28 +227,24 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class DoubleYRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class DoubleYRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001981";
 
-        public DoubleYRoom() {}
+        public DoubleYRoom() {
+        }
 
-        public DoubleYRoom(EnumFacing p_i45595_1_, StructureOceanMonumentPieces.RoomDefinition p_i45595_2_, Random p_i45595_3_)
-        {
+        public DoubleYRoom(EnumFacing p_i45595_1_, StructureOceanMonumentPieces.RoomDefinition p_i45595_2_, Random p_i45595_3_) {
             super(1, p_i45595_1_, p_i45595_2_, 1, 2, 1);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, this.field_175830_k.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
             StructureOceanMonumentPieces.RoomDefinition var4 = this.field_175830_k.field_175965_b[EnumFacing.UP.getIndex()];
 
-            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 8, 1, 6, 8, 6, field_175828_a);
             }
 
@@ -295,60 +262,47 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 6, 4, 5, 6, 4, 5, field_175826_b, field_175826_b, false);
             StructureOceanMonumentPieces.RoomDefinition var5 = this.field_175830_k;
 
-            for (int var6 = 1; var6 <= 5; var6 += 4)
-            {
+            for (int var6 = 1; var6 <= 5; var6 += 4) {
                 byte var7 = 0;
 
-                if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()])
-                {
+                if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 2, var6, var7, 2, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 5, var6, var7, 5, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, var6 + 2, var7, 4, var6 + 2, var7, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 0, var6, var7, 7, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, var6 + 1, var7, 7, var6 + 1, var7, field_175828_a, field_175828_a, false);
                 }
 
                 var7 = 7;
 
-                if (var5.field_175966_c[EnumFacing.NORTH.getIndex()])
-                {
+                if (var5.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 2, var6, var7, 2, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 5, var6, var7, 5, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, var6 + 2, var7, 4, var6 + 2, var7, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 0, var6, var7, 7, var6 + 2, var7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, var6 + 1, var7, 7, var6 + 1, var7, field_175828_a, field_175828_a, false);
                 }
 
                 byte var8 = 0;
 
-                if (var5.field_175966_c[EnumFacing.WEST.getIndex()])
-                {
+                if (var5.field_175966_c[EnumFacing.WEST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 2, var8, var6 + 2, 2, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 5, var8, var6 + 2, 5, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6 + 2, 3, var8, var6 + 2, 4, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 0, var8, var6 + 2, 7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6 + 1, 0, var8, var6 + 1, 7, field_175828_a, field_175828_a, false);
                 }
 
                 var8 = 7;
 
-                if (var5.field_175966_c[EnumFacing.EAST.getIndex()])
-                {
+                if (var5.field_175966_c[EnumFacing.EAST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 2, var8, var6 + 2, 2, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 5, var8, var6 + 2, 5, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6 + 2, 3, var8, var6 + 2, 4, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6, 0, var8, var6 + 2, 7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, var6 + 1, 0, var8, var6 + 1, 7, field_175828_a, field_175828_a, false);
                 }
@@ -360,49 +314,42 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class DoubleYZRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class DoubleYZRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001980";
 
-        public DoubleYZRoom() {}
+        public DoubleYZRoom() {
+        }
 
-        public DoubleYZRoom(EnumFacing p_i45594_1_, StructureOceanMonumentPieces.RoomDefinition p_i45594_2_, Random p_i45594_3_)
-        {
+        public DoubleYZRoom(EnumFacing p_i45594_1_, StructureOceanMonumentPieces.RoomDefinition p_i45594_2_, Random p_i45594_3_) {
             super(1, p_i45594_1_, p_i45594_2_, 1, 2, 2);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             StructureOceanMonumentPieces.RoomDefinition var4 = this.field_175830_k.field_175965_b[EnumFacing.NORTH.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var5 = this.field_175830_k;
             StructureOceanMonumentPieces.RoomDefinition var6 = var4.field_175965_b[EnumFacing.UP.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var7 = var5.field_175965_b[EnumFacing.UP.getIndex()];
 
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 0, 8, var4.field_175966_c[EnumFacing.DOWN.getIndex()]);
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, var5.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (var7.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var7.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 8, 1, 6, 8, 7, field_175828_a);
             }
 
-            if (var6.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var6.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 8, 8, 6, 8, 14, field_175828_a);
             }
 
             int var8;
             IBlockState var9;
 
-            for (var8 = 1; var8 <= 7; ++var8)
-            {
+            for (var8 = 1; var8 <= 7; ++var8) {
                 var9 = field_175826_b;
 
-                if (var8 == 2 || var8 == 6)
-                {
+                if (var8 == 2 || var8 == 6) {
                     var9 = field_175828_a;
                 }
 
@@ -412,84 +359,70 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 1, var8, 15, 6, var8, 15, var9, var9, false);
             }
 
-            for (var8 = 1; var8 <= 7; ++var8)
-            {
+            for (var8 = 1; var8 <= 7; ++var8) {
                 var9 = field_175827_c;
 
-                if (var8 == 2 || var8 == 6)
-                {
+                if (var8 == 2 || var8 == 6) {
                     var9 = field_175825_e;
                 }
 
                 this.func_175804_a(worldIn, p_74875_3_, 3, var8, 7, 4, var8, 8, var9, var9, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 1, 3, 7, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 0, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 15, 4, 2, 15, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 11, 0, 2, 12, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 1, 11, 7, 2, 12, field_175822_f, field_175822_f, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 5, 0, 4, 6, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 5, 3, 7, 6, 4, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 5, 4, 2, 6, 4, 5, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 6, 1, 2, 6, 3, 2, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 6, 1, 5, 6, 3, 5, field_175826_b, field_175826_b, false);
             }
 
-            if (var7.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var7.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 5, 3, 0, 6, 4, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 4, 2, 2, 4, 5, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 2, 1, 3, 2, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 5, 1, 3, 5, field_175826_b, field_175826_b, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 5, 15, 4, 6, 15, field_175822_f, field_175822_f, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 5, 11, 0, 6, 12, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 4, 10, 2, 4, 13, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 10, 1, 3, 10, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 13, 1, 3, 13, field_175826_b, field_175826_b, false);
             }
 
-            if (var6.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var6.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 5, 11, 7, 6, 12, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 5, 4, 10, 6, 4, 13, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 6, 1, 10, 6, 3, 10, field_175826_b, field_175826_b, false);
@@ -500,35 +433,30 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class DoubleZRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class DoubleZRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001979";
 
-        public DoubleZRoom() {}
+        public DoubleZRoom() {
+        }
 
-        public DoubleZRoom(EnumFacing p_i45593_1_, StructureOceanMonumentPieces.RoomDefinition p_i45593_2_, Random p_i45593_3_)
-        {
+        public DoubleZRoom(EnumFacing p_i45593_1_, StructureOceanMonumentPieces.RoomDefinition p_i45593_2_, Random p_i45593_3_) {
             super(1, p_i45593_1_, p_i45593_2_, 1, 1, 2);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             StructureOceanMonumentPieces.RoomDefinition var4 = this.field_175830_k.field_175965_b[EnumFacing.NORTH.getIndex()];
             StructureOceanMonumentPieces.RoomDefinition var5 = this.field_175830_k;
 
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 0, 8, var4.field_175966_c[EnumFacing.DOWN.getIndex()]);
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, var5.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (var5.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var5.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 4, 1, 6, 4, 7, field_175828_a);
             }
 
-            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (var4.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 4, 8, 6, 4, 14, field_175828_a);
             }
 
@@ -569,33 +497,27 @@ public class StructureOceanMonumentPieces
             this.func_175811_a(worldIn, field_175826_b, 2, 3, 10, p_74875_3_);
             this.func_175811_a(worldIn, field_175826_b, 5, 3, 10, p_74875_3_);
 
-            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 1, 3, 7, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var5.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var5.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 0, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 15, 4, 2, 15, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 11, 0, 2, 12, field_175822_f, field_175822_f, false);
             }
 
-            if (var4.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (var4.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 7, 1, 11, 7, 2, 12, field_175822_f, field_175822_f, false);
             }
 
@@ -603,19 +525,17 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class EntryRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class EntryRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001978";
 
-        public EntryRoom() {}
+        public EntryRoom() {
+        }
 
-        public EntryRoom(EnumFacing p_i45592_1_, StructureOceanMonumentPieces.RoomDefinition p_i45592_2_)
-        {
+        public EntryRoom(EnumFacing p_i45592_1_, StructureOceanMonumentPieces.RoomDefinition p_i45592_2_) {
             super(1, p_i45592_1_, p_i45592_2_, 1, 1, 1);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             this.func_175804_a(worldIn, p_74875_3_, 0, 3, 0, 2, 3, 7, field_175826_b, field_175826_b, false);
             this.func_175804_a(worldIn, p_74875_3_, 5, 3, 0, 7, 3, 7, field_175826_b, field_175826_b, false);
             this.func_175804_a(worldIn, p_74875_3_, 0, 2, 0, 1, 2, 7, field_175826_b, field_175826_b, false);
@@ -626,18 +546,15 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 1, 1, 0, 2, 3, 0, field_175826_b, field_175826_b, false);
             this.func_175804_a(worldIn, p_74875_3_, 5, 1, 0, 6, 3, 0, field_175826_b, field_175826_b, false);
 
-            if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()])
-            {
+            if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175822_f, field_175822_f, false);
             }
 
-            if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()])
-            {
+            if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 1, 2, 4, field_175822_f, field_175822_f, false);
             }
 
-            if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()])
-            {
+            if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 6, 1, 3, 7, 2, 4, field_175822_f, field_175822_f, false);
             }
 
@@ -645,68 +562,60 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    static class FitSimpleRoomHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class FitSimpleRoomHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001987";
 
-        private FitSimpleRoomHelper() {}
+        private FitSimpleRoomHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
+        FitSimpleRoomHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45601_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
             return true;
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             return new StructureOceanMonumentPieces.SimpleRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        FitSimpleRoomHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45601_1_)
-        {
-            this();
-        }
     }
 
-    static class FitSimpleRoomTopHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class FitSimpleRoomTopHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001986";
 
-        private FitSimpleRoomTopHelper() {}
+        private FitSimpleRoomTopHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
+        FitSimpleRoomTopHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45600_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
             return !p_175969_1_.field_175966_c[EnumFacing.WEST.getIndex()] && !p_175969_1_.field_175966_c[EnumFacing.EAST.getIndex()] && !p_175969_1_.field_175966_c[EnumFacing.NORTH.getIndex()] && !p_175969_1_.field_175966_c[EnumFacing.SOUTH.getIndex()] && !p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()];
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             return new StructureOceanMonumentPieces.SimpleTopRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        FitSimpleRoomTopHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45600_1_)
-        {
-            this();
-        }
     }
 
-    public static class MonumentBuilding extends StructureOceanMonumentPieces.Piece
-    {
+    public static class MonumentBuilding extends StructureOceanMonumentPieces.Piece {
+        private static final String __OBFID = "CL_00001985";
         private StructureOceanMonumentPieces.RoomDefinition field_175845_o;
         private StructureOceanMonumentPieces.RoomDefinition field_175844_p;
         private List field_175843_q = Lists.newArrayList();
-        private static final String __OBFID = "CL_00001985";
 
-        public MonumentBuilding() {}
+        public MonumentBuilding() {
+        }
 
-        public MonumentBuilding(Random p_i45599_1_, int p_i45599_2_, int p_i45599_3_, EnumFacing p_i45599_4_)
-        {
+        public MonumentBuilding(Random p_i45599_1_, int p_i45599_2_, int p_i45599_3_, EnumFacing p_i45599_4_) {
             super(0);
             this.coordBaseMode = p_i45599_4_;
 
-            switch (StructureOceanMonumentPieces.SwitchEnumFacing.field_175971_a[this.coordBaseMode.ordinal()])
-            {
+            switch (StructureOceanMonumentPieces.SwitchEnumFacing.field_175971_a[this.coordBaseMode.ordinal()]) {
                 case 1:
                 case 2:
                     this.boundingBox = new StructureBoundingBox(p_i45599_2_, 39, p_i45599_3_, p_i45599_2_ + 58 - 1, 61, p_i45599_3_ + 58 - 1);
@@ -721,29 +630,25 @@ public class StructureOceanMonumentPieces
             this.field_175843_q.add(new StructureOceanMonumentPieces.EntryRoom(this.coordBaseMode, this.field_175845_o));
             this.field_175843_q.add(new StructureOceanMonumentPieces.MonumentCoreRoom(this.coordBaseMode, this.field_175844_p, p_i45599_1_));
             ArrayList var6 = Lists.newArrayList();
-            var6.add(new StructureOceanMonumentPieces.XYDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.YZDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.ZDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.XDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.YDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.FitSimpleRoomTopHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
-            var6.add(new StructureOceanMonumentPieces.FitSimpleRoomHelper((StructureOceanMonumentPieces.SwitchEnumFacing)null));
+            var6.add(new StructureOceanMonumentPieces.XYDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.YZDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.ZDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.XDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.YDoubleRoomFitHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.FitSimpleRoomTopHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
+            var6.add(new StructureOceanMonumentPieces.FitSimpleRoomHelper((StructureOceanMonumentPieces.SwitchEnumFacing) null));
             Iterator var7 = var5.iterator();
 
-            while (var7.hasNext())
-            {
-                StructureOceanMonumentPieces.RoomDefinition var8 = (StructureOceanMonumentPieces.RoomDefinition)var7.next();
+            while (var7.hasNext()) {
+                StructureOceanMonumentPieces.RoomDefinition var8 = (StructureOceanMonumentPieces.RoomDefinition) var7.next();
 
-                if (!var8.field_175963_d && !var8.func_175961_b())
-                {
+                if (!var8.field_175963_d && !var8.func_175961_b()) {
                     Iterator var9 = var6.iterator();
 
-                    while (var9.hasNext())
-                    {
-                        StructureOceanMonumentPieces.MonumentRoomFitHelper var10 = (StructureOceanMonumentPieces.MonumentRoomFitHelper)var9.next();
+                    while (var9.hasNext()) {
+                        StructureOceanMonumentPieces.MonumentRoomFitHelper var10 = (StructureOceanMonumentPieces.MonumentRoomFitHelper) var9.next();
 
-                        if (var10.func_175969_a(var8))
-                        {
+                        if (var10.func_175969_a(var8)) {
                             this.field_175843_q.add(var10.func_175968_a(this.coordBaseMode, var8, p_i45599_1_));
                             break;
                         }
@@ -756,9 +661,8 @@ public class StructureOceanMonumentPieces
             int var16 = this.getZWithOffset(9, 22);
             Iterator var17 = this.field_175843_q.iterator();
 
-            while (var17.hasNext())
-            {
-                StructureOceanMonumentPieces.Piece var11 = (StructureOceanMonumentPieces.Piece)var17.next();
+            while (var17.hasNext()) {
+                StructureOceanMonumentPieces.Piece var11 = (StructureOceanMonumentPieces.Piece) var17.next();
                 var11.getBoundingBox().offset(var15, var14, var16);
             }
 
@@ -771,38 +675,31 @@ public class StructureOceanMonumentPieces
             this.field_175843_q.add(new StructureOceanMonumentPieces.Penthouse(this.coordBaseMode, var12));
         }
 
-        private List func_175836_a(Random p_175836_1_)
-        {
+        private List func_175836_a(Random p_175836_1_) {
             StructureOceanMonumentPieces.RoomDefinition[] var2 = new StructureOceanMonumentPieces.RoomDefinition[75];
             int var3;
             int var4;
             byte var5;
             int var6;
 
-            for (var3 = 0; var3 < 5; ++var3)
-            {
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+            for (var3 = 0; var3 < 5; ++var3) {
+                for (var4 = 0; var4 < 4; ++var4) {
                     var5 = 0;
                     var6 = func_175820_a(var3, var5, var4);
                     var2[var6] = new StructureOceanMonumentPieces.RoomDefinition(var6);
                 }
             }
 
-            for (var3 = 0; var3 < 5; ++var3)
-            {
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+            for (var3 = 0; var3 < 5; ++var3) {
+                for (var4 = 0; var4 < 4; ++var4) {
                     var5 = 1;
                     var6 = func_175820_a(var3, var5, var4);
                     var2[var6] = new StructureOceanMonumentPieces.RoomDefinition(var6);
                 }
             }
 
-            for (var3 = 1; var3 < 4; ++var3)
-            {
-                for (var4 = 0; var4 < 2; ++var4)
-                {
+            for (var3 = 1; var3 < 4; ++var3) {
+                for (var4 = 0; var4 < 2; ++var4) {
                     var5 = 2;
                     var6 = func_175820_a(var3, var5, var4);
                     var2[var6] = new StructureOceanMonumentPieces.RoomDefinition(var6);
@@ -816,38 +713,28 @@ public class StructureOceanMonumentPieces
             int var12;
             int var13;
 
-            for (var3 = 0; var3 < 5; ++var3)
-            {
-                for (var4 = 0; var4 < 5; ++var4)
-                {
-                    for (int var17 = 0; var17 < 3; ++var17)
-                    {
+            for (var3 = 0; var3 < 5; ++var3) {
+                for (var4 = 0; var4 < 5; ++var4) {
+                    for (int var17 = 0; var17 < 3; ++var17) {
                         var6 = func_175820_a(var3, var17, var4);
 
-                        if (var2[var6] != null)
-                        {
+                        if (var2[var6] != null) {
                             EnumFacing[] var7 = EnumFacing.values();
                             var8 = var7.length;
 
-                            for (var9 = 0; var9 < var8; ++var9)
-                            {
+                            for (var9 = 0; var9 < var8; ++var9) {
                                 EnumFacing var10 = var7[var9];
                                 var11 = var3 + var10.getFrontOffsetX();
                                 var12 = var17 + var10.getFrontOffsetY();
                                 var13 = var4 + var10.getFrontOffsetZ();
 
-                                if (var11 >= 0 && var11 < 5 && var13 >= 0 && var13 < 5 && var12 >= 0 && var12 < 3)
-                                {
+                                if (var11 >= 0 && var11 < 5 && var13 >= 0 && var13 < 5 && var12 >= 0 && var12 < 3) {
                                     int var14 = func_175820_a(var11, var12, var13);
 
-                                    if (var2[var14] != null)
-                                    {
-                                        if (var13 != var4)
-                                        {
+                                    if (var2[var14] != null) {
+                                        if (var13 != var4) {
                                             var2[var6].func_175957_a(var10.getOpposite(), var2[var14]);
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             var2[var6].func_175957_a(var10, var2[var14]);
                                         }
                                     }
@@ -881,12 +768,10 @@ public class StructureOceanMonumentPieces
             StructureOceanMonumentPieces.RoomDefinition[] var20 = var2;
             var8 = var2.length;
 
-            for (var9 = 0; var9 < var8; ++var9)
-            {
+            for (var9 = 0; var9 < var8; ++var9) {
                 StructureOceanMonumentPieces.RoomDefinition var24 = var20[var9];
 
-                if (var24 != null)
-                {
+                if (var24 != null) {
                     var24.func_175958_a();
                     var19.add(var24);
                 }
@@ -897,29 +782,23 @@ public class StructureOceanMonumentPieces
             int var21 = 1;
             Iterator var22 = var19.iterator();
 
-            while (var22.hasNext())
-            {
-                StructureOceanMonumentPieces.RoomDefinition var23 = (StructureOceanMonumentPieces.RoomDefinition)var22.next();
+            while (var22.hasNext()) {
+                StructureOceanMonumentPieces.RoomDefinition var23 = (StructureOceanMonumentPieces.RoomDefinition) var22.next();
                 int var25 = 0;
                 var11 = 0;
 
-                while (var25 < 2 && var11 < 5)
-                {
+                while (var25 < 2 && var11 < 5) {
                     ++var11;
                     var12 = p_175836_1_.nextInt(6);
 
-                    if (var23.field_175966_c[var12])
-                    {
+                    if (var23.field_175966_c[var12]) {
                         var13 = EnumFacing.getFront(var12).getOpposite().getIndex();
                         var23.field_175966_c[var12] = false;
                         var23.field_175965_b[var12].field_175966_c[var13] = false;
 
-                        if (var23.func_175959_a(var21++) && var23.field_175965_b[var12].func_175959_a(var21++))
-                        {
+                        if (var23.func_175959_a(var21++) && var23.field_175965_b[var12].func_175959_a(var21++)) {
                             ++var25;
-                        }
-                        else
-                        {
+                        } else {
                             var23.field_175966_c[var12] = true;
                             var23.field_175965_b[var12].field_175966_c[var13] = true;
                         }
@@ -933,8 +812,7 @@ public class StructureOceanMonumentPieces
             return var19;
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             this.func_175840_a(false, 0, worldIn, p_74875_2_, p_74875_3_);
             this.func_175840_a(true, 33, worldIn, p_74875_2_, p_74875_3_);
             this.func_175839_b(worldIn, p_74875_2_, p_74875_3_);
@@ -945,42 +823,33 @@ public class StructureOceanMonumentPieces
             this.func_175838_g(worldIn, p_74875_2_, p_74875_3_);
             int var4;
 
-            for (var4 = 0; var4 < 7; ++var4)
-            {
+            for (var4 = 0; var4 < 7; ++var4) {
                 int var5 = 0;
 
-                while (var5 < 7)
-                {
-                    if (var5 == 0 && var4 == 3)
-                    {
+                while (var5 < 7) {
+                    if (var5 == 0 && var4 == 3) {
                         var5 = 6;
                     }
 
                     int var6 = var4 * 9;
                     int var7 = var5 * 9;
 
-                    for (int var8 = 0; var8 < 4; ++var8)
-                    {
-                        for (int var9 = 0; var9 < 4; ++var9)
-                        {
+                    for (int var8 = 0; var8 < 4; ++var8) {
+                        for (int var9 = 0; var9 < 4; ++var9) {
                             this.func_175811_a(worldIn, field_175826_b, var6 + var8, 0, var7 + var9, p_74875_3_);
                             this.func_175808_b(worldIn, field_175826_b, var6 + var8, -1, var7 + var9, p_74875_3_);
                         }
                     }
 
-                    if (var4 != 0 && var4 != 6)
-                    {
+                    if (var4 != 0 && var4 != 6) {
                         var5 += 6;
-                    }
-                    else
-                    {
+                    } else {
                         ++var5;
                     }
                 }
             }
 
-            for (var4 = 0; var4 < 5; ++var4)
-            {
+            for (var4 = 0; var4 < 5; ++var4) {
                 this.func_175804_a(worldIn, p_74875_3_, -1 - var4, 0 + var4 * 2, -1 - var4, -1 - var4, 23, 58 + var4, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 58 + var4, 0 + var4 * 2, -1 - var4, 58 + var4, 23, 58 + var4, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_74875_3_, 0 - var4, 0 + var4 * 2, -1 - var4, 57 + var4, 23, -1 - var4, field_175822_f, field_175822_f, false);
@@ -989,12 +858,10 @@ public class StructureOceanMonumentPieces
 
             Iterator var10 = this.field_175843_q.iterator();
 
-            while (var10.hasNext())
-            {
-                StructureOceanMonumentPieces.Piece var11 = (StructureOceanMonumentPieces.Piece)var10.next();
+            while (var10.hasNext()) {
+                StructureOceanMonumentPieces.Piece var11 = (StructureOceanMonumentPieces.Piece) var10.next();
 
-                if (var11.getBoundingBox().intersectsWith(p_74875_3_))
-                {
+                if (var11.getBoundingBox().intersectsWith(p_74875_3_)) {
                     var11.addComponentParts(worldIn, p_74875_2_, p_74875_3_);
                 }
             }
@@ -1002,18 +869,15 @@ public class StructureOceanMonumentPieces
             return true;
         }
 
-        private void func_175840_a(boolean p_175840_1_, int p_175840_2_, World worldIn, Random p_175840_4_, StructureBoundingBox p_175840_5_)
-        {
+        private void func_175840_a(boolean p_175840_1_, int p_175840_2_, World worldIn, Random p_175840_4_, StructureBoundingBox p_175840_5_) {
             boolean var6 = true;
 
-            if (this.func_175818_a(p_175840_5_, p_175840_2_, 0, p_175840_2_ + 23, 20))
-            {
+            if (this.func_175818_a(p_175840_5_, p_175840_2_, 0, p_175840_2_ + 23, 20)) {
                 this.func_175804_a(worldIn, p_175840_5_, p_175840_2_ + 0, 0, 0, p_175840_2_ + 24, 0, 20, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175840_5_, p_175840_2_ + 0, 1, 0, p_175840_2_ + 24, 10, 20, field_175822_f, field_175822_f, false);
                 int var7;
 
-                for (var7 = 0; var7 < 4; ++var7)
-                {
+                for (var7 = 0; var7 < 4; ++var7) {
                     this.func_175804_a(worldIn, p_175840_5_, p_175840_2_ + var7, var7 + 1, var7, p_175840_2_ + var7, var7 + 1, 20, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_175840_5_, p_175840_2_ + var7 + 7, var7 + 5, var7 + 7, p_175840_2_ + var7 + 7, var7 + 5, 20, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_175840_5_, p_175840_2_ + 17 - var7, var7 + 5, var7 + 7, p_175840_2_ + 17 - var7, var7 + 5, 20, field_175826_b, field_175826_b, false);
@@ -1033,18 +897,15 @@ public class StructureOceanMonumentPieces
                 int var8 = p_175840_1_ ? p_175840_2_ + 5 : p_175840_2_ + 19;
                 int var9;
 
-                for (var9 = 20; var9 >= 5; var9 -= 3)
-                {
+                for (var9 = 20; var9 >= 5; var9 -= 3) {
                     this.func_175811_a(worldIn, field_175824_d, var7, 5, var9, p_175840_5_);
                 }
 
-                for (var9 = 19; var9 >= 7; var9 -= 3)
-                {
+                for (var9 = 19; var9 >= 7; var9 -= 3) {
                     this.func_175811_a(worldIn, field_175824_d, var8, 5, var9, p_175840_5_);
                 }
 
-                for (var9 = 0; var9 < 4; ++var9)
-                {
+                for (var9 = 0; var9 < 4; ++var9) {
                     int var10 = p_175840_1_ ? p_175840_2_ + (24 - (17 - var9 * 3)) : p_175840_2_ + 17 - var9 * 3;
                     this.func_175811_a(worldIn, field_175824_d, var10, 5, 5, p_175840_5_);
                 }
@@ -1055,14 +916,11 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        private void func_175839_b(World worldIn, Random p_175839_2_, StructureBoundingBox p_175839_3_)
-        {
-            if (this.func_175818_a(p_175839_3_, 22, 5, 35, 17))
-            {
+        private void func_175839_b(World worldIn, Random p_175839_2_, StructureBoundingBox p_175839_3_) {
+            if (this.func_175818_a(p_175839_3_, 22, 5, 35, 17)) {
                 this.func_175804_a(worldIn, p_175839_3_, 25, 0, 0, 32, 8, 20, field_175822_f, field_175822_f, false);
 
-                for (int var4 = 0; var4 < 4; ++var4)
-                {
+                for (int var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175839_3_, 24, 2, 5 + var4 * 4, 24, 4, 5 + var4 * 4, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_175839_3_, 22, 4, 5 + var4 * 4, 23, 4, 5 + var4 * 4, field_175826_b, field_175826_b, false);
                     this.func_175811_a(worldIn, field_175826_b, 25, 5, 5 + var4 * 4, p_175839_3_);
@@ -1078,10 +936,8 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        private void func_175837_c(World worldIn, Random p_175837_2_, StructureBoundingBox p_175837_3_)
-        {
-            if (this.func_175818_a(p_175837_3_, 15, 20, 42, 21))
-            {
+        private void func_175837_c(World worldIn, Random p_175837_2_, StructureBoundingBox p_175837_3_) {
+            if (this.func_175818_a(p_175837_3_, 15, 20, 42, 21)) {
                 this.func_175804_a(worldIn, p_175837_3_, 15, 0, 21, 42, 0, 21, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175837_3_, 26, 1, 21, 31, 3, 21, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175837_3_, 21, 12, 21, 36, 12, 21, field_175828_a, field_175828_a, false);
@@ -1104,14 +960,12 @@ public class StructureOceanMonumentPieces
                 this.func_175811_a(worldIn, field_175826_b, 32, 1, 21, p_175837_3_);
                 int var4;
 
-                for (var4 = 0; var4 < 7; ++var4)
-                {
+                for (var4 = 0; var4 < 7; ++var4) {
                     this.func_175811_a(worldIn, field_175827_c, 28 - var4, 6 + var4, 21, p_175837_3_);
                     this.func_175811_a(worldIn, field_175827_c, 29 + var4, 6 + var4, 21, p_175837_3_);
                 }
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175811_a(worldIn, field_175827_c, 28 - var4, 9 + var4, 21, p_175837_3_);
                     this.func_175811_a(worldIn, field_175827_c, 29 + var4, 9 + var4, 21, p_175837_3_);
                 }
@@ -1119,8 +973,7 @@ public class StructureOceanMonumentPieces
                 this.func_175811_a(worldIn, field_175827_c, 28, 12, 21, p_175837_3_);
                 this.func_175811_a(worldIn, field_175827_c, 29, 12, 21, p_175837_3_);
 
-                for (var4 = 0; var4 < 3; ++var4)
-                {
+                for (var4 = 0; var4 < 3; ++var4) {
                     this.func_175811_a(worldIn, field_175827_c, 22 - var4 * 2, 8, 21, p_175837_3_);
                     this.func_175811_a(worldIn, field_175827_c, 22 - var4 * 2, 9, 21, p_175837_3_);
                     this.func_175811_a(worldIn, field_175827_c, 35 + var4 * 2, 8, 21, p_175837_3_);
@@ -1143,15 +996,12 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        private void func_175841_d(World worldIn, Random p_175841_2_, StructureBoundingBox p_175841_3_)
-        {
-            if (this.func_175818_a(p_175841_3_, 21, 21, 36, 36))
-            {
+        private void func_175841_d(World worldIn, Random p_175841_2_, StructureBoundingBox p_175841_3_) {
+            if (this.func_175818_a(p_175841_3_, 21, 21, 36, 36)) {
                 this.func_175804_a(worldIn, p_175841_3_, 21, 0, 22, 36, 0, 36, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175841_3_, 21, 1, 22, 36, 23, 36, field_175822_f, field_175822_f, false);
 
-                for (int var4 = 0; var4 < 4; ++var4)
-                {
+                for (int var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175841_3_, 21 + var4, 13 + var4, 21 + var4, 36 - var4, 13 + var4, 21 + var4, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_175841_3_, 21 + var4, 13 + var4, 36 - var4, 36 - var4, 13 + var4, 36 - var4, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_175841_3_, 21 + var4, 13 + var4, 22 + var4, 21 + var4, 13 + var4, 35 - var4, field_175826_b, field_175826_b, false);
@@ -1182,30 +1032,25 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        private void func_175835_e(World worldIn, Random p_175835_2_, StructureBoundingBox p_175835_3_)
-        {
+        private void func_175835_e(World worldIn, Random p_175835_2_, StructureBoundingBox p_175835_3_) {
             int var4;
 
-            if (this.func_175818_a(p_175835_3_, 0, 21, 6, 58))
-            {
+            if (this.func_175818_a(p_175835_3_, 0, 21, 6, 58)) {
                 this.func_175804_a(worldIn, p_175835_3_, 0, 0, 21, 6, 0, 57, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175835_3_, 0, 1, 21, 6, 7, 57, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175835_3_, 4, 4, 21, 6, 4, 53, field_175828_a, field_175828_a, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175835_3_, var4, var4 + 1, 21, var4, var4 + 1, 57 - var4, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 23; var4 < 53; var4 += 3)
-                {
+                for (var4 = 23; var4 < 53; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 5, 5, var4, p_175835_3_);
                 }
 
                 this.func_175811_a(worldIn, field_175824_d, 5, 5, 52, p_175835_3_);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175835_3_, var4, var4 + 1, 21, var4, var4 + 1, 57 - var4, field_175826_b, field_175826_b, false);
                 }
 
@@ -1213,19 +1058,16 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_175835_3_, 5, 1, 51, 5, 3, 53, field_175828_a, field_175828_a, false);
             }
 
-            if (this.func_175818_a(p_175835_3_, 51, 21, 58, 58))
-            {
+            if (this.func_175818_a(p_175835_3_, 51, 21, 58, 58)) {
                 this.func_175804_a(worldIn, p_175835_3_, 51, 0, 21, 57, 0, 57, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175835_3_, 51, 1, 21, 57, 7, 57, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175835_3_, 51, 4, 21, 53, 4, 53, field_175828_a, field_175828_a, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175835_3_, 57 - var4, var4 + 1, 21, 57 - var4, var4 + 1, 57 - var4, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 23; var4 < 53; var4 += 3)
-                {
+                for (var4 = 23; var4 < 53; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 52, 5, var4, p_175835_3_);
                 }
 
@@ -1234,68 +1076,56 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_175835_3_, 52, 1, 51, 52, 3, 53, field_175828_a, field_175828_a, false);
             }
 
-            if (this.func_175818_a(p_175835_3_, 0, 51, 57, 57))
-            {
+            if (this.func_175818_a(p_175835_3_, 0, 51, 57, 57)) {
                 this.func_175804_a(worldIn, p_175835_3_, 7, 0, 51, 50, 0, 57, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175835_3_, 7, 1, 51, 50, 10, 57, field_175822_f, field_175822_f, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175835_3_, var4 + 1, var4 + 1, 57 - var4, 56 - var4, var4 + 1, 57 - var4, field_175826_b, field_175826_b, false);
                 }
             }
         }
 
-        private void func_175842_f(World worldIn, Random p_175842_2_, StructureBoundingBox p_175842_3_)
-        {
+        private void func_175842_f(World worldIn, Random p_175842_2_, StructureBoundingBox p_175842_3_) {
             int var4;
 
-            if (this.func_175818_a(p_175842_3_, 7, 21, 13, 50))
-            {
+            if (this.func_175818_a(p_175842_3_, 7, 21, 13, 50)) {
                 this.func_175804_a(worldIn, p_175842_3_, 7, 0, 21, 13, 0, 50, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175842_3_, 7, 1, 21, 13, 10, 50, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175842_3_, 11, 8, 21, 13, 8, 53, field_175828_a, field_175828_a, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175842_3_, var4 + 7, var4 + 5, 21, var4 + 7, var4 + 5, 54, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 21; var4 <= 45; var4 += 3)
-                {
+                for (var4 = 21; var4 <= 45; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 12, 9, var4, p_175842_3_);
                 }
             }
 
-            if (this.func_175818_a(p_175842_3_, 44, 21, 50, 54))
-            {
+            if (this.func_175818_a(p_175842_3_, 44, 21, 50, 54)) {
                 this.func_175804_a(worldIn, p_175842_3_, 44, 0, 21, 50, 0, 50, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175842_3_, 44, 1, 21, 50, 10, 50, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175842_3_, 44, 8, 21, 46, 8, 53, field_175828_a, field_175828_a, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175842_3_, 50 - var4, var4 + 5, 21, 50 - var4, var4 + 5, 54, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 21; var4 <= 45; var4 += 3)
-                {
+                for (var4 = 21; var4 <= 45; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 45, 9, var4, p_175842_3_);
                 }
             }
 
-            if (this.func_175818_a(p_175842_3_, 8, 44, 49, 54))
-            {
+            if (this.func_175818_a(p_175842_3_, 8, 44, 49, 54)) {
                 this.func_175804_a(worldIn, p_175842_3_, 14, 0, 44, 43, 0, 50, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175842_3_, 14, 1, 44, 43, 10, 50, field_175822_f, field_175822_f, false);
 
-                for (var4 = 12; var4 <= 45; var4 += 3)
-                {
+                for (var4 = 12; var4 <= 45; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, var4, 9, 45, p_175842_3_);
                     this.func_175811_a(worldIn, field_175824_d, var4, 9, 52, p_175842_3_);
 
-                    if (var4 == 12 || var4 == 18 || var4 == 24 || var4 == 33 || var4 == 39 || var4 == 45)
-                    {
+                    if (var4 == 12 || var4 == 18 || var4 == 24 || var4 == 33 || var4 == 39 || var4 == 45) {
                         this.func_175811_a(worldIn, field_175824_d, var4, 9, 47, p_175842_3_);
                         this.func_175811_a(worldIn, field_175824_d, var4, 9, 50, p_175842_3_);
                         this.func_175811_a(worldIn, field_175824_d, var4, 10, 45, p_175842_3_);
@@ -1309,8 +1139,7 @@ public class StructureOceanMonumentPieces
                     }
                 }
 
-                for (var4 = 0; var4 < 3; ++var4)
-                {
+                for (var4 = 0; var4 < 3; ++var4) {
                     this.func_175804_a(worldIn, p_175842_3_, 8 + var4, 5 + var4, 54, 49 - var4, 5 + var4, 54, field_175828_a, field_175828_a, false);
                 }
 
@@ -1319,78 +1148,66 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        private void func_175838_g(World worldIn, Random p_175838_2_, StructureBoundingBox p_175838_3_)
-        {
+        private void func_175838_g(World worldIn, Random p_175838_2_, StructureBoundingBox p_175838_3_) {
             int var4;
 
-            if (this.func_175818_a(p_175838_3_, 14, 21, 20, 43))
-            {
+            if (this.func_175818_a(p_175838_3_, 14, 21, 20, 43)) {
                 this.func_175804_a(worldIn, p_175838_3_, 14, 0, 21, 20, 0, 43, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175838_3_, 14, 1, 22, 20, 14, 43, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175838_3_, 18, 12, 22, 20, 12, 39, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175838_3_, 18, 12, 21, 20, 12, 21, field_175826_b, field_175826_b, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175838_3_, var4 + 14, var4 + 9, 21, var4 + 14, var4 + 9, 43 - var4, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 23; var4 <= 39; var4 += 3)
-                {
+                for (var4 = 23; var4 <= 39; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 19, 13, var4, p_175838_3_);
                 }
             }
 
-            if (this.func_175818_a(p_175838_3_, 37, 21, 43, 43))
-            {
+            if (this.func_175818_a(p_175838_3_, 37, 21, 43, 43)) {
                 this.func_175804_a(worldIn, p_175838_3_, 37, 0, 21, 43, 0, 43, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175838_3_, 37, 1, 22, 43, 14, 43, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175838_3_, 37, 12, 22, 39, 12, 39, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175838_3_, 37, 12, 21, 39, 12, 21, field_175826_b, field_175826_b, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175838_3_, 43 - var4, var4 + 9, 21, 43 - var4, var4 + 9, 43 - var4, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 23; var4 <= 39; var4 += 3)
-                {
+                for (var4 = 23; var4 <= 39; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, 38, 13, var4, p_175838_3_);
                 }
             }
 
-            if (this.func_175818_a(p_175838_3_, 15, 37, 42, 43))
-            {
+            if (this.func_175818_a(p_175838_3_, 15, 37, 42, 43)) {
                 this.func_175804_a(worldIn, p_175838_3_, 21, 0, 37, 36, 0, 43, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175838_3_, 21, 1, 37, 36, 14, 43, field_175822_f, field_175822_f, false);
                 this.func_175804_a(worldIn, p_175838_3_, 21, 12, 37, 36, 12, 39, field_175828_a, field_175828_a, false);
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_175838_3_, 15 + var4, var4 + 9, 43 - var4, 42 - var4, var4 + 9, 43 - var4, field_175826_b, field_175826_b, false);
                 }
 
-                for (var4 = 21; var4 <= 36; var4 += 3)
-                {
+                for (var4 = 21; var4 <= 36; var4 += 3) {
                     this.func_175811_a(worldIn, field_175824_d, var4, 13, 38, p_175838_3_);
                 }
             }
         }
     }
 
-    public static class MonumentCoreRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class MonumentCoreRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001984";
 
-        public MonumentCoreRoom() {}
+        public MonumentCoreRoom() {
+        }
 
-        public MonumentCoreRoom(EnumFacing p_i45598_1_, StructureOceanMonumentPieces.RoomDefinition p_i45598_2_, Random p_i45598_3_)
-        {
+        public MonumentCoreRoom(EnumFacing p_i45598_1_, StructureOceanMonumentPieces.RoomDefinition p_i45598_2_, Random p_i45598_3_) {
             super(1, p_i45598_1_, p_i45598_2_, 2, 2, 2);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             this.func_175819_a(worldIn, p_74875_3_, 1, 8, 0, 14, 8, 14, field_175828_a);
             byte var4 = 7;
             IBlockState var5 = field_175826_b;
@@ -1400,17 +1217,14 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 1, var4, 15, 14, var4, 15, var5, var5, false);
             int var7;
 
-            for (var7 = 1; var7 <= 6; ++var7)
-            {
+            for (var7 = 1; var7 <= 6; ++var7) {
                 var5 = field_175826_b;
 
-                if (var7 == 2 || var7 == 6)
-                {
+                if (var7 == 2 || var7 == 6) {
                     var5 = field_175828_a;
                 }
 
-                for (int var6 = 0; var6 <= 15; var6 += 15)
-                {
+                for (int var6 = 0; var6 <= 15; var6 += 15) {
                     this.func_175804_a(worldIn, p_74875_3_, var6, var7, 0, var6, var7, 1, var5, var5, false);
                     this.func_175804_a(worldIn, p_74875_3_, var6, var7, 6, var6, var7, 9, var5, var5, false);
                     this.func_175804_a(worldIn, p_74875_3_, var6, var7, 14, var6, var7, 15, var5, var5, false);
@@ -1425,10 +1239,8 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 6, 3, 6, 9, 6, 9, field_175827_c, field_175827_c, false);
             this.func_175804_a(worldIn, p_74875_3_, 7, 4, 7, 8, 5, 8, Blocks.gold_block.getDefaultState(), Blocks.gold_block.getDefaultState(), false);
 
-            for (var7 = 3; var7 <= 6; var7 += 3)
-            {
-                for (int var8 = 6; var8 <= 9; var8 += 3)
-                {
+            for (var7 = 3; var7 <= 6; var7 += 3) {
+                for (int var8 = 6; var8 <= 9; var8 += 3) {
                     this.func_175811_a(worldIn, field_175825_e, var8, var7, 6, p_74875_3_);
                     this.func_175811_a(worldIn, field_175825_e, var8, var7, 9, p_74875_3_);
                 }
@@ -1466,26 +1278,17 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    interface MonumentRoomFitHelper
-    {
-        boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_);
-
-        StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_);
-    }
-
-    public static class Penthouse extends StructureOceanMonumentPieces.Piece
-    {
+    public static class Penthouse extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001977";
 
-        public Penthouse() {}
+        public Penthouse() {
+        }
 
-        public Penthouse(EnumFacing p_i45591_1_, StructureBoundingBox p_i45591_2_)
-        {
+        public Penthouse(EnumFacing p_i45591_1_, StructureBoundingBox p_i45591_2_) {
             super(p_i45591_1_, p_i45591_2_);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             this.func_175804_a(worldIn, p_74875_3_, 2, -1, 2, 11, -1, 11, field_175826_b, field_175826_b, false);
             this.func_175804_a(worldIn, p_74875_3_, 0, -1, 0, 1, -1, 11, field_175828_a, field_175828_a, false);
             this.func_175804_a(worldIn, p_74875_3_, 12, -1, 0, 13, -1, 11, field_175828_a, field_175828_a, false);
@@ -1496,8 +1299,7 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 1, 0, 0, 12, 0, 0, field_175826_b, field_175826_b, false);
             this.func_175804_a(worldIn, p_74875_3_, 1, 0, 13, 12, 0, 13, field_175826_b, field_175826_b, false);
 
-            for (int var4 = 2; var4 <= 11; var4 += 3)
-            {
+            for (int var4 = 2; var4 <= 11; var4 += 3) {
                 this.func_175811_a(worldIn, field_175825_e, 0, 0, var4, p_74875_3_);
                 this.func_175811_a(worldIn, field_175825_e, 13, 0, var4, p_74875_3_);
                 this.func_175811_a(worldIn, field_175825_e, var4, 0, 0, p_74875_3_);
@@ -1515,10 +1317,8 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 6, 0, 10, 7, 0, 10, field_175827_c, field_175827_c, false);
             byte var7 = 3;
 
-            for (int var5 = 0; var5 < 2; ++var5)
-            {
-                for (int var6 = 2; var6 <= 8; var6 += 3)
-                {
+            for (int var5 = 0; var5 < 2; ++var5) {
+                for (int var6 = 2; var6 <= 8; var6 += 3) {
                     this.func_175804_a(worldIn, p_74875_3_, var7, 0, var6, var7, 2, var6, field_175826_b, field_175826_b, false);
                 }
 
@@ -1534,8 +1334,7 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public abstract static class Piece extends StructureComponent
-    {
+    public abstract static class Piece extends StructureComponent {
         protected static final IBlockState field_175828_a = Blocks.prismarine.getStateFromMeta(BlockPrismarine.ROUGHMETA);
         protected static final IBlockState field_175826_b = Blocks.prismarine.getStateFromMeta(BlockPrismarine.BRICKSMETA);
         protected static final IBlockState field_175827_c = Blocks.prismarine.getStateFromMeta(BlockPrismarine.DARKMETA);
@@ -1546,33 +1345,24 @@ public class StructureOceanMonumentPieces
         protected static final int field_175831_h = func_175820_a(2, 2, 0);
         protected static final int field_175832_i = func_175820_a(0, 1, 0);
         protected static final int field_175829_j = func_175820_a(4, 1, 0);
-        protected StructureOceanMonumentPieces.RoomDefinition field_175830_k;
         private static final String __OBFID = "CL_00001976";
+        protected StructureOceanMonumentPieces.RoomDefinition field_175830_k;
 
-        protected static final int func_175820_a(int p_175820_0_, int p_175820_1_, int p_175820_2_)
-        {
-            return p_175820_1_ * 25 + p_175820_2_ * 5 + p_175820_0_;
-        }
-
-        public Piece()
-        {
+        public Piece() {
             super(0);
         }
 
-        public Piece(int p_i45588_1_)
-        {
+        public Piece(int p_i45588_1_) {
             super(p_i45588_1_);
         }
 
-        public Piece(EnumFacing p_i45589_1_, StructureBoundingBox p_i45589_2_)
-        {
+        public Piece(EnumFacing p_i45589_1_, StructureBoundingBox p_i45589_2_) {
             super(1);
             this.coordBaseMode = p_i45589_1_;
             this.boundingBox = p_i45589_2_;
         }
 
-        protected Piece(int p_i45590_1_, EnumFacing p_i45590_2_, StructureOceanMonumentPieces.RoomDefinition p_i45590_3_, int p_i45590_4_, int p_i45590_5_, int p_i45590_6_)
-        {
+        protected Piece(int p_i45590_1_, EnumFacing p_i45590_2_, StructureOceanMonumentPieces.RoomDefinition p_i45590_3_, int p_i45590_4_, int p_i45590_5_, int p_i45590_6_) {
             super(p_i45590_1_);
             this.coordBaseMode = p_i45590_2_;
             this.field_175830_k = p_i45590_3_;
@@ -1581,17 +1371,13 @@ public class StructureOceanMonumentPieces
             int var9 = var7 / 5 % 5;
             int var10 = var7 / 25;
 
-            if (p_i45590_2_ != EnumFacing.NORTH && p_i45590_2_ != EnumFacing.SOUTH)
-            {
+            if (p_i45590_2_ != EnumFacing.NORTH && p_i45590_2_ != EnumFacing.SOUTH) {
                 this.boundingBox = new StructureBoundingBox(0, 0, 0, p_i45590_6_ * 8 - 1, p_i45590_5_ * 4 - 1, p_i45590_4_ * 8 - 1);
-            }
-            else
-            {
+            } else {
                 this.boundingBox = new StructureBoundingBox(0, 0, 0, p_i45590_4_ * 8 - 1, p_i45590_5_ * 4 - 1, p_i45590_6_ * 8 - 1);
             }
 
-            switch (StructureOceanMonumentPieces.SwitchEnumFacing.field_175971_a[p_i45590_2_.ordinal()])
-            {
+            switch (StructureOceanMonumentPieces.SwitchEnumFacing.field_175971_a[p_i45590_2_.ordinal()]) {
                 case 1:
                     this.boundingBox.offset(var8 * 8, var10 * 4, -(var9 + p_i45590_6_) * 8 + 1);
                     break;
@@ -1609,14 +1395,18 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {}
+        protected static final int func_175820_a(int p_175820_0_, int p_175820_1_, int p_175820_2_) {
+            return p_175820_1_ * 25 + p_175820_2_ * 5 + p_175820_0_;
+        }
 
-        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {}
+        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {
+        }
 
-        protected void func_175821_a(World worldIn, StructureBoundingBox p_175821_2_, int p_175821_3_, int p_175821_4_, boolean p_175821_5_)
-        {
-            if (p_175821_5_)
-            {
+        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {
+        }
+
+        protected void func_175821_a(World worldIn, StructureBoundingBox p_175821_2_, int p_175821_3_, int p_175821_4_, boolean p_175821_5_) {
+            if (p_175821_5_) {
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 0, 0, p_175821_4_ + 0, p_175821_3_ + 2, 0, p_175821_4_ + 8 - 1, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 5, 0, p_175821_4_ + 0, p_175821_3_ + 8 - 1, 0, p_175821_4_ + 8 - 1, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 3, 0, p_175821_4_ + 0, p_175821_3_ + 4, 0, p_175821_4_ + 2, field_175828_a, field_175828_a, false);
@@ -1625,23 +1415,16 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 3, 0, p_175821_4_ + 5, p_175821_3_ + 4, 0, p_175821_4_ + 5, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 2, 0, p_175821_4_ + 3, p_175821_3_ + 2, 0, p_175821_4_ + 4, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 5, 0, p_175821_4_ + 3, p_175821_3_ + 5, 0, p_175821_4_ + 4, field_175826_b, field_175826_b, false);
-            }
-            else
-            {
+            } else {
                 this.func_175804_a(worldIn, p_175821_2_, p_175821_3_ + 0, 0, p_175821_4_ + 0, p_175821_3_ + 8 - 1, 0, p_175821_4_ + 8 - 1, field_175828_a, field_175828_a, false);
             }
         }
 
-        protected void func_175819_a(World worldIn, StructureBoundingBox p_175819_2_, int p_175819_3_, int p_175819_4_, int p_175819_5_, int p_175819_6_, int p_175819_7_, int p_175819_8_, IBlockState p_175819_9_)
-        {
-            for (int var10 = p_175819_4_; var10 <= p_175819_7_; ++var10)
-            {
-                for (int var11 = p_175819_3_; var11 <= p_175819_6_; ++var11)
-                {
-                    for (int var12 = p_175819_5_; var12 <= p_175819_8_; ++var12)
-                    {
-                        if (this.func_175807_a(worldIn, var11, var10, var12, p_175819_2_) == field_175822_f)
-                        {
+        protected void func_175819_a(World worldIn, StructureBoundingBox p_175819_2_, int p_175819_3_, int p_175819_4_, int p_175819_5_, int p_175819_6_, int p_175819_7_, int p_175819_8_, IBlockState p_175819_9_) {
+            for (int var10 = p_175819_4_; var10 <= p_175819_7_; ++var10) {
+                for (int var11 = p_175819_3_; var11 <= p_175819_6_; ++var11) {
+                    for (int var12 = p_175819_5_; var12 <= p_175819_8_; ++var12) {
+                        if (this.func_175807_a(worldIn, var11, var10, var12, p_175819_2_) == field_175822_f) {
                             this.func_175811_a(worldIn, p_175819_9_, var11, var10, var12, p_175819_2_);
                         }
                     }
@@ -1649,8 +1432,7 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        protected boolean func_175818_a(StructureBoundingBox p_175818_1_, int p_175818_2_, int p_175818_3_, int p_175818_4_, int p_175818_5_)
-        {
+        protected boolean func_175818_a(StructureBoundingBox p_175818_1_, int p_175818_2_, int p_175818_3_, int p_175818_4_, int p_175818_5_) {
             int var6 = this.getXWithOffset(p_175818_2_, p_175818_3_);
             int var7 = this.getZWithOffset(p_175818_2_, p_175818_3_);
             int var8 = this.getXWithOffset(p_175818_4_, p_175818_5_);
@@ -1658,72 +1440,57 @@ public class StructureOceanMonumentPieces
             return p_175818_1_.intersectsWith(Math.min(var6, var8), Math.min(var7, var9), Math.max(var6, var8), Math.max(var7, var9));
         }
 
-        protected boolean func_175817_a(World worldIn, StructureBoundingBox p_175817_2_, int p_175817_3_, int p_175817_4_, int p_175817_5_)
-        {
+        protected boolean func_175817_a(World worldIn, StructureBoundingBox p_175817_2_, int p_175817_3_, int p_175817_4_, int p_175817_5_) {
             int var6 = this.getXWithOffset(p_175817_3_, p_175817_5_);
             int var7 = this.getYWithOffset(p_175817_4_);
             int var8 = this.getZWithOffset(p_175817_3_, p_175817_5_);
 
-            if (p_175817_2_.func_175898_b(new BlockPos(var6, var7, var8)))
-            {
+            if (p_175817_2_.func_175898_b(new BlockPos(var6, var7, var8))) {
                 EntityGuardian var9 = new EntityGuardian(worldIn);
                 var9.func_175467_a(true);
                 var9.heal(var9.getMaxHealth());
-                var9.setLocationAndAngles((double)var6 + 0.5D, (double)var7, (double)var8 + 0.5D, 0.0F, 0.0F);
-                var9.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(var9)), (IEntityLivingData)null);
+                var9.setLocationAndAngles((double) var6 + 0.5D, (double) var7, (double) var8 + 0.5D, 0.0F, 0.0F);
+                var9.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(var9)), (IEntityLivingData) null);
                 worldIn.spawnEntityInWorld(var9);
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
     }
 
-    static class RoomDefinition
-    {
+    static class RoomDefinition {
+        private static final String __OBFID = "CL_00001972";
         int field_175967_a;
         StructureOceanMonumentPieces.RoomDefinition[] field_175965_b = new StructureOceanMonumentPieces.RoomDefinition[6];
         boolean[] field_175966_c = new boolean[6];
         boolean field_175963_d;
         boolean field_175964_e;
         int field_175962_f;
-        private static final String __OBFID = "CL_00001972";
 
-        public RoomDefinition(int p_i45584_1_)
-        {
+        public RoomDefinition(int p_i45584_1_) {
             this.field_175967_a = p_i45584_1_;
         }
 
-        public void func_175957_a(EnumFacing p_175957_1_, StructureOceanMonumentPieces.RoomDefinition p_175957_2_)
-        {
+        public void func_175957_a(EnumFacing p_175957_1_, StructureOceanMonumentPieces.RoomDefinition p_175957_2_) {
             this.field_175965_b[p_175957_1_.getIndex()] = p_175957_2_;
             p_175957_2_.field_175965_b[p_175957_1_.getOpposite().getIndex()] = this;
         }
 
-        public void func_175958_a()
-        {
-            for (int var1 = 0; var1 < 6; ++var1)
-            {
+        public void func_175958_a() {
+            for (int var1 = 0; var1 < 6; ++var1) {
                 this.field_175966_c[var1] = this.field_175965_b[var1] != null;
             }
         }
 
-        public boolean func_175959_a(int p_175959_1_)
-        {
-            if (this.field_175964_e)
-            {
+        public boolean func_175959_a(int p_175959_1_) {
+            if (this.field_175964_e) {
                 return true;
-            }
-            else
-            {
+            } else {
                 this.field_175962_f = p_175959_1_;
 
-                for (int var2 = 0; var2 < 6; ++var2)
-                {
-                    if (this.field_175965_b[var2] != null && this.field_175966_c[var2] && this.field_175965_b[var2].field_175962_f != p_175959_1_ && this.field_175965_b[var2].func_175959_a(p_175959_1_))
-                    {
+                for (int var2 = 0; var2 < 6; ++var2) {
+                    if (this.field_175965_b[var2] != null && this.field_175966_c[var2] && this.field_175965_b[var2].field_175962_f != p_175959_1_ && this.field_175965_b[var2].func_175959_a(p_175959_1_)) {
                         return true;
                     }
                 }
@@ -1732,19 +1499,15 @@ public class StructureOceanMonumentPieces
             }
         }
 
-        public boolean func_175961_b()
-        {
+        public boolean func_175961_b() {
             return this.field_175967_a >= 75;
         }
 
-        public int func_175960_c()
-        {
+        public int func_175960_c() {
             int var1 = 0;
 
-            for (int var2 = 0; var2 < 6; ++var2)
-            {
-                if (this.field_175966_c[var2])
-                {
+            for (int var2 = 0; var2 < 6; ++var2) {
+                if (this.field_175966_c[var2]) {
                     ++var1;
                 }
             }
@@ -1753,35 +1516,30 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class SimpleRoom extends StructureOceanMonumentPieces.Piece
-    {
-        private int field_175833_o;
+    public static class SimpleRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001975";
+        private int field_175833_o;
 
-        public SimpleRoom() {}
+        public SimpleRoom() {
+        }
 
-        public SimpleRoom(EnumFacing p_i45587_1_, StructureOceanMonumentPieces.RoomDefinition p_i45587_2_, Random p_i45587_3_)
-        {
+        public SimpleRoom(EnumFacing p_i45587_1_, StructureOceanMonumentPieces.RoomDefinition p_i45587_2_, Random p_i45587_3_) {
             super(1, p_i45587_1_, p_i45587_2_, 1, 1, 1);
             this.field_175833_o = p_i45587_3_.nextInt(3);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, this.field_175830_k.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (this.field_175830_k.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (this.field_175830_k.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 4, 1, 6, 4, 6, field_175828_a);
             }
 
             boolean var4 = this.field_175833_o != 0 && p_74875_2_.nextBoolean() && !this.field_175830_k.field_175966_c[EnumFacing.DOWN.getIndex()] && !this.field_175830_k.field_175966_c[EnumFacing.UP.getIndex()] && this.field_175830_k.func_175960_c() > 1;
 
-            if (this.field_175833_o == 0)
-            {
+            if (this.field_175833_o == 0) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 0, 2, 1, 2, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 0, 3, 0, 2, 3, 2, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 0, 2, 0, 0, 2, 2, field_175828_a, field_175828_a, false);
@@ -1803,52 +1561,38 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 5, 2, 7, 6, 2, 7, field_175828_a, field_175828_a, false);
                 this.func_175811_a(worldIn, field_175825_e, 6, 2, 6, p_74875_3_);
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 3, 0, 4, 3, 0, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 3, 0, 4, 3, 1, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, 2, 0, 4, 2, 0, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 1, 1, field_175826_b, field_175826_b, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 3, 7, 4, 3, 7, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 3, 6, 4, 3, 7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, 2, 7, 4, 2, 7, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 3, 1, 6, 4, 1, 7, field_175826_b, field_175826_b, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 0, 3, 3, 0, 3, 4, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 0, 3, 3, 1, 3, 4, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, 2, 3, 0, 2, 4, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 1, 1, 4, field_175826_b, field_175826_b, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 7, 3, 3, 7, 3, 4, field_175826_b, field_175826_b, false);
-                }
-                else
-                {
+                } else {
                     this.func_175804_a(worldIn, p_74875_3_, 6, 3, 3, 7, 3, 4, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 7, 2, 3, 7, 2, 4, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 6, 1, 3, 7, 1, 4, field_175826_b, field_175826_b, false);
                 }
-            }
-            else if (this.field_175833_o == 1)
-            {
+            } else if (this.field_175833_o == 1) {
                 this.func_175804_a(worldIn, p_74875_3_, 2, 1, 2, 2, 3, 2, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 2, 1, 5, 2, 3, 5, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 5, 1, 5, 5, 3, 5, field_175826_b, field_175826_b, false);
@@ -1874,36 +1618,30 @@ public class StructureOceanMonumentPieces
                 this.func_175811_a(worldIn, field_175828_a, 6, 2, 0, p_74875_3_);
                 this.func_175811_a(worldIn, field_175828_a, 7, 2, 1, p_74875_3_);
 
-                if (!this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()])
-                {
+                if (!this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 1, 3, 0, 6, 3, 0, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 1, 2, 0, 6, 2, 0, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 1, 1, 0, 6, 1, 0, field_175826_b, field_175826_b, false);
                 }
 
-                if (!this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()])
-                {
+                if (!this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 1, 3, 7, 6, 3, 7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 1, 2, 7, 6, 2, 7, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 1, 1, 7, 6, 1, 7, field_175826_b, field_175826_b, false);
                 }
 
-                if (!this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()])
-                {
+                if (!this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 0, 3, 1, 0, 3, 6, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, 2, 1, 0, 2, 6, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 0, 1, 1, 0, 1, 6, field_175826_b, field_175826_b, false);
                 }
 
-                if (!this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()])
-                {
+                if (!this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 7, 3, 1, 7, 3, 6, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, 7, 2, 1, 7, 2, 6, field_175828_a, field_175828_a, false);
                     this.func_175804_a(worldIn, p_74875_3_, 7, 1, 1, 7, 1, 6, field_175826_b, field_175826_b, false);
                 }
-            }
-            else if (this.field_175833_o == 2)
-            {
+            } else if (this.field_175833_o == 2) {
                 this.func_175804_a(worldIn, p_74875_3_, 0, 1, 0, 0, 1, 7, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 7, 1, 0, 7, 1, 7, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 0, 6, 1, 0, field_175826_b, field_175826_b, false);
@@ -1921,29 +1659,24 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175827_c, field_175827_c, false);
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175827_c, field_175827_c, false);
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.NORTH.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175822_f, field_175822_f, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.WEST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 0, 1, 3, 0, 2, 4, field_175822_f, field_175822_f, false);
                 }
 
-                if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()])
-                {
+                if (this.field_175830_k.field_175966_c[EnumFacing.EAST.getIndex()]) {
                     this.func_175804_a(worldIn, p_74875_3_, 7, 1, 3, 7, 2, 4, field_175822_f, field_175822_f, false);
                 }
             }
 
-            if (var4)
-            {
+            if (var4) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 3, 4, 1, 4, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 3, 2, 3, 4, 2, 4, field_175828_a, field_175828_a, false);
                 this.func_175804_a(worldIn, p_74875_3_, 3, 3, 3, 4, 3, 4, field_175826_b, field_175826_b, false);
@@ -1953,35 +1686,28 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    public static class SimpleTopRoom extends StructureOceanMonumentPieces.Piece
-    {
+    public static class SimpleTopRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001974";
 
-        public SimpleTopRoom() {}
+        public SimpleTopRoom() {
+        }
 
-        public SimpleTopRoom(EnumFacing p_i45586_1_, StructureOceanMonumentPieces.RoomDefinition p_i45586_2_, Random p_i45586_3_)
-        {
+        public SimpleTopRoom(EnumFacing p_i45586_1_, StructureOceanMonumentPieces.RoomDefinition p_i45586_2_, Random p_i45586_3_) {
             super(1, p_i45586_1_, p_i45586_2_, 1, 1, 1);
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (this.field_175830_k.field_175967_a / 25 > 0)
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (this.field_175830_k.field_175967_a / 25 > 0) {
                 this.func_175821_a(worldIn, p_74875_3_, 0, 0, this.field_175830_k.field_175966_c[EnumFacing.DOWN.getIndex()]);
             }
 
-            if (this.field_175830_k.field_175965_b[EnumFacing.UP.getIndex()] == null)
-            {
+            if (this.field_175830_k.field_175965_b[EnumFacing.UP.getIndex()] == null) {
                 this.func_175819_a(worldIn, p_74875_3_, 1, 4, 1, 6, 4, 6, field_175828_a);
             }
 
-            for (int var4 = 1; var4 <= 6; ++var4)
-            {
-                for (int var5 = 1; var5 <= 6; ++var5)
-                {
-                    if (p_74875_2_.nextInt(3) != 0)
-                    {
+            for (int var4 = 1; var4 <= 6; ++var4) {
+                for (int var5 = 1; var5 <= 6; ++var5) {
+                    if (p_74875_2_.nextInt(3) != 0) {
                         int var6 = 2 + (p_74875_2_.nextInt(4) == 0 ? 0 : 1);
                         this.func_175804_a(worldIn, p_74875_3_, var4, var6, var5, var4, 3, var5, Blocks.sponge.getStateFromMeta(1), Blocks.sponge.getStateFromMeta(1), false);
                     }
@@ -2005,8 +1731,7 @@ public class StructureOceanMonumentPieces
             this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175827_c, field_175827_c, false);
             this.func_175804_a(worldIn, p_74875_3_, 3, 1, 7, 4, 2, 7, field_175827_c, field_175827_c, false);
 
-            if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()])
-            {
+            if (this.field_175830_k.field_175966_c[EnumFacing.SOUTH.getIndex()]) {
                 this.func_175804_a(worldIn, p_74875_3_, 3, 1, 0, 4, 2, 0, field_175822_f, field_175822_f, false);
             }
 
@@ -2014,63 +1739,48 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    static final class SwitchEnumFacing
-    {
+    static final class SwitchEnumFacing {
         static final int[] field_175971_a = new int[EnumFacing.values().length];
         private static final String __OBFID = "CL_00001993";
 
-        static
-        {
-            try
-            {
+        static {
+            try {
                 field_175971_a[EnumFacing.NORTH.ordinal()] = 1;
-            }
-            catch (NoSuchFieldError var3)
-            {
+            } catch (NoSuchFieldError var3) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_175971_a[EnumFacing.SOUTH.ordinal()] = 2;
-            }
-            catch (NoSuchFieldError var2)
-            {
+            } catch (NoSuchFieldError var2) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_175971_a[EnumFacing.WEST.ordinal()] = 3;
-            }
-            catch (NoSuchFieldError var1)
-            {
+            } catch (NoSuchFieldError var1) {
                 ;
             }
         }
     }
 
-    public static class WingRoom extends StructureOceanMonumentPieces.Piece
-    {
-        private int field_175834_o;
+    public static class WingRoom extends StructureOceanMonumentPieces.Piece {
         private static final String __OBFID = "CL_00001973";
+        private int field_175834_o;
 
-        public WingRoom() {}
+        public WingRoom() {
+        }
 
-        public WingRoom(EnumFacing p_i45585_1_, StructureBoundingBox p_i45585_2_, int p_i45585_3_)
-        {
+        public WingRoom(EnumFacing p_i45585_1_, StructureBoundingBox p_i45585_2_, int p_i45585_3_) {
             super(p_i45585_1_, p_i45585_2_);
             this.field_175834_o = p_i45585_3_ & 1;
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (this.field_175834_o == 0)
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (this.field_175834_o == 0) {
                 int var4;
 
-                for (var4 = 0; var4 < 4; ++var4)
-                {
+                for (var4 = 0; var4 < 4; ++var4) {
                     this.func_175804_a(worldIn, p_74875_3_, 10 - var4, 3 - var4, 20 - var4, 12 + var4, 3 - var4, 20, field_175826_b, field_175826_b, false);
                 }
 
@@ -2088,8 +1798,7 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 8, 0, 10, 8, 0, 12, field_175827_c, field_175827_c, false);
                 this.func_175804_a(worldIn, p_74875_3_, 14, 0, 10, 14, 0, 12, field_175827_c, field_175827_c, false);
 
-                for (var4 = 18; var4 >= 7; var4 -= 3)
-                {
+                for (var4 = 18; var4 >= 7; var4 -= 3) {
                     this.func_175811_a(worldIn, field_175825_e, 6, 3, var4, p_74875_3_);
                     this.func_175811_a(worldIn, field_175825_e, 16, 3, var4, p_74875_3_);
                 }
@@ -2117,9 +1826,7 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 6, 0, 21, 7, 4, 21, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 15, 0, 21, 16, 4, 21, field_175826_b, field_175826_b, false);
                 this.func_175817_a(worldIn, p_74875_3_, 11, 2, 16);
-            }
-            else if (this.field_175834_o == 1)
-            {
+            } else if (this.field_175834_o == 1) {
                 this.func_175804_a(worldIn, p_74875_3_, 9, 3, 18, 13, 3, 20, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 9, 0, 18, 9, 2, 18, field_175826_b, field_175826_b, false);
                 this.func_175804_a(worldIn, p_74875_3_, 13, 0, 18, 13, 2, 18, field_175826_b, field_175826_b, false);
@@ -2128,8 +1835,7 @@ public class StructureOceanMonumentPieces
                 byte var6 = 5;
                 int var7;
 
-                for (var7 = 0; var7 < 2; ++var7)
-                {
+                for (var7 = 0; var7 < 2; ++var7) {
                     this.func_175811_a(worldIn, field_175826_b, var8, var6 + 1, var5, p_74875_3_);
                     this.func_175811_a(worldIn, field_175825_e, var8, var6, var5, p_74875_3_);
                     this.func_175811_a(worldIn, field_175826_b, var8, var6 - 1, var5, p_74875_3_);
@@ -2139,8 +1845,7 @@ public class StructureOceanMonumentPieces
                 this.func_175804_a(worldIn, p_74875_3_, 7, 3, 7, 15, 3, 14, field_175826_b, field_175826_b, false);
                 var8 = 10;
 
-                for (var7 = 0; var7 < 2; ++var7)
-                {
+                for (var7 = 0; var7 < 2; ++var7) {
                     this.func_175804_a(worldIn, p_74875_3_, var8, 0, 10, var8, 6, 10, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, 0, 12, var8, 6, 12, field_175826_b, field_175826_b, false);
                     this.func_175811_a(worldIn, field_175825_e, var8, 0, 10, p_74875_3_);
@@ -2152,8 +1857,7 @@ public class StructureOceanMonumentPieces
 
                 var8 = 8;
 
-                for (var7 = 0; var7 < 2; ++var7)
-                {
+                for (var7 = 0; var7 < 2; ++var7) {
                     this.func_175804_a(worldIn, p_74875_3_, var8, 0, 7, var8, 2, 7, field_175826_b, field_175826_b, false);
                     this.func_175804_a(worldIn, p_74875_3_, var8, 0, 14, var8, 2, 14, field_175826_b, field_175826_b, false);
                     var8 = 14;
@@ -2168,150 +1872,128 @@ public class StructureOceanMonumentPieces
         }
     }
 
-    static class XDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class XDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001992";
 
-        private XDoubleRoomFitHelper() {}
+        private XDoubleRoomFitHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
+        XDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45606_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
             return p_175969_1_.field_175966_c[EnumFacing.EAST.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.EAST.getIndex()].field_175963_d;
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.EAST.getIndex()].field_175963_d = true;
             return new StructureOceanMonumentPieces.DoubleXRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        XDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45606_1_)
-        {
-            this();
-        }
     }
 
-    static class XYDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class XYDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001991";
 
-        private XYDoubleRoomFitHelper() {}
+        private XYDoubleRoomFitHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
-            if (p_175969_1_.field_175966_c[EnumFacing.EAST.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.EAST.getIndex()].field_175963_d && p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d)
-            {
+        XYDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45605_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
+            if (p_175969_1_.field_175966_c[EnumFacing.EAST.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.EAST.getIndex()].field_175963_d && p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d) {
                 StructureOceanMonumentPieces.RoomDefinition var2 = p_175969_1_.field_175965_b[EnumFacing.EAST.getIndex()];
                 return var2.field_175966_c[EnumFacing.UP.getIndex()] && !var2.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.EAST.getIndex()].field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.EAST.getIndex()].field_175965_b[EnumFacing.UP.getIndex()].field_175963_d = true;
             return new StructureOceanMonumentPieces.DoubleXYRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        XYDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45605_1_)
-        {
-            this();
-        }
     }
 
-    static class YDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class YDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001990";
 
-        private YDoubleRoomFitHelper() {}
+        private YDoubleRoomFitHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
+        YDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45604_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
             return p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d;
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d = true;
             return new StructureOceanMonumentPieces.DoubleYRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        YDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45604_1_)
-        {
-            this();
-        }
     }
 
-    static class YZDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class YZDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001989";
 
-        private YZDoubleRoomFitHelper() {}
+        private YZDoubleRoomFitHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
-            if (p_175969_1_.field_175966_c[EnumFacing.NORTH.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d && p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d)
-            {
+        YZDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45603_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
+            if (p_175969_1_.field_175966_c[EnumFacing.NORTH.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d && p_175969_1_.field_175966_c[EnumFacing.UP.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d) {
                 StructureOceanMonumentPieces.RoomDefinition var2 = p_175969_1_.field_175965_b[EnumFacing.NORTH.getIndex()];
                 return var2.field_175966_c[EnumFacing.UP.getIndex()] && !var2.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             p_175968_2_.field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.UP.getIndex()].field_175963_d = true;
             p_175968_2_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175965_b[EnumFacing.UP.getIndex()].field_175963_d = true;
             return new StructureOceanMonumentPieces.DoubleYZRoom(p_175968_1_, p_175968_2_, p_175968_3_);
         }
-
-        YZDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45603_1_)
-        {
-            this();
-        }
     }
 
-    static class ZDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper
-    {
+    static class ZDoubleRoomFitHelper implements StructureOceanMonumentPieces.MonumentRoomFitHelper {
         private static final String __OBFID = "CL_00001988";
 
-        private ZDoubleRoomFitHelper() {}
+        private ZDoubleRoomFitHelper() {
+        }
 
-        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_)
-        {
+        ZDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45602_1_) {
+            this();
+        }
+
+        public boolean func_175969_a(StructureOceanMonumentPieces.RoomDefinition p_175969_1_) {
             return p_175969_1_.field_175966_c[EnumFacing.NORTH.getIndex()] && !p_175969_1_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d;
         }
 
-        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_)
-        {
+        public StructureOceanMonumentPieces.Piece func_175968_a(EnumFacing p_175968_1_, StructureOceanMonumentPieces.RoomDefinition p_175968_2_, Random p_175968_3_) {
             StructureOceanMonumentPieces.RoomDefinition var4 = p_175968_2_;
 
-            if (!p_175968_2_.field_175966_c[EnumFacing.NORTH.getIndex()] || p_175968_2_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d)
-            {
+            if (!p_175968_2_.field_175966_c[EnumFacing.NORTH.getIndex()] || p_175968_2_.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d) {
                 var4 = p_175968_2_.field_175965_b[EnumFacing.SOUTH.getIndex()];
             }
 
             var4.field_175963_d = true;
             var4.field_175965_b[EnumFacing.NORTH.getIndex()].field_175963_d = true;
             return new StructureOceanMonumentPieces.DoubleZRoom(p_175968_1_, var4, p_175968_3_);
-        }
-
-        ZDoubleRoomFitHelper(StructureOceanMonumentPieces.SwitchEnumFacing p_i45602_1_)
-        {
-            this();
         }
     }
 }

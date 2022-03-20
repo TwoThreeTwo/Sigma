@@ -1,9 +1,9 @@
 package info.sigmaclient.module.impl.other;
 
-import info.sigmaclient.event.impl.EventTick;
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventPacket;
+import info.sigmaclient.event.impl.EventTick;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 
@@ -18,9 +18,9 @@ public class WorldTime extends Module {
 
     @RegisterEvent(events = {EventTick.class, EventPacket.class})
     public void onEvent(Event event) {
-        if(event instanceof EventTick) {
+        if (event instanceof EventTick) {
 
-        } else if(event instanceof EventPacket) {
+        } else if (event instanceof EventPacket) {
 
         }
     }

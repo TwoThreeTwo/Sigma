@@ -1,29 +1,29 @@
 package net.minecraft.dispenser;
 
 public class PositionImpl implements IPosition {
-	protected final double x;
-	protected final double y;
-	protected final double z;
-	private static final String __OBFID = "CL_00001208";
+    private static final String __OBFID = "CL_00001208";
+    protected final double x;
+    protected final double y;
+    protected final double z;
 
-	public PositionImpl(double xCoord, double yCoord, double zCoord) {
-		x = xCoord;
-		y = yCoord;
-		z = zCoord;
-	}
+    public PositionImpl(double xCoord, double yCoord, double zCoord) {
+        x = xCoord;
+        y = yCoord;
+        z = zCoord;
+    }
 
-	@Override
-	public double getX() {
-		return x;
-	}
+    @Override
+    public double getX() {
+        return x;
+    }
 
-	@Override
-	public double getY() {
-		return y;
-	}
+    @Override
+    public double getY() {
+        return y;
+    }
 
-	@Override
-	public double getZ() {
-		return z;
-	}
+    @Override
+    public double getZ() {
+        return z;
+    }
 }

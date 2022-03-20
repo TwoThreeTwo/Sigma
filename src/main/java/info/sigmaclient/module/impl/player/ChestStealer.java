@@ -74,11 +74,11 @@ public class ChestStealer extends Module {
             } else if (mc.currentScreen instanceof GuiChest) {
                 GuiChest guiChest = (GuiChest) mc.currentScreen;
                 String name = guiChest.lowerChestInventory.getDisplayName().getUnformattedText().toLowerCase();
-                String[] list = new String[] {"menu","selector","game","gui","server","inventory","play","teleporter","shop","melee","armor",
-                "block","castle","mini","warp","teleport","user", "team", "tool", "sure", "trade", "cancel", "accept", "soul", "book", "recipe",
-                "profile","tele","port","map","kit","select","lobby","vault","lock"};
-                for(String str : list) {
-                    if(name.contains(str))
+                String[] list = new String[]{"menu", "selector", "game", "gui", "server", "inventory", "play", "teleporter", "shop", "melee", "armor",
+                        "block", "castle", "mini", "warp", "teleport", "user", "team", "tool", "sure", "trade", "cancel", "accept", "soul", "book", "recipe",
+                        "profile", "tele", "port", "map", "kit", "select", "lobby", "vault", "lock"};
+                for (String str : list) {
+                    if (name.contains(str))
                         return;
                 }
                 isStealing = true;
@@ -147,7 +147,7 @@ public class ChestStealer extends Module {
             if (mc.thePlayer.inventoryContainer.getSlot(i).getHasStack()) {
                 ItemStack is1 = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
                 if (is1.getItem() instanceof ItemSword && item.getItem() instanceof ItemSword) {
-                    if(lastDamage < getDamage(is1)) {
+                    if (lastDamage < getDamage(is1)) {
                         lastDamage = getDamage(is1);
                         is = is1;
                     }
@@ -163,8 +163,6 @@ public class ChestStealer extends Module {
                 return false;
             }
         }
-
-
 
 
         return item != null &&

@@ -1,13 +1,13 @@
 package info.sigmaclient.util;
 
-import java.io.*;
-import java.util.*;
-
 import info.sigmaclient.Client;
 import net.minecraft.client.Minecraft;
 
-public final class FileUtils
-{
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class FileUtils {
 
     public static List<String> read(final File inputFile) {
 
@@ -19,8 +19,7 @@ public final class FileUtils
                 readContent.add(str);
             }
             in.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return readContent;
@@ -33,12 +32,11 @@ public final class FileUtils
                 out.write(String.valueOf(outputLine) + System.getProperty("line.separator"));
             }
             out.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private static File getConfigDir() {
         final File file = new File(Minecraft.getMinecraft().mcDataDir, Client.clientName);
         if (!file.exists()) {
@@ -46,14 +44,13 @@ public final class FileUtils
         }
         return file;
     }
-    
+
     public static File getConfigFile(final String name) {
         final File file = new File(getConfigDir(), String.format("%s.txt", name));
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

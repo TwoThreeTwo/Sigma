@@ -26,6 +26,7 @@ public class PingSpoof extends Module {
     private info.sigmaclient.util.Timer timer = new info.sigmaclient.util.Timer();
     private List<Packet> packetList = new CopyOnWriteArrayList<>();
     private String WAIT = "WAIT";
+
     public PingSpoof(ModuleData data) {
         super(data);
         settings.put(WAIT, new Setting<>(WAIT, 15, "Seconds to wait before sending packets again.", 1, 5, 30));
@@ -41,16 +42,16 @@ public class PingSpoof extends Module {
                 packetList.add(ep.getPacket());
                 event.setCancelled(true);
             }
-            if (timer.delay(1000 * ((Number)settings.get(WAIT).getValue()).intValue())) {
-                if(!packetList.isEmpty()) {
+            if (timer.delay(1000 * ((Number) settings.get(WAIT).getValue()).intValue())) {
+                if (!packetList.isEmpty()) {
                     int i = 0;
                     double totalPackets = MathUtils.getIncremental(Math.random() * 10, 1);
                     for (Packet packet : packetList) {
-                       if(i < totalPackets) {
-                           i++;
-                           mc.getNetHandler().getNetworkManager().sendPacketNoEvent(packet);
-                           packetList.remove(packet);
-                       }
+                        if (i < totalPackets) {
+                            i++;
+                            mc.getNetHandler().getNetworkManager().sendPacketNoEvent(packet);
+                            packetList.remove(packet);
+                        }
                     }
                 }
                 mc.getNetHandler().getNetworkManager().sendPacketNoEvent(new C00PacketKeepAlive(10000));

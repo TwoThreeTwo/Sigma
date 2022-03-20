@@ -18,41 +18,31 @@ import net.minecraft.client.gui.GuiScreen;
 import java.io.File;
 
 public class Client {
-    public static Client instance;
-
-    //Credits: LPK, Tojatta, Aristhena, OG
-
     // Client data
     public static final String author = "Arithmo";
+
+    //Credits: LPK, Tojatta, Aristhena, OG
     public static final String version = "v2.08";
     public static final String clientName = "Sigma";
+    public static final int VERSION_CHECK = 3;
+    public static Client instance;
     public static ColorManager cm = new ColorManager();
     public static UserManager um;
     public static UpgradeManager upgradeManager;
-
     public static boolean isLowEndPC;
     public static boolean hasSetup;
-    public static final int VERSION_CHECK = 3;
-
+    public static ClickGui clickGui;
+    public static CommandManager commandManager;
+    public static FontManager fm = new FontManager();
+    public static WaypointManager wm = new WaypointManager();
+    public static boolean outdated;
+    private static FileManager fileManager;
     // Managers
     private final ModuleManager moduleManager;
-
-    private static FileManager fileManager;
-    public static ClickGui clickGui;
-
-    public static FileManager getFileManager() {
-        return fileManager;
-    }
-
-    public static CommandManager commandManager;
-
     // Other data
     private File dataDirectory;
     private GuiScreen mainMenu = new ClientMainMenu();
     private boolean isHidden;
-
-    public static FontManager fm = new FontManager();
-    public static WaypointManager wm = new WaypointManager();
 
     /**
      * TODO: - Work on vanilla hidden mode - Work on making the renderers (help
@@ -68,20 +58,12 @@ public class Client {
         FriendManager.start();
     }
 
-    public static boolean outdated;
+    public static FileManager getFileManager() {
+        return fileManager;
+    }
 
     public static ClickGui getClickGui() {
         return clickGui;
-    }
-
-    public void setup() {
-        commandManager.setup();
-        dataDirectory = new File(Client.clientName);
-        moduleManager.setup();
-        (Client.fileManager = new FileManager()).loadFiles();
-        clickGui = new ClickGui();
-        Module.loadStatus();
-        Module.loadSettings();
     }
 
     public static ModuleManager<Module> getModuleManager() {
@@ -103,6 +85,16 @@ public class Client {
         } else {
             instance.mainMenu = new ClientMainMenu();
         }
+    }
+
+    public void setup() {
+        commandManager.setup();
+        dataDirectory = new File(Client.clientName);
+        moduleManager.setup();
+        (Client.fileManager = new FileManager()).loadFiles();
+        clickGui = new ClickGui();
+        Module.loadStatus();
+        Module.loadSettings();
     }
 
 }

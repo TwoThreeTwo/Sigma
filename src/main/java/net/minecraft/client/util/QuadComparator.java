@@ -3,17 +3,15 @@ package net.minecraft.client.util;
 import java.nio.FloatBuffer;
 import java.util.Comparator;
 
-public class QuadComparator implements Comparator
-{
+public class QuadComparator implements Comparator {
+    private static final String __OBFID = "CL_00000958";
     private float field_147630_a;
     private float field_147628_b;
     private float field_147629_c;
     private FloatBuffer field_147627_d;
     private int field_178079_e;
-    private static final String __OBFID = "CL_00000958";
 
-    public QuadComparator(FloatBuffer p_i46247_1_, float p_i46247_2_, float p_i46247_3_, float p_i46247_4_, int p_i46247_5_)
-    {
+    public QuadComparator(FloatBuffer p_i46247_1_, float p_i46247_2_, float p_i46247_3_, float p_i46247_4_, int p_i46247_5_) {
         this.field_147627_d = p_i46247_1_;
         this.field_147630_a = p_i46247_2_;
         this.field_147628_b = p_i46247_3_;
@@ -21,8 +19,7 @@ public class QuadComparator implements Comparator
         this.field_178079_e = p_i46247_5_;
     }
 
-    public int compare(Integer p_compare_1_, Integer p_compare_2_)
-    {
+    public int compare(Integer p_compare_1_, Integer p_compare_2_) {
         float var3 = this.field_147627_d.get(p_compare_1_.intValue()) - this.field_147630_a;
         float var4 = this.field_147627_d.get(p_compare_1_.intValue() + 1) - this.field_147628_b;
         float var5 = this.field_147627_d.get(p_compare_1_.intValue() + 2) - this.field_147629_c;
@@ -58,8 +55,7 @@ public class QuadComparator implements Comparator
         return Float.compare(var34, var33);
     }
 
-    public int compare(Object p_compare_1_, Object p_compare_2_)
-    {
-        return this.compare((Integer)p_compare_1_, (Integer)p_compare_2_);
+    public int compare(Object p_compare_1_, Object p_compare_2_) {
+        return this.compare((Integer) p_compare_1_, (Integer) p_compare_2_);
     }
 }

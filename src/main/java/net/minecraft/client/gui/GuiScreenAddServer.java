@@ -1,21 +1,20 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
-public class GuiScreenAddServer extends GuiScreen
-{
+import java.io.IOException;
+
+public class GuiScreenAddServer extends GuiScreen {
+    private static final String __OBFID = "CL_00000695";
     private final GuiScreen parentScreen;
     private final ServerData serverData;
     private GuiTextField serverIPField;
     private GuiTextField serverNameField;
     private GuiButton serverResourcePacks;
-    private static final String __OBFID = "CL_00000695";
 
-    public GuiScreenAddServer(GuiScreen p_i1033_1_, ServerData p_i1033_2_)
-    {
+    public GuiScreenAddServer(GuiScreen p_i1033_1_, ServerData p_i1033_2_) {
         this.parentScreen = p_i1033_1_;
         this.serverData = p_i1033_2_;
     }
@@ -23,8 +22,7 @@ public class GuiScreenAddServer extends GuiScreen
     /**
      * Called from the main game loop to update the screen.
      */
-    public void updateScreen()
-    {
+    public void updateScreen() {
         this.serverNameField.updateCursorCounter();
         this.serverIPField.updateCursorCounter();
     }
@@ -32,8 +30,7 @@ public class GuiScreenAddServer extends GuiScreen
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
-    public void initGui()
-    {
+    public void initGui() {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 18, I18n.format("addServer.add", new Object[0])));
@@ -45,32 +42,24 @@ public class GuiScreenAddServer extends GuiScreen
         this.serverIPField = new GuiTextField(1, this.fontRendererObj, this.width / 2 - 100, 106, 200, 20);
         this.serverIPField.setMaxStringLength(128);
         this.serverIPField.setText(this.serverData.serverIP);
-        ((GuiButton)this.buttonList.get(0)).enabled = this.serverIPField.getText().length() > 0 && this.serverIPField.getText().split(":").length > 0 && this.serverNameField.getText().length() > 0;
+        ((GuiButton) this.buttonList.get(0)).enabled = this.serverIPField.getText().length() > 0 && this.serverIPField.getText().split(":").length > 0 && this.serverNameField.getText().length() > 0;
     }
 
     /**
      * Called when the screen is unloaded. Used to disable keyboard repeat events
      */
-    public void onGuiClosed()
-    {
+    public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.enabled)
-        {
-            if (button.id == 2)
-            {
+    protected void actionPerformed(GuiButton button) throws IOException {
+        if (button.enabled) {
+            if (button.id == 2) {
                 this.serverData.setResourceMode(ServerData.ServerResourceMode.values()[(this.serverData.getResourceMode().ordinal() + 1) % ServerData.ServerResourceMode.values().length]);
                 this.serverResourcePacks.displayString = I18n.format("addServer.resourcePack", new Object[0]) + ": " + this.serverData.getResourceMode().getMotd().getFormattedText();
-            }
-            else if (button.id == 1)
-            {
+            } else if (button.id == 1) {
                 this.parentScreen.confirmClicked(false, 0);
-            }
-            else if (button.id == 0)
-            {
+            } else if (button.id == 0) {
                 this.serverData.serverName = this.serverNameField.getText();
                 this.serverData.serverIP = this.serverIPField.getText();
                 this.parentScreen.confirmClicked(true, 0);
@@ -82,30 +71,26 @@ public class GuiScreenAddServer extends GuiScreen
      * Fired when a key is typed (except F11 who toggle full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
      */
-    protected void keyTyped(char typedChar, int keyCode) throws IOException
-    {
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
         this.serverNameField.textboxKeyTyped(typedChar, keyCode);
         this.serverIPField.textboxKeyTyped(typedChar, keyCode);
 
-        if (keyCode == 15)
-        {
+        if (keyCode == 15) {
             this.serverNameField.setFocused(!this.serverNameField.isFocused());
             this.serverIPField.setFocused(!this.serverIPField.isFocused());
         }
 
-        if (keyCode == 28 || keyCode == 156)
-        {
-            this.actionPerformed((GuiButton)this.buttonList.get(0));
+        if (keyCode == 28 || keyCode == 156) {
+            this.actionPerformed((GuiButton) this.buttonList.get(0));
         }
 
-        ((GuiButton)this.buttonList.get(0)).enabled = this.serverIPField.getText().length() > 0 && this.serverIPField.getText().split(":").length > 0 && this.serverNameField.getText().length() > 0;
+        ((GuiButton) this.buttonList.get(0)).enabled = this.serverIPField.getText().length() > 0 && this.serverIPField.getText().split(":").length > 0 && this.serverNameField.getText().length() > 0;
     }
 
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      */
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         this.serverIPField.mouseClicked(mouseX, mouseY, mouseButton);
         this.serverNameField.mouseClicked(mouseX, mouseY, mouseButton);
@@ -114,8 +99,7 @@ public class GuiScreenAddServer extends GuiScreen
     /**
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("addServer.title", new Object[0]), this.width / 2, 17, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("addServer.enterName", new Object[0]), this.width / 2 - 100, 53, 10526880);

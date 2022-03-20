@@ -29,11 +29,8 @@ import java.util.List;
 
 public class Scaffold extends Module {
 
-    public static List<Block> getBlacklistedBlocks() {
-        return blacklistedBlocks;
-    }
-
     private static List<Block> blacklistedBlocks;
+    int slot;
     private BlockData blockBelowData;
     private Timer timer = new Timer();
     private Timer towerTimer = new Timer();
@@ -43,7 +40,7 @@ public class Scaffold extends Module {
     public Scaffold(ModuleData data) {
         super(data);
         settings.put(TOWER, new Setting<>(TOWER, true, "Helps you build up faster."));
-        settings.put(MODE, new Setting<>(MODE, new Options("Mode", "Normal", new String[] {"Normal", "Watchdog"}), "Scaffold method."));
+        settings.put(MODE, new Setting<>(MODE, new Options("Mode", "Normal", new String[]{"Normal", "Watchdog"}), "Scaffold method."));
         blacklistedBlocks = Arrays.asList(
                 Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava,
                 Blocks.enchanting_table, Blocks.carpet, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars,
@@ -54,6 +51,20 @@ public class Scaffold extends Module {
                 Blocks.stone_button, Blocks.wooden_button, Blocks.lever);
     }
 
+    public static List<Block> getBlacklistedBlocks() {
+        return blacklistedBlocks;
+    }
+
+    public static float[] getRotationsBlock(BlockPos pos, EnumFacing facing) {
+        double d0 = pos.getX() - mc.thePlayer.posX;
+        double d1 = pos.getY() - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
+        double d2 = pos.getZ() - mc.thePlayer.posZ;
+        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        float f = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+        float f1 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+        return new float[]{f, f1};
+    }
+
     @Override
     public void onEnable() {
         super.onEnable();
@@ -62,14 +73,12 @@ public class Scaffold extends Module {
     }
 
     public void onDisable() {
-        if(mc.thePlayer.isSwingInProgress) {
+        if (mc.thePlayer.isSwingInProgress) {
             mc.thePlayer.swingProgress = 0;
             mc.thePlayer.swingProgressInt = 0;
             mc.thePlayer.isSwingInProgress = false;
         }
     }
-
-    int slot;
 
     @Override
     @RegisterEvent(events = {EventPacket.class, EventUpdate.class, EventRenderGui.class})
@@ -86,10 +95,10 @@ public class Scaffold extends Module {
             Client.fm.getFont("SFB 7").drawStringWithShadow(getBlockCount() + "", res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(getBlockCount() + "") / 2, res.getScaledHeight() / 2 - 25, color);
         }
         if (event instanceof EventUpdate) {
-            String currentMode = ((Options)settings.get(MODE).getValue()).getSelected();
+            String currentMode = ((Options) settings.get(MODE).getValue()).getSelected();
             setSuffix(currentMode);
             EventUpdate em = (EventUpdate) event;
-            if(currentMode.equalsIgnoreCase("Watchdog")) {
+            if (currentMode.equalsIgnoreCase("Watchdog")) {
                 if (em.isPre()) {
                     int tempSlot = getBlockSlot();
                     blockBelowData = null;
@@ -231,8 +240,6 @@ public class Scaffold extends Module {
         }
     }
 
-
-
     protected void swap(int slot, int hotbarNum) {
         mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, hotbarNum, 2, mc.thePlayer);
     }
@@ -318,16 +325,6 @@ public class Scaffold extends Module {
             return new BlockData(add4.add(0, 0, 1), EnumFacing.NORTH);
         }
         return null;
-    }
-
-    public static float[] getRotationsBlock(BlockPos pos, EnumFacing facing) {
-        double d0 = pos.getX() - mc.thePlayer.posX;
-        double d1 = pos.getY() - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
-        double d2 = pos.getZ() - mc.thePlayer.posZ;
-        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        float f = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-        float f1 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-        return new float[]{f, f1};
     }
 
     private int getBlockSlot() {

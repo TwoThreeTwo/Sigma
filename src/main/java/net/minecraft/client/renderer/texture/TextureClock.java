@@ -3,44 +3,36 @@ package net.minecraft.client.renderer.texture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 
-public class TextureClock extends TextureAtlasSprite
-{
+public class TextureClock extends TextureAtlasSprite {
+    private static final String __OBFID = "CL_00001070";
     private double field_94239_h;
     private double field_94240_i;
-    private static final String __OBFID = "CL_00001070";
 
-    public TextureClock(String p_i1285_1_)
-    {
+    public TextureClock(String p_i1285_1_) {
         super(p_i1285_1_);
     }
 
-    public void updateAnimation()
-    {
-        if (!this.framesTextureData.isEmpty())
-        {
+    public void updateAnimation() {
+        if (!this.framesTextureData.isEmpty()) {
             Minecraft var1 = Minecraft.getMinecraft();
             double var2 = 0.0D;
 
-            if (var1.theWorld != null && var1.thePlayer != null)
-            {
+            if (var1.theWorld != null && var1.thePlayer != null) {
                 float var4 = var1.theWorld.getCelestialAngle(1.0F);
-                var2 = (double)var4;
+                var2 = (double) var4;
 
-                if (!var1.theWorld.provider.isSurfaceWorld())
-                {
+                if (!var1.theWorld.provider.isSurfaceWorld()) {
                     var2 = Math.random();
                 }
             }
 
             double var7;
 
-            for (var7 = var2 - this.field_94239_h; var7 < -0.5D; ++var7)
-            {
+            for (var7 = var2 - this.field_94239_h; var7 < -0.5D; ++var7) {
                 ;
             }
 
-            while (var7 >= 0.5D)
-            {
+            while (var7 >= 0.5D) {
                 --var7;
             }
 
@@ -50,15 +42,13 @@ public class TextureClock extends TextureAtlasSprite
             this.field_94239_h += this.field_94240_i;
             int var6;
 
-            for (var6 = (int)((this.field_94239_h + 1.0D) * (double)this.framesTextureData.size()) % this.framesTextureData.size(); var6 < 0; var6 = (var6 + this.framesTextureData.size()) % this.framesTextureData.size())
-            {
+            for (var6 = (int) ((this.field_94239_h + 1.0D) * (double) this.framesTextureData.size()) % this.framesTextureData.size(); var6 < 0; var6 = (var6 + this.framesTextureData.size()) % this.framesTextureData.size()) {
                 ;
             }
 
-            if (var6 != this.frameCounter)
-            {
+            if (var6 != this.frameCounter) {
                 this.frameCounter = var6;
-                TextureUtil.uploadTextureMipmap((int[][])this.framesTextureData.get(this.frameCounter), this.width, this.height, this.originX, this.originY, false, false);
+                TextureUtil.uploadTextureMipmap((int[][]) this.framesTextureData.get(this.frameCounter), this.width, this.height, this.originX, this.originY, false, false);
             }
         }
     }

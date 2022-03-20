@@ -24,12 +24,11 @@ import java.util.List;
 public class InventoryCleaner extends Module {
     //TODO: ADD THE FUCKING NIGGER OPTIONS FOR DIFFERENT ITEMS
     public static List<Integer> blacklistedItems = new ArrayList<>();
-
+    private static boolean isCleaning;
     private final String TOGGLE = "TOGGLE";
     private final String BLOCKCAP = "BLOCKCAP";
     private final String ARCHERY = "ARCHERY";
     private final String FOOD = "FOOD";
-
     private Timer timer = new Timer();
 
     public InventoryCleaner(ModuleData data) {
@@ -40,8 +39,6 @@ public class InventoryCleaner extends Module {
         settings.put(BLOCKCAP, new Setting<>(BLOCKCAP, 128, "Max blocks allowed in your inventory.", 8, -1, 256));
         Xray.loadIDs();
     }
-
-    private static boolean isCleaning;
 
     public static boolean isCleaning() {
         return isCleaning;

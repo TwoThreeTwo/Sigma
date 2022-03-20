@@ -2,8 +2,7 @@ package net.minecraft.client.gui.spectator;
 
 import net.minecraft.util.IChatComponent;
 
-public interface ISpectatorMenuObject
-{
+public interface ISpectatorMenuObject {
     void func_178661_a(SpectatorMenu p_178661_1_);
 
     IChatComponent func_178664_z_();

@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiMenuButton extends GuiButton {
 
-    private ResourceLocation icon;
     int index = 0;
     boolean movingUp;
+    private ResourceLocation icon;
 
     public GuiMenuButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
@@ -26,7 +26,7 @@ public class GuiMenuButton extends GuiButton {
             int text = hovered ? Colors.getColor(255) : Colors.getColor(232);
             if (hovered && index < 1) {
                 movingUp = true;
-            } else if(index == 14 && movingUp && !hovered) {
+            } else if (index == 14 && movingUp && !hovered) {
                 movingUp = false;
             }
 

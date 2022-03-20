@@ -49,45 +49,40 @@ public class GuiIngame extends Gui {
     private static final ResourceLocation vignetteTexPath = new ResourceLocation("textures/misc/vignette.png");
     private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
     private static final ResourceLocation pumpkinBlurTexPath = new ResourceLocation("textures/misc/pumpkinblur.png");
+    private static final String __OBFID = "CL_00000661";
     private final Random rand = new Random();
     private final Minecraft mc;
     private final RenderItem itemRenderer;
-
     /**
      * ChatGUI instance that retains all previous chat data
      */
     private final GuiNewChat persistantChatGUI;
     private final GuiStreamIndicator streamIndicator;
+    private final GuiOverlayDebug overlayDebug;
+    private final GuiSpectator field_175197_u;
+    private final GuiPlayerTabOverlay overlayPlayerList;
+    /**
+     * Previous frame vignette brightness (slowly changes by 1% each frame)
+     */
+    public float prevVignetteBrightness = 1.0F;
     private int updateCounter;
-
     /**
      * The string specifying which record music is playing
      */
     private String recordPlaying = "";
-
     /**
      * How many ticks the record playing message will be displayed
      */
     private int recordPlayingUpFor;
     private boolean recordIsPlaying;
-
-    /**
-     * Previous frame vignette brightness (slowly changes by 1% each frame)
-     */
-    public float prevVignetteBrightness = 1.0F;
-
     /**
      * Remaining ticks the item highlight should be visible
      */
     private int remainingHighlightTicks;
-
     /**
      * The ItemStack that is currently being highlighted
      */
     private ItemStack highlightingItemStack;
-    private final GuiOverlayDebug overlayDebug;
-    private final GuiSpectator field_175197_u;
-    private final GuiPlayerTabOverlay overlayPlayerList;
     private int field_175195_w;
     private String field_175201_x = "";
     private String field_175200_y = "";
@@ -98,7 +93,7 @@ public class GuiIngame extends Gui {
     private int field_175189_D = 0;
     private long field_175190_E = 0L;
     private long field_175191_F = 0L;
-    private static final String __OBFID = "CL_00000661";
+    private Timer timer = new Timer();
 
     public GuiIngame(Minecraft mcIn) {
         timer.reset();
@@ -117,8 +112,6 @@ public class GuiIngame extends Gui {
         this.field_175192_A = 70;
         this.field_175193_B = 20;
     }
-
-    private Timer timer = new Timer();
 
     public void func_175180_a(float p_175180_1_) {
         ScaledResolution var2 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);

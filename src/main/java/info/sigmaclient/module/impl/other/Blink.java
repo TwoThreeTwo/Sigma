@@ -12,7 +12,8 @@ import info.sigmaclient.event.impl.EventRender3D;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
-import info.sigmaclient.util.*;
+import info.sigmaclient.util.PlayerUtil;
+import info.sigmaclient.util.RenderingUtil;
 import info.sigmaclient.util.Timer;
 import info.sigmaclient.util.render.Colors;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -31,6 +32,7 @@ public class Blink extends Module {
     private List<Packet> packets = new CopyOnWriteArrayList<>();
     private List<Vec3> crumbs = new CopyOnWriteArrayList<>();
     private String BREADCRUMBS = "CRUMBS";
+    private info.sigmaclient.util.Timer timer = new Timer();
 
     public Blink(ModuleData data) {
         super(data);
@@ -47,13 +49,11 @@ public class Blink extends Module {
     public void onDisable() {
         super.onDisable();
         crumbs.clear();
-        for(Packet packet : packets) {
+        for (Packet packet : packets) {
             mc.getNetHandler().getNetworkManager().sendPacketNoEvent(packet);
         }
         packets.clear();
     }
-
-    private info.sigmaclient.util.Timer timer = new Timer();
 
     @Override
     @RegisterEvent(events = {EventPacket.class, EventRender3D.class})
@@ -67,7 +67,7 @@ public class Blink extends Module {
             }
         }
         if (event instanceof EventRender3D && ((Boolean) settings.get(BREADCRUMBS).getValue())) {
-            if(timer.delay(50)) {
+            if (timer.delay(50)) {
                 crumbs.add(new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ));
                 timer.reset();
             }

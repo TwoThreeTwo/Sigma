@@ -1,9 +1,9 @@
 package info.sigmaclient.gui.click.components;
 
-import info.sigmaclient.gui.click.ui.UI;
-import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.Client;
+import info.sigmaclient.gui.click.ui.UI;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.Setting;
 
 /**
  * Created by cool1 on 1/21/2017.

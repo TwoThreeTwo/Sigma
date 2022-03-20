@@ -12,14 +12,13 @@ import net.minecraft.network.play.server.S27PacketExplosion;
 
 public class AntiVelocity extends Module {
 
+    public static String HORIZONTAL = "HORIZONTAL";
+    public static String VERTICAL = "VERTICAL";
     public AntiVelocity(ModuleData data) {
         super(data);
         settings.put(HORIZONTAL, new Setting<>(HORIZONTAL, 0, "Horizontal velocity factor.", 10, 0, 100));
         settings.put(VERTICAL, new Setting<>(VERTICAL, 0, "Vertical velocity factor.", 10, 0, 100));
     }
-
-    public static String HORIZONTAL = "HORIZONTAL";
-    public static String VERTICAL = "VERTICAL";
 
     @Override
     @RegisterEvent(events = {EventPacket.class})
@@ -27,8 +26,8 @@ public class AntiVelocity extends Module {
         // Check for incoming packets only
         EventPacket ep = (EventPacket) event;
         if (ep.isOutgoing()) {
-            if(ep.getPacket() instanceof C03PacketPlayer)
-            return;
+            if (ep.getPacket() instanceof C03PacketPlayer)
+                return;
         }
         // If the packet handles velocity
         if (ep.getPacket() instanceof S12PacketEntityVelocity) {

@@ -9,14 +9,12 @@ import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
 
-public class NetHandlerStatusServer implements INetHandlerStatusServer
-{
+public class NetHandlerStatusServer implements INetHandlerStatusServer {
+    private static final String __OBFID = "CL_00001464";
     private final MinecraftServer server;
     private final NetworkManager networkManager;
-    private static final String __OBFID = "CL_00001464";
 
-    public NetHandlerStatusServer(MinecraftServer serverIn, NetworkManager netManager)
-    {
+    public NetHandlerStatusServer(MinecraftServer serverIn, NetworkManager netManager) {
         this.server = serverIn;
         this.networkManager = netManager;
     }
@@ -24,15 +22,14 @@ public class NetHandlerStatusServer implements INetHandlerStatusServer
     /**
      * Invoked when disconnecting, the parameter is a ChatComponent describing the reason for termination
      */
-    public void onDisconnect(IChatComponent reason) {}
+    public void onDisconnect(IChatComponent reason) {
+    }
 
-    public void processServerQuery(C00PacketServerQuery packetIn)
-    {
+    public void processServerQuery(C00PacketServerQuery packetIn) {
         this.networkManager.sendPacket(new S00PacketServerInfo(this.server.getServerStatusResponse()));
     }
 
-    public void processPing(C01PacketPing packetIn)
-    {
+    public void processPing(C01PacketPing packetIn) {
         this.networkManager.sendPacket(new S01PacketPong(packetIn.getClientTime()));
     }
 }

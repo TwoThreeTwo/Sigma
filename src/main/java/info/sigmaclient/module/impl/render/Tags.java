@@ -1,5 +1,6 @@
 package info.sigmaclient.module.impl.render;
 
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventNametagRender;
 import info.sigmaclient.event.impl.EventRender3D;
 import info.sigmaclient.management.friend.FriendManager;
@@ -7,7 +8,6 @@ import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.RenderingUtil;
-import info.sigmaclient.event.RegisterEvent;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,27 +19,27 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 import java.text.DecimalFormat;
 
 public class Tags extends Module {
 
+    private String INVISIBLES = "INVISIBLES";
+    private String ARMOR = "ARMOR";
     public Tags(ModuleData data) {
         super(data);
         settings.put(ARMOR, new Setting(ARMOR, true, "Show armor."));
         settings.put(INVISIBLES, new Setting(INVISIBLES, false, "Show invisibles."));
     }
 
-    private String INVISIBLES = "INVISIBLES";
-    private String ARMOR = "ARMOR";
-
     @Override
     @RegisterEvent(events = {EventRender3D.class, EventNametagRender.class})
     public void onEvent(info.sigmaclient.event.Event event) {
         if (event instanceof EventRender3D) {
-            EventRender3D er = (EventRender3D)event;
+            EventRender3D er = (EventRender3D) event;
             for (Object o : mc.theWorld.playerEntities) {
-                final EntityPlayer player = (EntityPlayer)o;
+                final EntityPlayer player = (EntityPlayer) o;
                 if ((Boolean) settings.get(INVISIBLES).getValue() || !player.isInvisible() && !(player instanceof EntityPlayerSP)) {
                     final double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * er.renderPartialTicks - RenderManager.renderPosX;
                     final double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * er.renderPartialTicks - RenderManager.renderPosY;
@@ -65,7 +65,7 @@ public class Tags extends Module {
         GL11.glDisable(2929);
         mc.entityRenderer.setupCameraTransform(mc.timer.renderPartialTicks, 0);
         RenderHelper.enableStandardItemLighting();
-        GlStateManager.translate((float)x, (float)tempY + 1.6f, (float)z);
+        GlStateManager.translate((float) x, (float) tempY + 1.6f, (float) z);
         GL11.glNormal3f(0.0f, 2.0f, 0.0f);
         GlStateManager.rotate(-RenderManager.playerViewY, 0.0f, 1.0f, 0.0f);
         final float var10001 = (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f;
@@ -78,7 +78,7 @@ public class Tags extends Module {
         GlStateManager.enableTextures();
         int color = -1;
         String str = player.getName();
-        if(FriendManager.isFriend(str)) {
+        if (FriendManager.isFriend(str)) {
             color = 0x5CD3FF;
             str = FriendManager.getAlias(str);
         }
@@ -86,13 +86,13 @@ public class Tags extends Module {
         float health = player.getHealth();
         float[] fractions = new float[]{0f, 0.5f, 1f};
         Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN};
-        float progress = (health*5)*0.01f;
+        float progress = (health * 5) * 0.01f;
         Color customColor = ESP2D.blendColors(fractions, colors, progress).brighter();
-        mc.fontRendererObj.drawStringWithShadow((int)health + "", (mc.fontRendererObj.getStringWidth(String.valueOf(player.getName()) + " " + this.getHealth(player)) - mc.fontRendererObj.getStringWidth(this.getHealth(player)) * 2) / 2, 0.0f, customColor.getRGB());
+        mc.fontRendererObj.drawStringWithShadow((int) health + "", (mc.fontRendererObj.getStringWidth(String.valueOf(player.getName()) + " " + this.getHealth(player)) - mc.fontRendererObj.getStringWidth(this.getHealth(player)) * 2) / 2, 0.0f, customColor.getRGB());
 
 
         GlStateManager.disableBlend();
-        if (((Boolean)settings.get(ARMOR).getValue()).booleanValue()) {
+        if (((Boolean) settings.get(ARMOR).getValue()).booleanValue()) {
             this.renderArmor(player);
         }
         GlStateManager.enableBlend();
@@ -202,9 +202,8 @@ public class Tags extends Module {
         double health = (10.0 + abs) * (e.getHealth() / e.getMaxHealth());
         health = Double.valueOf(numberFormat.format(health));
         if (Math.floor(health) == health) {
-            hp = String.valueOf((int)health);
-        }
-        else {
+            hp = String.valueOf((int) health);
+        } else {
             hp = String.valueOf(health);
         }
         return hp;
@@ -343,5 +342,5 @@ public class Tags extends Module {
             mc.fontRendererObj.drawStringWithShadow("god", x * 2, enchantmentY, -1052689);
         }
     }
-    
+
 }

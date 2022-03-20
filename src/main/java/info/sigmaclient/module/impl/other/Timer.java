@@ -32,7 +32,7 @@ public class Timer extends Module {
     @Override
     @RegisterEvent(events = EventTick.class)
     public void onEvent(Event event) {
-        mc.timer.timerSpeed = ((Number)settings.get(GS).getValue()).floatValue();
+        mc.timer.timerSpeed = ((Number) settings.get(GS).getValue()).floatValue();
     }
 
 }

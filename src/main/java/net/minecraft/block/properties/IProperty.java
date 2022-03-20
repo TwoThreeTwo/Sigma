@@ -2,8 +2,7 @@ package net.minecraft.block.properties;
 
 import java.util.Collection;
 
-public interface IProperty
-{
+public interface IProperty {
     String getName();
 
     Collection getAllowedValues();

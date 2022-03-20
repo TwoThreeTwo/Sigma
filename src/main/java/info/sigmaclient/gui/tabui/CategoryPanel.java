@@ -3,5 +3,5 @@ package info.sigmaclient.gui.tabui;
 /**
  * Created by cool1 on 4/9/2017.
  */
-public class CategoryPanel extends tabui  {
+public class CategoryPanel extends tabui {
 }

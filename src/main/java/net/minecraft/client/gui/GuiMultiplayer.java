@@ -2,10 +2,6 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-
-import java.io.IOException;
-import java.util.List;
-
 import info.sigmaclient.Client;
 import info.sigmaclient.management.notifications.Notifications;
 import info.sigmaclient.module.Module;
@@ -21,8 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
+import java.util.List;
+
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     private static final Logger logger = LogManager.getLogger();
+    private static final String __OBFID = "CL_00000814";
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     private GuiScreen parentScreen;
     private ServerSelectionList serverListSelector;
@@ -39,7 +39,6 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     private LanServerDetector.LanServerList lanServerList;
     private LanServerDetector.ThreadLanServerFind lanServerDetector;
     private boolean initialized;
-    private static final String __OBFID = "CL_00000814";
 
     public GuiMultiplayer(GuiScreen parentScreen) {
         this.parentScreen = parentScreen;

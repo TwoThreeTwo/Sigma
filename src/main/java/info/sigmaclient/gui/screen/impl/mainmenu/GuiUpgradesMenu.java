@@ -18,7 +18,7 @@ public class GuiUpgradesMenu extends GuiScreen {
 
     public void initGui() {
         buttonList.clear();
-        buttonList.add(new GuiButton(0, width/2 - 50, height/2 + 50, 100, 20, "Back"));
+        buttonList.add(new GuiButton(0, width / 2 - 50, height / 2 + 50, 100, 20, "Back"));
     }
 
     public void updateScreen() {
@@ -34,8 +34,8 @@ public class GuiUpgradesMenu extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        mc.fontRendererObj.drawStringWithShadow("Upgrades Manager", (width - mc.fontRendererObj.getStringWidth("Upgrades Manager"))/2, height/2 - 150,-1);
-        mc.fontRendererObj.drawStringWithShadow("Arithmo forgot to finish this :(", (width - mc.fontRendererObj.getStringWidth("Arithmo forgot to finish this :("))/2, height/2 - 138,-1);
+        mc.fontRendererObj.drawStringWithShadow("Upgrades Manager", (width - mc.fontRendererObj.getStringWidth("Upgrades Manager")) / 2, height / 2 - 150, -1);
+        mc.fontRendererObj.drawStringWithShadow("Arithmo forgot to finish this :(", (width - mc.fontRendererObj.getStringWidth("Arithmo forgot to finish this :(")) / 2, height / 2 - 138, -1);
     }
 
 }

@@ -1,13 +1,13 @@
 package info.sigmaclient.module.impl.movement;
 
-import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.module.data.Setting;
-import info.sigmaclient.util.Timer;
 import info.sigmaclient.Client;
+import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventMove;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
+import info.sigmaclient.module.data.Setting;
+import info.sigmaclient.util.Timer;
 import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
 
@@ -30,14 +30,14 @@ public class Catch extends Module {
     @RegisterEvent(events = EventMove.class)
     public void onEvent(Event event) {
         EventMove em = (EventMove) event;
-        if((saveMe && timer.delay(150)) || mc.thePlayer.isCollidedVertically) {
+        if ((saveMe && timer.delay(150)) || mc.thePlayer.isCollidedVertically) {
             saveMe = false;
             timer.reset();
         }
-        int dist = ((Number)settings.get(DISTANCE).getValue()).intValue();
+        int dist = ((Number) settings.get(DISTANCE).getValue()).intValue();
         if (mc.thePlayer.fallDistance > dist && !Client.getModuleManager().isEnabled(Fly.class)) {
             if (!((Boolean) settings.get(VOID).getValue()) || !isBlockUnder()) {
-                if(!saveMe) {
+                if (!saveMe) {
                     saveMe = true;
                     timer.reset();
                 }

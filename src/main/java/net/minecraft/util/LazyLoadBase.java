@@ -1,18 +1,18 @@
 package net.minecraft.util;
 
 public abstract class LazyLoadBase {
-	private Object value;
-	private boolean isLoaded = false;
-	private static final String __OBFID = "CL_00002263";
+    private static final String __OBFID = "CL_00002263";
+    private Object value;
+    private boolean isLoaded = false;
 
-	public Object getValue() {
-		if (!isLoaded) {
-			isLoaded = true;
-			value = load();
-		}
+    public Object getValue() {
+        if (!isLoaded) {
+            isLoaded = true;
+            value = load();
+        }
 
-		return value;
-	}
+        return value;
+    }
 
-	protected abstract Object load();
+    protected abstract Object load();
 }

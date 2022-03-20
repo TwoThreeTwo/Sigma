@@ -1,17 +1,6 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -33,44 +22,50 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
+    public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
     private static final AtomicInteger field_175373_f = new AtomicInteger(0);
     private static final Logger logger = LogManager.getLogger();
     private static final Random field_175374_h = new Random();
-
+    private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
+    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
+    /**
+     * An array of all the paths to the panorama pictures.
+     */
+    private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[]{new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
+    private static final String __OBFID = "CL_00001154";
+    private final Object field_104025_t = new Object();
     /**
      * Counts the number of screen updates.
      */
     private float updateCounter;
-
     /**
      * The splash message.
      */
     private String splashText;
     private GuiButton buttonResetDemo;
-
     /**
      * Timer used to rotate the panorama, increases every tick.
      */
     private int panoramaTimer;
-
     /**
      * Texture allocated for the current viewport of the main menu's panorama background.
      */
     private DynamicTexture viewportTexture;
     private boolean field_175375_v = true;
-    private final Object field_104025_t = new Object();
     private String field_92025_p;
     private String field_146972_A;
     private String field_104024_v;
-    private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
-    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
-
-    /**
-     * An array of all the paths to the panorama pictures.
-     */
-    private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[]{new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
-    public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
     private int field_92024_r;
     private int field_92023_s;
     private int field_92022_t;
@@ -79,7 +74,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     private int field_92019_w;
     private ResourceLocation field_110351_G;
     private GuiButton field_175372_K;
-    private static final String __OBFID = "CL_00001154";
 
     public GuiMainMenu() {
         this.field_146972_A = field_96138_a;

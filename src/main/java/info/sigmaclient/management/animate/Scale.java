@@ -24,18 +24,18 @@ public class Scale {
         long delta = currentMS - lastMS;//16.66666
         lastMS = currentMS;
         float diffW = (width - tWidth);
-        if(diffW > speed) {
-            width -= (speed * delta / (1000/60));
-        } else if(diffW < -speed) {
-            width += (speed * delta / (1000/60));
+        if (diffW > speed) {
+            width -= (speed * delta / (1000 / 60));
+        } else if (diffW < -speed) {
+            width += (speed * delta / (1000 / 60));
         } else {
             width = tWidth;
         }
         float diffH = (height - tHeight);
-        if(diffH > speed) {
-            height -= (speed * delta / (1000/60));
-        } else if(diffH < -speed) {
-            height += (speed * delta / (1000/60));
+        if (diffH > speed) {
+            height -= (speed * delta / (1000 / 60));
+        } else if (diffH < -speed) {
+            height += (speed * delta / (1000 / 60));
         } else {
             height = tHeight;
         }

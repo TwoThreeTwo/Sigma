@@ -1,13 +1,11 @@
 package net.minecraft.client.renderer.vertex;
 
-public class DefaultVertexFormats
-{
+public class DefaultVertexFormats {
     public static final VertexFormat field_176600_a = new VertexFormat();
     public static final VertexFormat field_176599_b;
     private static final String __OBFID = "CL_00002403";
 
-    static
-    {
+    static {
         field_176600_a.func_177349_a(new VertexFormatElement(0, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUseage.POSITION, 3));
         field_176600_a.func_177349_a(new VertexFormatElement(0, VertexFormatElement.EnumType.UBYTE, VertexFormatElement.EnumUseage.COLOR, 4));
         field_176600_a.func_177349_a(new VertexFormatElement(0, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUseage.UV, 2));

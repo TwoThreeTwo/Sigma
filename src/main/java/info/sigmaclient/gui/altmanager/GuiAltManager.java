@@ -25,14 +25,16 @@ import java.util.List;
 import java.util.Random;
 
 public class GuiAltManager extends GuiScreen {
+    public Alt selectedAlt;
     private GuiButton login;
     private GuiButton remove;
     private GuiButton rename;
     private AltLoginThread loginThread;
     private int offset;
-    public Alt selectedAlt;
     private String status;
     private ParticleManager particles = new ParticleManager();
+    private ResourceLocation background = new ResourceLocation("textures/mainmenubackground.png");
+    private GuiTextField seatchField;
 
     public GuiAltManager() {
         this.selectedAlt = null;
@@ -104,8 +106,6 @@ public class GuiAltManager extends GuiScreen {
             }
         }
     }
-
-    private ResourceLocation background = new ResourceLocation("textures/mainmenubackground.png");
 
     @Override
     public void drawScreen(final int par1, final int par2, final float par3) {
@@ -210,9 +210,6 @@ public class GuiAltManager extends GuiScreen {
         }
     }
 
-
-    private GuiTextField seatchField;
-
     @Override
     public void initGui() {
         this.buttonList.add(new GuiButton(0, this.width / 2 + 116, this.height - 24, 75, 20, "SuperAlts"));
@@ -237,7 +234,7 @@ public class GuiAltManager extends GuiScreen {
             seatchField.setFocused(!seatchField.isFocused());
         }
         try {
-            super.keyTyped(par1,par2);
+            super.keyTyped(par1, par2);
         } catch (IOException e) {
             e.printStackTrace();
         }

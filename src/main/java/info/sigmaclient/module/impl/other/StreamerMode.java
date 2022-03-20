@@ -1,12 +1,12 @@
 package info.sigmaclient.module.impl.other;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.event.impl.EventUpdate;
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventPacket;
+import info.sigmaclient.event.impl.EventUpdate;
+import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
-import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.module.Module;
 import info.sigmaclient.util.misc.ChatUtil;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -22,16 +22,16 @@ import java.util.List;
  */
 public class StreamerMode extends Module {
 
+    public static boolean scrambleNames;
+    public static boolean hideTab;
+    public static boolean hideScore;
+    public static boolean spoofSkins;
+    public static List<String> strings = new ArrayList<>();
     private String NAMEPROTECT = "PROTECT";
     private String SCRAMBLE = "SCRAMBLE";
     private String HIDESCORE = "HIDESCORE";
     private String HIDETAB = "HIDETAB";
     private String SPOOFSKINS = "SPOOFSKINS";
-
-    public static boolean scrambleNames;
-    public static boolean hideTab;
-    public static boolean hideScore;
-    public static boolean spoofSkins;
 
     public StreamerMode(ModuleData data) {
         super(data);
@@ -41,8 +41,6 @@ public class StreamerMode extends Module {
         settings.put(SPOOFSKINS, new Setting<>(SPOOFSKINS, false, "Spoofs player skins."));
         settings.put(HIDETAB, new Setting<>(HIDETAB, false, "Hides tablist/player list."));
     }
-
-    public static List<String> strings = new ArrayList<>();
 
     @Override
     public void onDisable() {
@@ -74,9 +72,9 @@ public class StreamerMode extends Module {
                         strings.add(info.getGameProfile().getName());
                     }
                 }
-                for(Object o : mc.theWorld.getLoadedEntityList()) {
-                    if(o instanceof EntityPlayer) {
-                        if(!strings.contains(((EntityPlayer) o).getName())) {
+                for (Object o : mc.theWorld.getLoadedEntityList()) {
+                    if (o instanceof EntityPlayer) {
+                        if (!strings.contains(((EntityPlayer) o).getName())) {
                             strings.add(((EntityPlayer) o).getName());
                         }
                     }

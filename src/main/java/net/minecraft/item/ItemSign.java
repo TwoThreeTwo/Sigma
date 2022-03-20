@@ -13,53 +13,51 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemSign extends Item {
-	private static final String __OBFID = "CL_00000064";
+    private static final String __OBFID = "CL_00000064";
 
-	public ItemSign() {
-		maxStackSize = 16;
-		setCreativeTab(CreativeTabs.tabDecorations);
-	}
+    public ItemSign() {
+        maxStackSize = 16;
+        setCreativeTab(CreativeTabs.tabDecorations);
+    }
 
-	/**
-	 * Called when a Block is right-clicked with this Item
-	 * 
-	 * @param pos
-	 *            The block being right-clicked
-	 * @param side
-	 *            The side being right-clicked
-	 */
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (side == EnumFacing.DOWN) {
-			return false;
-		} else if (!worldIn.getBlockState(pos).getBlock().getMaterial().isSolid()) {
-			return false;
-		} else {
-			pos = pos.offset(side);
+    /**
+     * Called when a Block is right-clicked with this Item
+     *
+     * @param pos  The block being right-clicked
+     * @param side The side being right-clicked
+     */
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (side == EnumFacing.DOWN) {
+            return false;
+        } else if (!worldIn.getBlockState(pos).getBlock().getMaterial().isSolid()) {
+            return false;
+        } else {
+            pos = pos.offset(side);
 
-			if (!playerIn.func_175151_a(pos, side, stack)) {
-				return false;
-			} else if (!Blocks.standing_sign.canPlaceBlockAt(worldIn, pos)) {
-				return false;
-			} else if (worldIn.isRemote) {
-				return true;
-			} else {
-				if (side == EnumFacing.UP) {
-					int var9 = MathHelper.floor_double((playerIn.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
-					worldIn.setBlockState(pos, Blocks.standing_sign.getDefaultState().withProperty(BlockStandingSign.ROTATION_PROP, Integer.valueOf(var9)), 3);
-				} else {
-					worldIn.setBlockState(pos, Blocks.wall_sign.getDefaultState().withProperty(BlockWallSign.field_176412_a, side), 3);
-				}
+            if (!playerIn.func_175151_a(pos, side, stack)) {
+                return false;
+            } else if (!Blocks.standing_sign.canPlaceBlockAt(worldIn, pos)) {
+                return false;
+            } else if (worldIn.isRemote) {
+                return true;
+            } else {
+                if (side == EnumFacing.UP) {
+                    int var9 = MathHelper.floor_double((playerIn.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
+                    worldIn.setBlockState(pos, Blocks.standing_sign.getDefaultState().withProperty(BlockStandingSign.ROTATION_PROP, Integer.valueOf(var9)), 3);
+                } else {
+                    worldIn.setBlockState(pos, Blocks.wall_sign.getDefaultState().withProperty(BlockWallSign.field_176412_a, side), 3);
+                }
 
-				--stack.stackSize;
-				TileEntity var10 = worldIn.getTileEntity(pos);
+                --stack.stackSize;
+                TileEntity var10 = worldIn.getTileEntity(pos);
 
-				if (var10 instanceof TileEntitySign && !ItemBlock.setTileEntityNBT(worldIn, pos, stack)) {
-					playerIn.func_175141_a((TileEntitySign) var10);
-				}
+                if (var10 instanceof TileEntitySign && !ItemBlock.setTileEntityNBT(worldIn, pos, stack)) {
+                    playerIn.func_175141_a((TileEntitySign) var10);
+                }
 
-				return true;
-			}
-		}
-	}
+                return true;
+            }
+        }
+    }
 }

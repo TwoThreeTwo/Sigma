@@ -6,6 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RegisterEvent {
 
-	public Class<? extends Event>[]events();
+    public Class<? extends Event>[] events();
 
 }

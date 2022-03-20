@@ -17,6 +17,11 @@ public class Color extends Command {
 
     private static final File COLOR_DIR = FileUtils.getConfigFile("Colors");
 
+    public Color(String[] names, String description) {
+        super(names, description);
+        loadStatus();
+    }
+
     public static void saveStatus() {
         List<String> fileContent = new ArrayList<>();
         fileContent.add(String.format("%s:%s:%s:%s:%s", "hudColor", ColorManager.hudColor.getRed(), ColorManager.hudColor.getGreen(), ColorManager.hudColor.getBlue(), ColorManager.hudColor.getAlpha()));
@@ -35,11 +40,11 @@ public class Color extends Command {
                 int blue = Integer.parseInt(split[3]);
                 int alpha = Integer.parseInt(split[4]);
                 switch (object) {
-                    case "hudColor" :
-                        ColorManager.hudColor.updateColors(red,green,blue,alpha);
+                    case "hudColor":
+                        ColorManager.hudColor.updateColors(red, green, blue, alpha);
                         break;
-                    case "xhairCollor" :
-                        ColorManager.ch.updateColors(red,green,blue,alpha);
+                    case "xhairCollor":
+                        ColorManager.ch.updateColors(red, green, blue, alpha);
                         break;
                 }
             }
@@ -47,13 +52,6 @@ public class Color extends Command {
             e.printStackTrace();
         }
     }
-
-
-    public Color(String[] names, String description) {
-        super(names, description);
-        loadStatus();
-    }
-
 
     @Override
     public void fire(String[] args) {
@@ -75,9 +73,9 @@ public class Color extends Command {
         int green = Integer.parseInt(color[1]);
         int blue = Integer.parseInt(color[2]);
         int alpha = Integer.parseInt(color[3]);
-        switch (args[0] ) {
+        switch (args[0]) {
             case "hc":
-                ColorManager.hudColor.updateColors(red,green,blue,alpha);
+                ColorManager.hudColor.updateColors(red, green, blue, alpha);
                 ChatUtil.printChat(chatPrefix + "Color set: \247c" + red + "  \247a" + green + "  \247b" + blue + "  \247f" + alpha);
                 saveStatus();
                 break;

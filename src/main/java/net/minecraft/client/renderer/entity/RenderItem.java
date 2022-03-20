@@ -1,34 +1,9 @@
 package net.minecraft.client.renderer.entity;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Callable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockPrismarine;
-import net.minecraft.block.BlockQuartz;
-import net.minecraft.block.BlockRedSandstone;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockSilverfish;
-import net.minecraft.block.BlockStone;
-import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.BlockStoneSlab;
-import net.minecraft.block.BlockStoneSlabNew;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
@@ -48,26 +23,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3i;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
 
-public class RenderItem implements IResourceManagerReloadListener
-{
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+public class RenderItem implements IResourceManagerReloadListener {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-    private boolean field_175058_l = true;
-
-    /** Defines the zLevel of rendering of item on GUI. */
-    public float zLevel;
-    private final ItemModelMesher itemModelMesher;
-    private final TextureManager field_175057_n;
+    private static final String __OBFID = "CL_00001003";
     public static float field_175055_b = 0.0F;
     public static float field_175056_c = 0.0F;
     public static float field_175053_d = 0.0F;
@@ -77,57 +42,53 @@ public class RenderItem implements IResourceManagerReloadListener
     public static float field_175061_h = 0.0F;
     public static float field_175062_i = 0.0F;
     public static float field_175060_j = 0.0F;
-    private static final String __OBFID = "CL_00001003";
+    private final ItemModelMesher itemModelMesher;
+    private final TextureManager field_175057_n;
+    /**
+     * Defines the zLevel of rendering of item on GUI.
+     */
+    public float zLevel;
+    private boolean field_175058_l = true;
 
-    public RenderItem(TextureManager p_i46165_1_, ModelManager p_i46165_2_)
-    {
+    public RenderItem(TextureManager p_i46165_1_, ModelManager p_i46165_2_) {
         this.field_175057_n = p_i46165_1_;
         this.itemModelMesher = new ItemModelMesher(p_i46165_2_);
         this.registerItems();
     }
 
-    public void func_175039_a(boolean p_175039_1_)
-    {
+    public void func_175039_a(boolean p_175039_1_) {
         this.field_175058_l = p_175039_1_;
     }
 
-    public ItemModelMesher getItemModelMesher()
-    {
+    public ItemModelMesher getItemModelMesher() {
         return this.itemModelMesher;
     }
 
-    protected void registerItem(Item p_175048_1_, int p_175048_2_, String p_175048_3_)
-    {
+    protected void registerItem(Item p_175048_1_, int p_175048_2_, String p_175048_3_) {
         this.itemModelMesher.register(p_175048_1_, p_175048_2_, new ModelResourceLocation(p_175048_3_, "inventory"));
     }
 
-    protected void registerBlock(Block p_175029_1_, int p_175029_2_, String p_175029_3_)
-    {
+    protected void registerBlock(Block p_175029_1_, int p_175029_2_, String p_175029_3_) {
         this.registerItem(Item.getItemFromBlock(p_175029_1_), p_175029_2_, p_175029_3_);
     }
 
-    private void registerBlock(Block p_175031_1_, String p_175031_2_)
-    {
+    private void registerBlock(Block p_175031_1_, String p_175031_2_) {
         this.registerBlock(p_175031_1_, 0, p_175031_2_);
     }
 
-    private void registerItem(Item p_175047_1_, String p_175047_2_)
-    {
+    private void registerItem(Item p_175047_1_, String p_175047_2_) {
         this.registerItem(p_175047_1_, 0, p_175047_2_);
     }
 
-    private void func_175036_a(IBakedModel p_175036_1_, ItemStack p_175036_2_)
-    {
+    private void func_175036_a(IBakedModel p_175036_1_, ItemStack p_175036_2_) {
         this.func_175045_a(p_175036_1_, -1, p_175036_2_);
     }
 
-    private void func_175035_a(IBakedModel p_175035_1_, int p_175035_2_)
-    {
-        this.func_175045_a(p_175035_1_, p_175035_2_, (ItemStack)null);
+    private void func_175035_a(IBakedModel p_175035_1_, int p_175035_2_) {
+        this.func_175045_a(p_175035_1_, p_175035_2_, (ItemStack) null);
     }
 
-    private void func_175045_a(IBakedModel p_175045_1_, int p_175045_2_, ItemStack p_175045_3_)
-    {
+    private void func_175045_a(IBakedModel p_175045_1_, int p_175045_2_, ItemStack p_175045_3_) {
         Tessellator var4 = Tessellator.getInstance();
         WorldRenderer var5 = var4.getWorldRenderer();
         var5.startDrawingQuads();
@@ -135,8 +96,7 @@ public class RenderItem implements IResourceManagerReloadListener
         EnumFacing[] var6 = EnumFacing.values();
         int var7 = var6.length;
 
-        for (int var8 = 0; var8 < var7; ++var8)
-        {
+        for (int var8 = 0; var8 < var7; ++var8) {
             EnumFacing var9 = var6[var8];
             this.func_175032_a(var5, p_175045_1_.func_177551_a(var9), p_175045_2_, p_175045_3_);
         }
@@ -145,26 +105,21 @@ public class RenderItem implements IResourceManagerReloadListener
         var4.draw();
     }
 
-    public void func_180454_a(ItemStack p_180454_1_, IBakedModel p_180454_2_)
-    {
+    public void func_180454_a(ItemStack p_180454_1_, IBakedModel p_180454_2_) {
         GlStateManager.pushMatrix();
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
 
-        if (p_180454_2_.isBuiltInRenderer())
-        {
+        if (p_180454_2_.isBuiltInRenderer()) {
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableRescaleNormal();
             TileEntityRendererChestHelper.instance.renderByItem(p_180454_1_);
-        }
-        else
-        {
+        } else {
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
             this.func_175036_a(p_180454_2_, p_180454_1_);
 
-            if (p_180454_1_.hasEffect())
-            {
+            if (p_180454_1_.hasEffect()) {
                 this.renderEffect(p_180454_2_);
             }
         }
@@ -172,8 +127,7 @@ public class RenderItem implements IResourceManagerReloadListener
         GlStateManager.popMatrix();
     }
 
-    private void renderEffect(IBakedModel p_180451_1_)
-    {
+    private void renderEffect(IBakedModel p_180451_1_) {
         GlStateManager.depthMask(false);
         GlStateManager.depthFunc(514);
         GlStateManager.disableLighting();
@@ -182,14 +136,14 @@ public class RenderItem implements IResourceManagerReloadListener
         GlStateManager.matrixMode(5890);
         GlStateManager.pushMatrix();
         GlStateManager.scale(8.0F, 8.0F, 8.0F);
-        float var2 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F / 8.0F;
+        float var2 = (float) (Minecraft.getSystemTime() % 3000L) / 3000.0F / 8.0F;
         GlStateManager.translate(var2, 0.0F, 0.0F);
         GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
         this.func_175035_a(p_180451_1_, -8372020);
         GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.scale(8.0F, 8.0F, 8.0F);
-        float var3 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F / 8.0F;
+        float var3 = (float) (Minecraft.getSystemTime() % 4873L) / 4873.0F / 8.0F;
         GlStateManager.translate(-var3, 0.0F, 0.0F);
         GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
         this.func_175035_a(p_180451_1_, -8372020);
@@ -202,36 +156,30 @@ public class RenderItem implements IResourceManagerReloadListener
         this.field_175057_n.bindTexture(TextureMap.locationBlocksTexture);
     }
 
-    private void func_175038_a(WorldRenderer p_175038_1_, BakedQuad p_175038_2_)
-    {
+    private void func_175038_a(WorldRenderer p_175038_1_, BakedQuad p_175038_2_) {
         Vec3i var3 = p_175038_2_.getFace().getDirectionVec();
-        p_175038_1_.func_178975_e((float)var3.getX(), (float)var3.getY(), (float)var3.getZ());
+        p_175038_1_.func_178975_e((float) var3.getX(), (float) var3.getY(), (float) var3.getZ());
     }
 
-    private void func_175033_a(WorldRenderer p_175033_1_, BakedQuad p_175033_2_, int p_175033_3_)
-    {
+    private void func_175033_a(WorldRenderer p_175033_1_, BakedQuad p_175033_2_, int p_175033_3_) {
         p_175033_1_.func_178981_a(p_175033_2_.func_178209_a());
         p_175033_1_.func_178968_d(p_175033_3_);
         this.func_175038_a(p_175033_1_, p_175033_2_);
     }
 
-    private void func_175032_a(WorldRenderer p_175032_1_, List p_175032_2_, int p_175032_3_, ItemStack p_175032_4_)
-    {
+    private void func_175032_a(WorldRenderer p_175032_1_, List p_175032_2_, int p_175032_3_, ItemStack p_175032_4_) {
         boolean var5 = p_175032_3_ == -1 && p_175032_4_ != null;
         BakedQuad var7;
         int var8;
 
-        for (Iterator var6 = p_175032_2_.iterator(); var6.hasNext(); this.func_175033_a(p_175032_1_, var7, var8))
-        {
-            var7 = (BakedQuad)var6.next();
+        for (Iterator var6 = p_175032_2_.iterator(); var6.hasNext(); this.func_175033_a(p_175032_1_, var7, var8)) {
+            var7 = (BakedQuad) var6.next();
             var8 = p_175032_3_;
 
-            if (var5 && var7.func_178212_b())
-            {
+            if (var5 && var7.func_178212_b()) {
                 var8 = p_175032_4_.getItem().getColorFromItemStack(p_175032_4_, var7.func_178211_c());
 
-                if (EntityRenderer.anaglyphEnable)
-                {
+                if (EntityRenderer.anaglyphEnable) {
                     var8 = TextureUtil.func_177054_c(var8);
                 }
 
@@ -240,23 +188,19 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    public boolean func_175050_a(ItemStack p_175050_1_)
-    {
+    public boolean func_175050_a(ItemStack p_175050_1_) {
         IBakedModel var2 = this.itemModelMesher.getItemModel(p_175050_1_);
         return var2 == null ? false : var2.isAmbientOcclusionEnabled();
     }
 
-    private void func_175046_c(ItemStack p_175046_1_)
-    {
+    private void func_175046_c(ItemStack p_175046_1_) {
         IBakedModel var2 = this.itemModelMesher.getItemModel(p_175046_1_);
         Item var3 = p_175046_1_.getItem();
 
-        if (var3 != null)
-        {
+        if (var3 != null) {
             boolean var4 = var2.isAmbientOcclusionEnabled();
 
-            if (!var4)
-            {
+            if (!var4) {
                 GlStateManager.scale(2.0F, 2.0F, 2.0F);
             }
 
@@ -264,46 +208,34 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    public void func_175043_b(ItemStack p_175043_1_)
-    {
+    public void func_175043_b(ItemStack p_175043_1_) {
         IBakedModel var2 = this.itemModelMesher.getItemModel(p_175043_1_);
         this.func_175040_a(p_175043_1_, var2, ItemCameraTransforms.TransformType.NONE);
     }
 
-    public void func_175049_a(ItemStack p_175049_1_, EntityLivingBase p_175049_2_, ItemCameraTransforms.TransformType p_175049_3_)
-    {
+    public void func_175049_a(ItemStack p_175049_1_, EntityLivingBase p_175049_2_, ItemCameraTransforms.TransformType p_175049_3_) {
         IBakedModel var4 = this.itemModelMesher.getItemModel(p_175049_1_);
 
-        if (p_175049_2_ instanceof EntityPlayer)
-        {
-            EntityPlayer var5 = (EntityPlayer)p_175049_2_;
+        if (p_175049_2_ instanceof EntityPlayer) {
+            EntityPlayer var5 = (EntityPlayer) p_175049_2_;
             Item var6 = p_175049_1_.getItem();
             ModelResourceLocation var7 = null;
 
-            if (var6 == Items.fishing_rod && var5.fishEntity != null)
-            {
+            if (var6 == Items.fishing_rod && var5.fishEntity != null) {
                 var7 = new ModelResourceLocation("fishing_rod_cast", "inventory");
-            }
-            else if (var6 == Items.bow && var5.getItemInUse() != null)
-            {
+            } else if (var6 == Items.bow && var5.getItemInUse() != null) {
                 int var8 = p_175049_1_.getMaxItemUseDuration() - var5.getItemInUseCount();
 
-                if (var8 >= 18)
-                {
+                if (var8 >= 18) {
                     var7 = new ModelResourceLocation("bow_pulling_2", "inventory");
-                }
-                else if (var8 > 13)
-                {
+                } else if (var8 > 13) {
                     var7 = new ModelResourceLocation("bow_pulling_1", "inventory");
-                }
-                else if (var8 > 0)
-                {
+                } else if (var8 > 0) {
                     var7 = new ModelResourceLocation("bow_pulling_0", "inventory");
                 }
             }
 
-            if (var7 != null)
-            {
+            if (var7 != null) {
                 var4 = this.itemModelMesher.getModelManager().getModel(var7);
             }
         }
@@ -311,10 +243,8 @@ public class RenderItem implements IResourceManagerReloadListener
         this.func_175040_a(p_175049_1_, var4, p_175049_3_);
     }
 
-    protected void func_175034_a(ItemTransformVec3f p_175034_1_)
-    {
-        if (p_175034_1_ != ItemTransformVec3f.field_178366_a)
-        {
+    protected void func_175034_a(ItemTransformVec3f p_175034_1_) {
+        if (p_175034_1_ != ItemTransformVec3f.field_178366_a) {
             GlStateManager.translate(p_175034_1_.field_178365_c.x + field_175055_b, p_175034_1_.field_178365_c.y + field_175056_c, p_175034_1_.field_178365_c.z + field_175053_d);
             GlStateManager.rotate(p_175034_1_.field_178364_b.y + field_175051_f, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(p_175034_1_.field_178364_b.x + field_175054_e, 1.0F, 0.0F, 0.0F);
@@ -323,8 +253,7 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    protected void func_175040_a(ItemStack p_175040_1_, IBakedModel p_175040_2_, ItemCameraTransforms.TransformType p_175040_3_)
-    {
+    protected void func_175040_a(ItemStack p_175040_1_, IBakedModel p_175040_2_, ItemCameraTransforms.TransformType p_175040_3_) {
         this.field_175057_n.bindTexture(TextureMap.locationBlocksTexture);
         this.field_175057_n.getTexture(TextureMap.locationBlocksTexture).func_174936_b(false, false);
         this.func_175046_c(p_175040_1_);
@@ -334,8 +263,7 @@ public class RenderItem implements IResourceManagerReloadListener
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.pushMatrix();
 
-        switch (RenderItem.SwitchTransformType.field_178640_a[p_175040_3_.ordinal()])
-        {
+        switch (RenderItem.SwitchTransformType.field_178640_a[p_175040_3_.ordinal()]) {
             case 1:
             default:
                 break;
@@ -364,8 +292,7 @@ public class RenderItem implements IResourceManagerReloadListener
         this.field_175057_n.getTexture(TextureMap.locationBlocksTexture).func_174935_a();
     }
 
-    public void remderItemIntoGUI(ItemStack p_175042_1_, int p_175042_2_, int p_175042_3_)
-    {
+    public void remderItemIntoGUI(ItemStack p_175042_1_, int p_175042_2_, int p_175042_3_) {
         IBakedModel var4 = this.itemModelMesher.getItemModel(p_175042_1_);
         GlStateManager.pushMatrix();
         this.field_175057_n.bindTexture(TextureMap.locationBlocksTexture);
@@ -387,71 +314,58 @@ public class RenderItem implements IResourceManagerReloadListener
         this.field_175057_n.getTexture(TextureMap.locationBlocksTexture).func_174935_a();
     }
 
-    private void func_180452_a(int p_180452_1_, int p_180452_2_, boolean p_180452_3_)
-    {
-        GlStateManager.translate((float)p_180452_1_, (float)p_180452_2_, 100.0F + this.zLevel);
+    private void func_180452_a(int p_180452_1_, int p_180452_2_, boolean p_180452_3_) {
+        GlStateManager.translate((float) p_180452_1_, (float) p_180452_2_, 100.0F + this.zLevel);
         GlStateManager.translate(8.0F, 8.0F, 0.0F);
         GlStateManager.scale(1.0F, 1.0F, -1.0F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
 
-        if (p_180452_3_)
-        {
+        if (p_180452_3_) {
             GlStateManager.scale(40.0F, 40.0F, 40.0F);
             GlStateManager.rotate(210.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.enableLighting();
-        }
-        else
-        {
+        } else {
             GlStateManager.scale(64.0F, 64.0F, 64.0F);
             GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.disableLighting();
         }
     }
 
-    public void func_180450_b(final ItemStack p_180450_1_, int p_180450_2_, int p_180450_3_)
-    {
-        if (p_180450_1_ != null)
-        {
+    public void func_180450_b(final ItemStack p_180450_1_, int p_180450_2_, int p_180450_3_) {
+        if (p_180450_1_ != null) {
             this.zLevel += 50.0F;
 
-            try
-            {
+            try {
                 this.remderItemIntoGUI(p_180450_1_, p_180450_2_, p_180450_3_);
-            }
-            catch (Throwable var7)
-            {
+            } catch (Throwable var7) {
                 CrashReport var5 = CrashReport.makeCrashReport(var7, "Rendering item");
                 CrashReportCategory var6 = var5.makeCategory("Item being rendered");
-                var6.addCrashSectionCallable("Item Type", new Callable()
-                {
+                var6.addCrashSectionCallable("Item Type", new Callable() {
                     private static final String __OBFID = "CL_00001004";
-                    public String call()
-                    {
+
+                    public String call() {
                         return String.valueOf(p_180450_1_.getItem());
                     }
                 });
-                var6.addCrashSectionCallable("Item Aux", new Callable()
-                {
+                var6.addCrashSectionCallable("Item Aux", new Callable() {
                     private static final String __OBFID = "CL_00001005";
-                    public String call()
-                    {
+
+                    public String call() {
                         return String.valueOf(p_180450_1_.getMetadata());
                     }
                 });
-                var6.addCrashSectionCallable("Item NBT", new Callable()
-                {
+                var6.addCrashSectionCallable("Item NBT", new Callable() {
                     private static final String __OBFID = "CL_00001006";
-                    public String call()
-                    {
+
+                    public String call() {
                         return String.valueOf(p_180450_1_.getTagCompound());
                     }
                 });
-                var6.addCrashSectionCallable("Item Foil", new Callable()
-                {
+                var6.addCrashSectionCallable("Item Foil", new Callable() {
                     private static final String __OBFID = "CL_00001007";
-                    public String call()
-                    {
+
+                    public String call() {
                         return String.valueOf(p_180450_1_.hasEffect());
                     }
                 });
@@ -462,36 +376,30 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    public void renderItemOverlays(FontRenderer p_175030_1_, ItemStack p_175030_2_, int p_175030_3_, int p_175030_4_)
-    {
-        this.renderItemOverlayIntoGUI(p_175030_1_, p_175030_2_, p_175030_3_, p_175030_4_, (String)null);
+    public void renderItemOverlays(FontRenderer p_175030_1_, ItemStack p_175030_2_, int p_175030_3_, int p_175030_4_) {
+        this.renderItemOverlayIntoGUI(p_175030_1_, p_175030_2_, p_175030_3_, p_175030_4_, (String) null);
     }
 
-    public void renderItemOverlayIntoGUI(FontRenderer p_180453_1_, ItemStack p_180453_2_, int p_180453_3_, int p_180453_4_, String p_180453_5_)
-    {
-        if (p_180453_2_ != null)
-        {
-            if (p_180453_2_.stackSize != 1 || p_180453_5_ != null)
-            {
+    public void renderItemOverlayIntoGUI(FontRenderer p_180453_1_, ItemStack p_180453_2_, int p_180453_3_, int p_180453_4_, String p_180453_5_) {
+        if (p_180453_2_ != null) {
+            if (p_180453_2_.stackSize != 1 || p_180453_5_ != null) {
                 String var6 = p_180453_5_ == null ? String.valueOf(p_180453_2_.stackSize) : p_180453_5_;
 
-                if (p_180453_5_ == null && p_180453_2_.stackSize < 1)
-                {
+                if (p_180453_5_ == null && p_180453_2_.stackSize < 1) {
                     var6 = EnumChatFormatting.RED + String.valueOf(p_180453_2_.stackSize);
                 }
 
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableBlend();
-                p_180453_1_.drawStringWithShadow(var6, (float)(p_180453_3_ + 19 - 2 - p_180453_1_.getStringWidth(var6)), (float)(p_180453_4_ + 6 + 3), 16777215);
+                p_180453_1_.drawStringWithShadow(var6, (float) (p_180453_3_ + 19 - 2 - p_180453_1_.getStringWidth(var6)), (float) (p_180453_4_ + 6 + 3), 16777215);
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();
             }
 
-            if (p_180453_2_.isItemDamaged())
-            {
-                int var12 = (int)Math.round(13.0D - (double)p_180453_2_.getItemDamage() * 13.0D / (double)p_180453_2_.getMaxDamage());
-                int var7 = (int)Math.round(255.0D - (double)p_180453_2_.getItemDamage() * 255.0D / (double)p_180453_2_.getMaxDamage());
+            if (p_180453_2_.isItemDamaged()) {
+                int var12 = (int) Math.round(13.0D - (double) p_180453_2_.getItemDamage() * 13.0D / (double) p_180453_2_.getMaxDamage());
+                int var7 = (int) Math.round(255.0D - (double) p_180453_2_.getItemDamage() * 255.0D / (double) p_180453_2_.getMaxDamage());
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
                 GlStateManager.disableTextures();
@@ -513,19 +421,17 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    private void func_175044_a(WorldRenderer p_175044_1_, int p_175044_2_, int p_175044_3_, int p_175044_4_, int p_175044_5_, int p_175044_6_)
-    {
+    private void func_175044_a(WorldRenderer p_175044_1_, int p_175044_2_, int p_175044_3_, int p_175044_4_, int p_175044_5_, int p_175044_6_) {
         p_175044_1_.startDrawingQuads();
         p_175044_1_.func_178991_c(p_175044_6_);
-        p_175044_1_.addVertex((double)(p_175044_2_ + 0), (double)(p_175044_3_ + 0), 0.0D);
-        p_175044_1_.addVertex((double)(p_175044_2_ + 0), (double)(p_175044_3_ + p_175044_5_), 0.0D);
-        p_175044_1_.addVertex((double)(p_175044_2_ + p_175044_4_), (double)(p_175044_3_ + p_175044_5_), 0.0D);
-        p_175044_1_.addVertex((double)(p_175044_2_ + p_175044_4_), (double)(p_175044_3_ + 0), 0.0D);
+        p_175044_1_.addVertex((double) (p_175044_2_ + 0), (double) (p_175044_3_ + 0), 0.0D);
+        p_175044_1_.addVertex((double) (p_175044_2_ + 0), (double) (p_175044_3_ + p_175044_5_), 0.0D);
+        p_175044_1_.addVertex((double) (p_175044_2_ + p_175044_4_), (double) (p_175044_3_ + p_175044_5_), 0.0D);
+        p_175044_1_.addVertex((double) (p_175044_2_ + p_175044_4_), (double) (p_175044_3_ + 0), 0.0D);
         Tessellator.getInstance().draw();
     }
 
-    private void registerItems()
-    {
+    private void registerItems() {
         this.registerBlock(Blocks.anvil, "anvil_intact");
         this.registerBlock(Blocks.anvil, 1, "anvil_slightly_damaged");
         this.registerBlock(Blocks.anvil, 2, "anvil_very_damaged");
@@ -971,11 +877,10 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.ghast_tear, "ghast_tear");
         this.registerItem(Items.gold_nugget, "gold_nugget");
         this.registerItem(Items.nether_wart, "nether_wart");
-        this.itemModelMesher.register(Items.potionitem, new ItemMeshDefinition()
-        {
+        this.itemModelMesher.register(Items.potionitem, new ItemMeshDefinition() {
             private static final String __OBFID = "CL_00002440";
-            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_)
-            {
+
+            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_) {
                 return ItemPotion.isSplash(p_178113_1_.getMetadata()) ? new ModelResourceLocation("bottle_splash", "inventory") : new ModelResourceLocation("bottle_drinkable", "inventory");
             }
         });
@@ -988,11 +893,10 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.cauldron, "cauldron");
         this.registerItem(Items.ender_eye, "ender_eye");
         this.registerItem(Items.speckled_melon, "speckled_melon");
-        this.itemModelMesher.register(Items.spawn_egg, new ItemMeshDefinition()
-        {
+        this.itemModelMesher.register(Items.spawn_egg, new ItemMeshDefinition() {
             private static final String __OBFID = "CL_00002439";
-            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_)
-            {
+
+            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_) {
                 return new ModelResourceLocation("spawn_egg", "inventory");
             }
         });
@@ -1028,11 +932,10 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.diamond_horse_armor, "diamond_horse_armor");
         this.registerItem(Items.lead, "lead");
         this.registerItem(Items.name_tag, "name_tag");
-        this.itemModelMesher.register(Items.banner, new ItemMeshDefinition()
-        {
+        this.itemModelMesher.register(Items.banner, new ItemMeshDefinition() {
             private static final String __OBFID = "CL_00002438";
-            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_)
-            {
+
+            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_) {
                 return new ModelResourceLocation("banner", "inventory");
             }
         });
@@ -1050,19 +953,17 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerItem(Items.record_wait, "record_wait");
         this.registerItem(Items.prismarine_shard, "prismarine_shard");
         this.registerItem(Items.prismarine_crystals, "prismarine_crystals");
-        this.itemModelMesher.register(Items.enchanted_book, new ItemMeshDefinition()
-        {
+        this.itemModelMesher.register(Items.enchanted_book, new ItemMeshDefinition() {
             private static final String __OBFID = "CL_00002437";
-            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_)
-            {
+
+            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_) {
                 return new ModelResourceLocation("enchanted_book", "inventory");
             }
         });
-        this.itemModelMesher.register(Items.filled_map, new ItemMeshDefinition()
-        {
+        this.itemModelMesher.register(Items.filled_map, new ItemMeshDefinition() {
             private static final String __OBFID = "CL_00002436";
-            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_)
-            {
+
+            public ModelResourceLocation getModelLocation(ItemStack p_178113_1_) {
                 return new ModelResourceLocation("filled_map", "inventory");
             }
         });
@@ -1077,60 +978,42 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.dragon_egg, "dragon_egg");
     }
 
-    public void onResourceManagerReload(IResourceManager p_110549_1_)
-    {
+    public void onResourceManagerReload(IResourceManager p_110549_1_) {
         this.itemModelMesher.rebuildCache();
     }
 
-    static final class SwitchTransformType
-    {
+    static final class SwitchTransformType {
         static final int[] field_178640_a = new int[ItemCameraTransforms.TransformType.values().length];
         private static final String __OBFID = "CL_00002441";
 
-        static
-        {
-            try
-            {
+        static {
+            try {
                 field_178640_a[ItemCameraTransforms.TransformType.NONE.ordinal()] = 1;
-            }
-            catch (NoSuchFieldError var5)
-            {
+            } catch (NoSuchFieldError var5) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_178640_a[ItemCameraTransforms.TransformType.THIRD_PERSON.ordinal()] = 2;
-            }
-            catch (NoSuchFieldError var4)
-            {
+            } catch (NoSuchFieldError var4) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_178640_a[ItemCameraTransforms.TransformType.FIRST_PERSON.ordinal()] = 3;
-            }
-            catch (NoSuchFieldError var3)
-            {
+            } catch (NoSuchFieldError var3) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_178640_a[ItemCameraTransforms.TransformType.HEAD.ordinal()] = 4;
-            }
-            catch (NoSuchFieldError var2)
-            {
+            } catch (NoSuchFieldError var2) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_178640_a[ItemCameraTransforms.TransformType.GUI.ordinal()] = 5;
-            }
-            catch (NoSuchFieldError var1)
-            {
+            } catch (NoSuchFieldError var1) {
                 ;
             }
         }

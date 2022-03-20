@@ -30,9 +30,10 @@ public class Radar extends Module {
     private static final String SCALE = "SCALE";
     private static final String X = "X";
     private static final String Y = "Y";
+    float hue;
     private String SIZE = "SIZE";
     private Timer timer = new Timer();
-
+    private boolean dragging;
     public Radar(ModuleData data) {
         super(data);
         settings.put(SCALE, new Setting<>(SCALE, 2.0, "Scales the radar.", 0.1, 0.25, 5));
@@ -40,9 +41,6 @@ public class Radar extends Module {
         settings.put(Y, new Setting<>(Y, 2, "Y position for radar.", 5, 1, 1080));
         settings.put(SIZE, new Setting<>(SIZE, 125, "Size of the radar.", 5, 50, 500));
     }
-
-    private boolean dragging;
-    float hue;
 
     @Override
     @RegisterEvent(events = {EventRenderGui.class, EventTick.class})
@@ -58,15 +56,15 @@ public class Radar extends Module {
 
             /*
              * Horizontal line of the cross
-			 */
+             */
             GlStateManager.pushMatrix();
             GlStateManager.translate(xOffset + size / 2, yOffset + size / 2, 0);
             GlStateManager.rotate(-mc.thePlayer.rotationYaw, 0, 0, 1);
             RenderingUtil.rectangle((-0.5), -size / 2 + 4, (0.5), size / 2 - 4, Colors.getColor(255, 80));
 
-			/*
+            /*
              * Vertical line of the cross
-			 */
+             */
 
             RenderingUtil.rectangle(-size / 2 + 4, (-0.5), size / 2 - 4, (+0.5),
                     Colors.getColor(255, 80));
@@ -107,10 +105,10 @@ public class Radar extends Module {
                 dragging = false;
             }
 
-			/*
+            /*
              * The offsets are used here for the first rectangle. + 100 is the
-			 * current size to extend the Y and Z
-			 */
+             * current size to extend the Y and Z
+             */
 
             /*RenderingUtil.rectangleBordered(xOffset, yOffset, xOffset + size, yOffset + size, 0.5, Colors.getColor(90), Colors.getColor(0));
             RenderingUtil.rectangleBordered(xOffset + 1, yOffset + 1, xOffset + size - 1, yOffset + size - 1, 1, Colors.getColor(90), Colors.getColor(61));
@@ -122,26 +120,26 @@ public class Radar extends Module {
 
 
 
-			/*
-			 * For every entity (Player or valid entity)
-			 */
+            /*
+             * For every entity (Player or valid entity)
+             */
 
             for (Object o : mc.theWorld.getLoadedEntityList()) {
                 if (o instanceof EntityPlayer) {
                     EntityPlayer ent = (EntityPlayer) o;
                     if (ent.isEntityAlive() && ent != mc.thePlayer && !(ent.isInvisible() || ent.isInvisibleToPlayer(mc.thePlayer))) {
-						/*
-						 * (targetPlayer posX - localPlayer posX) * Distance
-						 * Scale
-						 */
+                        /*
+                         * (targetPlayer posX - localPlayer posX) * Distance
+                         * Scale
+                         */
 
                         float pTicks = mc.timer.renderPartialTicks;
                         float posX = (float) (((ent.posX + (ent.posX - ent.lastTickPosX) * pTicks) -
                                 playerOffsetX) * ((Number) settings.get(SCALE).getValue()).doubleValue());
-						/*
-						 * (targetPlayer posZ - localPlayer posZ) * Distance
-						 * Scale
-						 */
+                        /*
+                         * (targetPlayer posZ - localPlayer posZ) * Distance
+                         * Scale
+                         */
                         float posZ = (float) (((ent.posZ + (ent.posZ - ent.lastTickPosZ) * pTicks) -
                                 playerOffSetZ) * ((Number) settings.get(SCALE).getValue()).doubleValue());
                         int color;
@@ -154,10 +152,10 @@ public class Radar extends Module {
                                     : Colors.getColor(255, 255, 0);
                         }
 
-						/*
-						 * Fuck Ms. Goble's geometry class.
-						 * Rotate the circle based off of the player yaw with some gay trig.
-						 */
+                        /*
+                         * Fuck Ms. Goble's geometry class.
+                         * Rotate the circle based off of the player yaw with some gay trig.
+                         */
 
                         float cos = (float) Math.cos(mc.thePlayer.rotationYaw * (Math.PI * 2 / 360));
                         float sin = (float) Math.sin(mc.thePlayer.rotationYaw * (Math.PI * 2 / 360));
@@ -183,10 +181,10 @@ public class Radar extends Module {
                                     yOffset + (size / 2) + rotY + 1.5, 0.5, color, Colors.getColor(46));
                         }
 
-						/*
-						 * Clamps to the edge of the radar, have it less than
-						 * the radar if you don't want squares to come out.
-						 */
+                        /*
+                         * Clamps to the edge of the radar, have it less than
+                         * the radar if you don't want squares to come out.
+                         */
 
 
                     }
@@ -195,22 +193,22 @@ public class Radar extends Module {
             if (mc.getCurrentServerData() != null)
                 for (Waypoint waypoint : WaypointManager.getManager().getWaypoints()) {
                     if (Objects.equals(waypoint.getAddress(), mc.getCurrentServerData().serverIP)) {
-						/*
-						 * (targetPlayer posX - localPlayer posX) * Distance
-						 * Scale
-						 */
+                        /*
+                         * (targetPlayer posX - localPlayer posX) * Distance
+                         * Scale
+                         */
 
                         float posX = (float) (waypoint.getVec3().xCoord - playerOffsetX * ((Number) settings.get(SCALE).getValue()).doubleValue());
-						/*
-						 * (targetPlayer posZ - localPlayer posZ) * Distance
-						 * Scale
-						 */
+                        /*
+                         * (targetPlayer posZ - localPlayer posZ) * Distance
+                         * Scale
+                         */
                         float posZ = (float) ((float) waypoint.getVec3().zCoord - playerOffSetZ * ((Number) settings.get(SCALE).getValue()).doubleValue());
 
-						/*
-						 * Fuck Ms. Goble's geometry class.
-						 * Rotate the circle based off of the player yaw with some gay trig.
-						 */
+                        /*
+                         * Fuck Ms. Goble's geometry class.
+                         * Rotate the circle based off of the player yaw with some gay trig.
+                         */
 
                         float cos = (float) Math.cos(mc.thePlayer.rotationYaw * (Math.PI * 2 / 360));
                         float sin = (float) Math.sin(mc.thePlayer.rotationYaw * (Math.PI * 2 / 360));
@@ -244,9 +242,9 @@ public class Radar extends Module {
                     }
                 }
             /*
-			 * LocalPlayer square, doesn't need any pointers just rendered on
-			 * the radar.
-			 */
+             * LocalPlayer square, doesn't need any pointers just rendered on
+             * the radar.
+             */
 
 
         }

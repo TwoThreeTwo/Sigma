@@ -1,11 +1,11 @@
 package info.sigmaclient.module.impl.render;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.event.impl.EventRenderGui;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
 
 /**
  * Created by cool1 on 2/4/2017.
@@ -19,8 +19,8 @@ public class ESP extends Module {
     @Override
     @RegisterEvent(events = {EventRenderGui.class, EventUpdate.class})
     public void onEvent(Event event) {
-        if(event instanceof EventRenderGui) {
-            EventRenderGui er = (EventRenderGui)event;
+        if (event instanceof EventRenderGui) {
+            EventRenderGui er = (EventRenderGui) event;
 /*
             Vec3 Position = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
             Vec3 Transform = new Vec3(0,0,0);

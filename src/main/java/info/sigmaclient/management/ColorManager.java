@@ -8,27 +8,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ColorManager {
 
+    public static ColorObject hudColor = new ColorObject(0, 192, 255, 255);
+    public static ColorObject ch = new ColorObject(255, 0, 0, 255);
+    private static List<ColorObject> colorObjectList = new CopyOnWriteArrayList<>();
+
+    public ColorManager() {
+        colorObjectList.add(hudColor);
+        colorObjectList.add(ch);
+    }
+
     public static List<ColorObject> getColorObjectList() {
         return colorObjectList;
     }
-
-    private static List<ColorObject> colorObjectList = new CopyOnWriteArrayList<>();
 
     public ColorObject getHudColor() {
         return hudColor;
     }
 
-    public static ColorObject hudColor = new ColorObject(0,192,255,255);
-
     public ColorObject getXhairColor() {
         return ch;
-    }
-
-    public static ColorObject ch = new ColorObject(255,0,0,255);
-
-    public ColorManager() {
-        colorObjectList.add(hudColor);
-        colorObjectList.add(ch);
     }
 
 }

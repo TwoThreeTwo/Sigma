@@ -12,17 +12,7 @@ public class FontManager {
     private ResourceLocation darrow = new ResourceLocation("SF-UI-Display-Regular.otf");
 
     private TTFFontRenderer defaultFont;
-
-    public FontManager getInstance() {
-        return instance;
-    }
-
-    public TTFFontRenderer getFont(String key) {
-        return fonts.getOrDefault(key, defaultFont);
-    }
-
     private FontManager instance;
-
     private HashMap<String, TTFFontRenderer> fonts = new HashMap<>();
 
     public FontManager() {
@@ -58,5 +48,13 @@ public class FontManager {
         } catch (Exception ignored) {
 
         }
+    }
+
+    public FontManager getInstance() {
+        return instance;
+    }
+
+    public TTFFontRenderer getFont(String key) {
+        return fonts.getOrDefault(key, defaultFont);
     }
 }

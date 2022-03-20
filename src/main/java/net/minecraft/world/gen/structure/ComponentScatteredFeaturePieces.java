@@ -1,17 +1,7 @@
 package net.minecraft.world.gen.structure;
 
 import com.google.common.collect.Lists;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.BlockFlowerPot;
-import net.minecraft.block.BlockLever;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.BlockStoneSlab;
-import net.minecraft.block.BlockTripWire;
-import net.minecraft.block.BlockTripWireHook;
+import net.minecraft.block.*;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.Blocks;
@@ -23,32 +13,32 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
-public class ComponentScatteredFeaturePieces
-{
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+public class ComponentScatteredFeaturePieces {
     private static final String __OBFID = "CL_00000473";
 
-    public static void registerScatteredFeaturePieces()
-    {
+    public static void registerScatteredFeaturePieces() {
         MapGenStructureIO.registerStructureComponent(ComponentScatteredFeaturePieces.DesertPyramid.class, "TeDP");
         MapGenStructureIO.registerStructureComponent(ComponentScatteredFeaturePieces.JunglePyramid.class, "TeJP");
         MapGenStructureIO.registerStructureComponent(ComponentScatteredFeaturePieces.SwampHut.class, "TeSH");
     }
 
-    public static class DesertPyramid extends ComponentScatteredFeaturePieces.Feature
-    {
-        private boolean[] field_74940_h = new boolean[4];
-        private static final List itemsToGenerateInTemple = Lists.newArrayList(new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 3), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_ingot, 0, 2, 7, 15), new WeightedRandomChestContent(Items.emerald, 0, 1, 3, 2), new WeightedRandomChestContent(Items.bone, 0, 4, 6, 20), new WeightedRandomChestContent(Items.rotten_flesh, 0, 3, 7, 16), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 3), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 1)});
+    public static class DesertPyramid extends ComponentScatteredFeaturePieces.Feature {
+        private static final List itemsToGenerateInTemple = Lists.newArrayList(new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 3), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_ingot, 0, 2, 7, 15), new WeightedRandomChestContent(Items.emerald, 0, 1, 3, 2), new WeightedRandomChestContent(Items.bone, 0, 4, 6, 20), new WeightedRandomChestContent(Items.rotten_flesh, 0, 3, 7, 16), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 3), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 1)});
         private static final String __OBFID = "CL_00000476";
+        private boolean[] field_74940_h = new boolean[4];
 
-        public DesertPyramid() {}
+        public DesertPyramid() {
+        }
 
-        public DesertPyramid(Random p_i2062_1_, int p_i2062_2_, int p_i2062_3_)
-        {
+        public DesertPyramid(Random p_i2062_1_, int p_i2062_2_, int p_i2062_3_) {
             super(p_i2062_1_, p_i2062_2_, 64, p_i2062_3_, 21, 15, 21);
         }
 
-        protected void writeStructureToNBT(NBTTagCompound p_143012_1_)
-        {
+        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {
             super.writeStructureToNBT(p_143012_1_);
             p_143012_1_.setBoolean("hasPlacedChest0", this.field_74940_h[0]);
             p_143012_1_.setBoolean("hasPlacedChest1", this.field_74940_h[1]);
@@ -56,8 +46,7 @@ public class ComponentScatteredFeaturePieces
             p_143012_1_.setBoolean("hasPlacedChest3", this.field_74940_h[3]);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound p_143011_1_)
-        {
+        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {
             super.readStructureFromNBT(p_143011_1_);
             this.field_74940_h[0] = p_143011_1_.getBoolean("hasPlacedChest0");
             this.field_74940_h[1] = p_143011_1_.getBoolean("hasPlacedChest1");
@@ -65,23 +54,19 @@ public class ComponentScatteredFeaturePieces
             this.field_74940_h[3] = p_143011_1_.getBoolean("hasPlacedChest3");
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
             this.func_175804_a(worldIn, p_74875_3_, 0, -4, 0, this.scatteredFeatureSizeX - 1, 0, this.scatteredFeatureSizeZ - 1, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
             int var4;
 
-            for (var4 = 1; var4 <= 9; ++var4)
-            {
+            for (var4 = 1; var4 <= 9; ++var4) {
                 this.func_175804_a(worldIn, p_74875_3_, var4, var4, var4, this.scatteredFeatureSizeX - 1 - var4, var4, this.scatteredFeatureSizeZ - 1 - var4, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
                 this.func_175804_a(worldIn, p_74875_3_, var4 + 1, var4, var4 + 1, this.scatteredFeatureSizeX - 2 - var4, var4, this.scatteredFeatureSizeZ - 2 - var4, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
             }
 
             int var5;
 
-            for (var4 = 0; var4 < this.scatteredFeatureSizeX; ++var4)
-            {
-                for (var5 = 0; var5 < this.scatteredFeatureSizeZ; ++var5)
-                {
+            for (var4 = 0; var4 < this.scatteredFeatureSizeX; ++var4) {
+                for (var5 = 0; var5 < this.scatteredFeatureSizeZ; ++var5) {
                     byte var6 = -5;
                     this.func_175808_b(worldIn, Blocks.sandstone.getDefaultState(), var4, var6, var5, p_74875_3_);
                 }
@@ -156,8 +141,7 @@ public class ComponentScatteredFeaturePieces
             this.func_175804_a(worldIn, p_74875_3_, this.scatteredFeatureSizeX - 6, 1, 5, this.scatteredFeatureSizeX - 5, 2, 16, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
             int var10;
 
-            for (var10 = 5; var10 <= 17; var10 += 2)
-            {
+            for (var10 = 5; var10 <= 17; var10 += 2) {
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), 4, 1, var10, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.CHISELED.func_176675_a()), 4, 2, var10, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), this.scatteredFeatureSizeX - 5, 1, var10, p_74875_3_);
@@ -178,8 +162,7 @@ public class ComponentScatteredFeaturePieces
             this.func_175811_a(worldIn, Blocks.stained_hardened_clay.getStateFromMeta(var8), 10, 0, 13, p_74875_3_);
             this.func_175811_a(worldIn, Blocks.stained_hardened_clay.getStateFromMeta(var9), 10, 0, 10, p_74875_3_);
 
-            for (var10 = 0; var10 <= this.scatteredFeatureSizeX - 1; var10 += this.scatteredFeatureSizeX - 1)
-            {
+            for (var10 = 0; var10 <= this.scatteredFeatureSizeX - 1; var10 += this.scatteredFeatureSizeX - 1) {
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), var10, 2, 1, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.stained_hardened_clay.getStateFromMeta(var8), var10, 2, 2, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), var10, 2, 3, p_74875_3_);
@@ -203,8 +186,7 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), var10, 8, 3, p_74875_3_);
             }
 
-            for (var10 = 2; var10 <= this.scatteredFeatureSizeX - 3; var10 += this.scatteredFeatureSizeX - 3 - 2)
-            {
+            for (var10 = 2; var10 <= this.scatteredFeatureSizeX - 3; var10 += this.scatteredFeatureSizeX - 3 - 2) {
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), var10 - 1, 2, 0, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.stained_hardened_clay.getStateFromMeta(var8), var10, 2, 0, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), var10 + 1, 2, 0, p_74875_3_);
@@ -259,15 +241,13 @@ public class ComponentScatteredFeaturePieces
             this.func_175811_a(worldIn, Blocks.sandstone.getStateFromMeta(BlockSandStone.EnumType.SMOOTH.func_176675_a()), 10, -11, 13, p_74875_3_);
             Iterator var15 = EnumFacing.Plane.HORIZONTAL.iterator();
 
-            while (var15.hasNext())
-            {
-                EnumFacing var11 = (EnumFacing)var15.next();
+            while (var15.hasNext()) {
+                EnumFacing var11 = (EnumFacing) var15.next();
 
-                if (!this.field_74940_h[var11.getHorizontalIndex()])
-                {
+                if (!this.field_74940_h[var11.getHorizontalIndex()]) {
                     int var12 = var11.getFrontOffsetX() * 2;
                     int var13 = var11.getFrontOffsetZ() * 2;
-                    this.field_74940_h[var11.getHorizontalIndex()] = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 10 + var12, -11, 10 + var13, WeightedRandomChestContent.func_177629_a(itemsToGenerateInTemple, new WeightedRandomChestContent[] {Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
+                    this.field_74940_h[var11.getHorizontalIndex()] = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 10 + var12, -11, 10 + var13, WeightedRandomChestContent.func_177629_a(itemsToGenerateInTemple, new WeightedRandomChestContent[]{Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
                 }
             }
 
@@ -275,26 +255,24 @@ public class ComponentScatteredFeaturePieces
         }
     }
 
-    abstract static class Feature extends StructureComponent
-    {
+    abstract static class Feature extends StructureComponent {
+        private static final String __OBFID = "CL_00000479";
         protected int scatteredFeatureSizeX;
         protected int scatteredFeatureSizeY;
         protected int scatteredFeatureSizeZ;
         protected int field_74936_d = -1;
-        private static final String __OBFID = "CL_00000479";
 
-        public Feature() {}
+        public Feature() {
+        }
 
-        protected Feature(Random p_i2065_1_, int p_i2065_2_, int p_i2065_3_, int p_i2065_4_, int p_i2065_5_, int p_i2065_6_, int p_i2065_7_)
-        {
+        protected Feature(Random p_i2065_1_, int p_i2065_2_, int p_i2065_3_, int p_i2065_4_, int p_i2065_5_, int p_i2065_6_, int p_i2065_7_) {
             super(0);
             this.scatteredFeatureSizeX = p_i2065_5_;
             this.scatteredFeatureSizeY = p_i2065_6_;
             this.scatteredFeatureSizeZ = p_i2065_7_;
             this.coordBaseMode = EnumFacing.Plane.HORIZONTAL.random(p_i2065_1_);
 
-            switch (ComponentScatteredFeaturePieces.SwitchEnumFacing.field_175956_a[this.coordBaseMode.ordinal()])
-            {
+            switch (ComponentScatteredFeaturePieces.SwitchEnumFacing.field_175956_a[this.coordBaseMode.ordinal()]) {
                 case 1:
                 case 2:
                     this.boundingBox = new StructureBoundingBox(p_i2065_2_, p_i2065_3_, p_i2065_4_, p_i2065_2_ + p_i2065_5_ - 1, p_i2065_3_ + p_i2065_6_ - 1, p_i2065_4_ + p_i2065_7_ - 1);
@@ -305,53 +283,41 @@ public class ComponentScatteredFeaturePieces
             }
         }
 
-        protected void writeStructureToNBT(NBTTagCompound p_143012_1_)
-        {
+        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {
             p_143012_1_.setInteger("Width", this.scatteredFeatureSizeX);
             p_143012_1_.setInteger("Height", this.scatteredFeatureSizeY);
             p_143012_1_.setInteger("Depth", this.scatteredFeatureSizeZ);
             p_143012_1_.setInteger("HPos", this.field_74936_d);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound p_143011_1_)
-        {
+        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {
             this.scatteredFeatureSizeX = p_143011_1_.getInteger("Width");
             this.scatteredFeatureSizeY = p_143011_1_.getInteger("Height");
             this.scatteredFeatureSizeZ = p_143011_1_.getInteger("Depth");
             this.field_74936_d = p_143011_1_.getInteger("HPos");
         }
 
-        protected boolean func_74935_a(World worldIn, StructureBoundingBox p_74935_2_, int p_74935_3_)
-        {
-            if (this.field_74936_d >= 0)
-            {
+        protected boolean func_74935_a(World worldIn, StructureBoundingBox p_74935_2_, int p_74935_3_) {
+            if (this.field_74936_d >= 0) {
                 return true;
-            }
-            else
-            {
+            } else {
                 int var4 = 0;
                 int var5 = 0;
 
-                for (int var6 = this.boundingBox.minZ; var6 <= this.boundingBox.maxZ; ++var6)
-                {
-                    for (int var7 = this.boundingBox.minX; var7 <= this.boundingBox.maxX; ++var7)
-                    {
+                for (int var6 = this.boundingBox.minZ; var6 <= this.boundingBox.maxZ; ++var6) {
+                    for (int var7 = this.boundingBox.minX; var7 <= this.boundingBox.maxX; ++var7) {
                         BlockPos var8 = new BlockPos(var7, 64, var6);
 
-                        if (p_74935_2_.func_175898_b(var8))
-                        {
+                        if (p_74935_2_.func_175898_b(var8)) {
                             var4 += Math.max(worldIn.func_175672_r(var8).getY(), worldIn.provider.getAverageGroundLevel());
                             ++var5;
                         }
                     }
                 }
 
-                if (var5 == 0)
-                {
+                if (var5 == 0) {
                     return false;
-                }
-                else
-                {
+                } else {
                     this.field_74936_d = var4 / var5;
                     this.boundingBox.offset(0, this.field_74936_d - this.boundingBox.minY + p_74935_3_, 0);
                     return true;
@@ -360,26 +326,24 @@ public class ComponentScatteredFeaturePieces
         }
     }
 
-    public static class JunglePyramid extends ComponentScatteredFeaturePieces.Feature
-    {
+    public static class JunglePyramid extends ComponentScatteredFeaturePieces.Feature {
+        private static final List field_175816_i = Lists.newArrayList(new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 3), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_ingot, 0, 2, 7, 15), new WeightedRandomChestContent(Items.emerald, 0, 1, 3, 2), new WeightedRandomChestContent(Items.bone, 0, 4, 6, 20), new WeightedRandomChestContent(Items.rotten_flesh, 0, 3, 7, 16), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 3), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 1)});
+        private static final List field_175815_j = Lists.newArrayList(new WeightedRandomChestContent[]{new WeightedRandomChestContent(Items.arrow, 0, 2, 7, 30)});
+        private static final String __OBFID = "CL_00000477";
+        private static ComponentScatteredFeaturePieces.JunglePyramid.Stones junglePyramidsRandomScatteredStones = new ComponentScatteredFeaturePieces.JunglePyramid.Stones((ComponentScatteredFeaturePieces.SwitchEnumFacing) null);
         private boolean field_74947_h;
         private boolean field_74948_i;
         private boolean field_74945_j;
         private boolean field_74946_k;
-        private static final List field_175816_i = Lists.newArrayList(new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 3), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_ingot, 0, 2, 7, 15), new WeightedRandomChestContent(Items.emerald, 0, 1, 3, 2), new WeightedRandomChestContent(Items.bone, 0, 4, 6, 20), new WeightedRandomChestContent(Items.rotten_flesh, 0, 3, 7, 16), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 3), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 1), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 1)});
-        private static final List field_175815_j = Lists.newArrayList(new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.arrow, 0, 2, 7, 30)});
-        private static ComponentScatteredFeaturePieces.JunglePyramid.Stones junglePyramidsRandomScatteredStones = new ComponentScatteredFeaturePieces.JunglePyramid.Stones((ComponentScatteredFeaturePieces.SwitchEnumFacing)null);
-        private static final String __OBFID = "CL_00000477";
 
-        public JunglePyramid() {}
+        public JunglePyramid() {
+        }
 
-        public JunglePyramid(Random p_i2064_1_, int p_i2064_2_, int p_i2064_3_)
-        {
+        public JunglePyramid(Random p_i2064_1_, int p_i2064_2_, int p_i2064_3_) {
             super(p_i2064_1_, p_i2064_2_, 64, p_i2064_3_, 12, 10, 15);
         }
 
-        protected void writeStructureToNBT(NBTTagCompound p_143012_1_)
-        {
+        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {
             super.writeStructureToNBT(p_143012_1_);
             p_143012_1_.setBoolean("placedMainChest", this.field_74947_h);
             p_143012_1_.setBoolean("placedHiddenChest", this.field_74948_i);
@@ -387,8 +351,7 @@ public class ComponentScatteredFeaturePieces
             p_143012_1_.setBoolean("placedTrap2", this.field_74946_k);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound p_143011_1_)
-        {
+        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {
             super.readStructureFromNBT(p_143011_1_);
             this.field_74947_h = p_143011_1_.getBoolean("placedMainChest");
             this.field_74948_i = p_143011_1_.getBoolean("placedHiddenChest");
@@ -396,14 +359,10 @@ public class ComponentScatteredFeaturePieces
             this.field_74946_k = p_143011_1_.getBoolean("placedTrap2");
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (!this.func_74935_a(worldIn, p_74875_3_, 0))
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (!this.func_74935_a(worldIn, p_74875_3_, 0)) {
                 return false;
-            }
-            else
-            {
+            } else {
                 int var4 = this.getMetadataWithOffset(Blocks.stone_stairs, 3);
                 int var5 = this.getMetadataWithOffset(Blocks.stone_stairs, 2);
                 int var6 = this.getMetadataWithOffset(Blocks.stone_stairs, 0);
@@ -436,8 +395,7 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.air.getDefaultState(), 10, 5, 9, p_74875_3_);
                 int var8;
 
-                for (var8 = 0; var8 <= 14; var8 += 14)
-                {
+                for (var8 = 0; var8 <= 14; var8 += 14) {
                     this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 2, 4, var8, 2, 5, var8, false, p_74875_2_, junglePyramidsRandomScatteredStones);
                     this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 4, 4, var8, 4, 5, var8, false, p_74875_2_, junglePyramidsRandomScatteredStones);
                     this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 7, 4, var8, 7, 5, var8, false, p_74875_2_, junglePyramidsRandomScatteredStones);
@@ -446,10 +404,8 @@ public class ComponentScatteredFeaturePieces
 
                 this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 5, 6, 0, 6, 6, 0, false, p_74875_2_, junglePyramidsRandomScatteredStones);
 
-                for (var8 = 0; var8 <= 11; var8 += 11)
-                {
-                    for (int var9 = 2; var9 <= 12; var9 += 2)
-                    {
+                for (var8 = 0; var8 <= 11; var8 += 11) {
+                    for (int var9 = 2; var9 <= 12; var9 += 2) {
                         this.fillWithRandomizedBlocks(worldIn, p_74875_3_, var8, 4, var9, var8, 5, var9, false, p_74875_2_, junglePyramidsRandomScatteredStones);
                     }
 
@@ -487,8 +443,7 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.stone_stairs.getStateFromMeta(var6), 4, 4, 5, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.stone_stairs.getStateFromMeta(var7), 7, 4, 5, p_74875_3_);
 
-                for (var8 = 0; var8 < 4; ++var8)
-                {
+                for (var8 = 0; var8 < 4; ++var8) {
                     this.func_175811_a(worldIn, Blocks.stone_stairs.getStateFromMeta(var5), 5, 0 - var8, 6 + var8, p_74875_3_);
                     this.func_175811_a(worldIn, Blocks.stone_stairs.getStateFromMeta(var5), 6, 0 - var8, 6 + var8, p_74875_3_);
                     this.fillWithAir(worldIn, p_74875_3_, 5, 0 - var8, 7 + var8, 6, 0 - var8, 9 + var8);
@@ -498,13 +453,11 @@ public class ComponentScatteredFeaturePieces
                 this.fillWithAir(worldIn, p_74875_3_, 1, -3, 1, 3, -1, 13);
                 this.fillWithAir(worldIn, p_74875_3_, 1, -3, 1, 9, -1, 5);
 
-                for (var8 = 1; var8 <= 13; var8 += 2)
-                {
+                for (var8 = 1; var8 <= 13; var8 += 2) {
                     this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 1, -3, var8, 1, -2, var8, false, p_74875_2_, junglePyramidsRandomScatteredStones);
                 }
 
-                for (var8 = 2; var8 <= 12; var8 += 2)
-                {
+                for (var8 = 2; var8 <= 12; var8 += 2) {
                     this.fillWithRandomizedBlocks(worldIn, p_74875_3_, 1, -1, var8, 3, -1, var8, false, p_74875_2_, junglePyramidsRandomScatteredStones);
                 }
 
@@ -526,8 +479,7 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.redstone_wire.getDefaultState(), 4, -3, 1, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.mossy_cobblestone.getDefaultState(), 3, -3, 1, p_74875_3_);
 
-                if (!this.field_74945_j)
-                {
+                if (!this.field_74945_j) {
                     this.field_74945_j = this.func_175806_a(worldIn, p_74875_3_, p_74875_2_, 3, -2, 1, EnumFacing.NORTH.getIndex(), field_175815_j, 2);
                 }
 
@@ -543,17 +495,15 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.mossy_cobblestone.getDefaultState(), 9, -3, 4, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.redstone_wire.getDefaultState(), 9, -2, 4, p_74875_3_);
 
-                if (!this.field_74946_k)
-                {
+                if (!this.field_74946_k) {
                     this.field_74946_k = this.func_175806_a(worldIn, p_74875_3_, p_74875_2_, 9, -2, 3, EnumFacing.WEST.getIndex(), field_175815_j, 2);
                 }
 
                 this.func_175811_a(worldIn, Blocks.vine.getStateFromMeta(15), 8, -1, 3, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.vine.getStateFromMeta(15), 8, -2, 3, p_74875_3_);
 
-                if (!this.field_74947_h)
-                {
-                    this.field_74947_h = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 8, -3, 3, WeightedRandomChestContent.func_177629_a(field_175816_i, new WeightedRandomChestContent[] {Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
+                if (!this.field_74947_h) {
+                    this.field_74947_h = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 8, -3, 3, WeightedRandomChestContent.func_177629_a(field_175816_i, new WeightedRandomChestContent[]{Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
                 }
 
                 this.func_175811_a(worldIn, Blocks.mossy_cobblestone.getDefaultState(), 9, -3, 2, p_74875_3_);
@@ -584,72 +534,59 @@ public class ComponentScatteredFeaturePieces
                 this.func_175811_a(worldIn, Blocks.sticky_piston.getStateFromMeta(this.getMetadataWithOffset(Blocks.sticky_piston, EnumFacing.WEST.getIndex())), 10, -1, 8, p_74875_3_);
                 this.func_175811_a(worldIn, Blocks.unpowered_repeater.getStateFromMeta(this.getMetadataWithOffset(Blocks.unpowered_repeater, EnumFacing.NORTH.getHorizontalIndex())), 10, -2, 10, p_74875_3_);
 
-                if (!this.field_74948_i)
-                {
-                    this.field_74948_i = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 9, -3, 10, WeightedRandomChestContent.func_177629_a(field_175816_i, new WeightedRandomChestContent[] {Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
+                if (!this.field_74948_i) {
+                    this.field_74948_i = this.func_180778_a(worldIn, p_74875_3_, p_74875_2_, 9, -3, 10, WeightedRandomChestContent.func_177629_a(field_175816_i, new WeightedRandomChestContent[]{Items.enchanted_book.getRandomEnchantedBook(p_74875_2_)}), 2 + p_74875_2_.nextInt(5));
                 }
 
                 return true;
             }
         }
 
-        static class Stones extends StructureComponent.BlockSelector
-        {
+        static class Stones extends StructureComponent.BlockSelector {
             private static final String __OBFID = "CL_00000478";
 
-            private Stones() {}
-
-            public void selectBlocks(Random p_75062_1_, int p_75062_2_, int p_75062_3_, int p_75062_4_, boolean p_75062_5_)
-            {
-                if (p_75062_1_.nextFloat() < 0.4F)
-                {
-                    this.field_151562_a = Blocks.cobblestone.getDefaultState();
-                }
-                else
-                {
-                    this.field_151562_a = Blocks.mossy_cobblestone.getDefaultState();
-                }
+            private Stones() {
             }
 
-            Stones(ComponentScatteredFeaturePieces.SwitchEnumFacing p_i45583_1_)
-            {
+            Stones(ComponentScatteredFeaturePieces.SwitchEnumFacing p_i45583_1_) {
                 this();
+            }
+
+            public void selectBlocks(Random p_75062_1_, int p_75062_2_, int p_75062_3_, int p_75062_4_, boolean p_75062_5_) {
+                if (p_75062_1_.nextFloat() < 0.4F) {
+                    this.field_151562_a = Blocks.cobblestone.getDefaultState();
+                } else {
+                    this.field_151562_a = Blocks.mossy_cobblestone.getDefaultState();
+                }
             }
         }
     }
 
-    public static class SwampHut extends ComponentScatteredFeaturePieces.Feature
-    {
-        private boolean hasWitch;
+    public static class SwampHut extends ComponentScatteredFeaturePieces.Feature {
         private static final String __OBFID = "CL_00000480";
+        private boolean hasWitch;
 
-        public SwampHut() {}
+        public SwampHut() {
+        }
 
-        public SwampHut(Random p_i2066_1_, int p_i2066_2_, int p_i2066_3_)
-        {
+        public SwampHut(Random p_i2066_1_, int p_i2066_2_, int p_i2066_3_) {
             super(p_i2066_1_, p_i2066_2_, 64, p_i2066_3_, 7, 5, 9);
         }
 
-        protected void writeStructureToNBT(NBTTagCompound p_143012_1_)
-        {
+        protected void writeStructureToNBT(NBTTagCompound p_143012_1_) {
             super.writeStructureToNBT(p_143012_1_);
             p_143012_1_.setBoolean("Witch", this.hasWitch);
         }
 
-        protected void readStructureFromNBT(NBTTagCompound p_143011_1_)
-        {
+        protected void readStructureFromNBT(NBTTagCompound p_143011_1_) {
             super.readStructureFromNBT(p_143011_1_);
             this.hasWitch = p_143011_1_.getBoolean("Witch");
         }
 
-        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_)
-        {
-            if (!this.func_74935_a(worldIn, p_74875_3_, 0))
-            {
+        public boolean addComponentParts(World worldIn, Random p_74875_2_, StructureBoundingBox p_74875_3_) {
+            if (!this.func_74935_a(worldIn, p_74875_3_, 0)) {
                 return false;
-            }
-            else
-            {
+            } else {
                 this.func_175804_a(worldIn, p_74875_3_, 1, 1, 1, 5, 1, 7, Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), false);
                 this.func_175804_a(worldIn, p_74875_3_, 1, 4, 2, 5, 4, 7, Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), false);
                 this.func_175804_a(worldIn, p_74875_3_, 2, 1, 0, 4, 1, 0, Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.func_176839_a()), false);
@@ -682,26 +619,22 @@ public class ComponentScatteredFeaturePieces
                 int var8;
                 int var9;
 
-                for (var8 = 2; var8 <= 7; var8 += 5)
-                {
-                    for (var9 = 1; var9 <= 5; var9 += 4)
-                    {
+                for (var8 = 2; var8 <= 7; var8 += 5) {
+                    for (var9 = 1; var9 <= 5; var9 += 4) {
                         this.func_175808_b(worldIn, Blocks.log.getDefaultState(), var9, -1, var8, p_74875_3_);
                     }
                 }
 
-                if (!this.hasWitch)
-                {
+                if (!this.hasWitch) {
                     var8 = this.getXWithOffset(2, 5);
                     var9 = this.getYWithOffset(2);
                     int var10 = this.getZWithOffset(2, 5);
 
-                    if (p_74875_3_.func_175898_b(new BlockPos(var8, var9, var10)))
-                    {
+                    if (p_74875_3_.func_175898_b(new BlockPos(var8, var9, var10))) {
                         this.hasWitch = true;
                         EntityWitch var11 = new EntityWitch(worldIn);
-                        var11.setLocationAndAngles((double)var8 + 0.5D, (double)var9, (double)var10 + 0.5D, 0.0F, 0.0F);
-                        var11.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(var8, var9, var10)), (IEntityLivingData)null);
+                        var11.setLocationAndAngles((double) var8 + 0.5D, (double) var9, (double) var10 + 0.5D, 0.0F, 0.0F);
+                        var11.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(var8, var9, var10)), (IEntityLivingData) null);
                         worldIn.spawnEntityInWorld(var11);
                     }
                 }
@@ -711,28 +644,20 @@ public class ComponentScatteredFeaturePieces
         }
     }
 
-    static final class SwitchEnumFacing
-    {
+    static final class SwitchEnumFacing {
         static final int[] field_175956_a = new int[EnumFacing.values().length];
         private static final String __OBFID = "CL_00001971";
 
-        static
-        {
-            try
-            {
+        static {
+            try {
                 field_175956_a[EnumFacing.NORTH.ordinal()] = 1;
-            }
-            catch (NoSuchFieldError var2)
-            {
+            } catch (NoSuchFieldError var2) {
                 ;
             }
 
-            try
-            {
+            try {
                 field_175956_a[EnumFacing.SOUTH.ordinal()] = 2;
-            }
-            catch (NoSuchFieldError var1)
-            {
+            } catch (NoSuchFieldError var1) {
                 ;
             }
         }

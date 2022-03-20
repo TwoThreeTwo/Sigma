@@ -25,6 +25,8 @@ import java.util.List;
 
 public abstract class Module extends Saveable implements EventListener, Bindable, Toggleable {
     protected final static Minecraft mc = Minecraft.getMinecraft();
+    private static final File MODULE_DIR = FileUtils.getConfigFile("Mods");
+    private static final File SETTINGS_DIR = FileUtils.getConfigFile("Sets");
     @Expose
     protected final ModuleData data;
     @Expose
@@ -33,11 +35,6 @@ public abstract class Module extends Saveable implements EventListener, Bindable
     private boolean enabled;
     private String suffix;
     private boolean isHidden;
-
-    public int getColor() {
-        return color;
-    }
-
     private int color;
 
     public Module(ModuleData data) {
@@ -48,13 +45,10 @@ public abstract class Module extends Saveable implements EventListener, Bindable
         color = Colors.getColor((int) (255 * Math.random()), (int) (255 * Math.random()), (int) (255 * Math.random()), 255);
     }
 
-    private static final File MODULE_DIR = FileUtils.getConfigFile("Mods");
-    private static final File SETTINGS_DIR = FileUtils.getConfigFile("Sets");
-
     public static void saveStatus() {
         List<String> fileContent = new ArrayList<>();
         for (Module module : Client.getModuleManager().getArray()) {
-            fileContent.add(String.format("%s:%s:%s:%s", module.getName(), module.isEnabled(),  module.data.getKey(), module.isHidden));
+            fileContent.add(String.format("%s:%s:%s:%s", module.getName(), module.isEnabled(), module.data.getKey(), module.isHidden));
         }
         FileUtils.write(MODULE_DIR, fileContent, true);
     }
@@ -79,10 +73,6 @@ public abstract class Module extends Saveable implements EventListener, Bindable
         FileUtils.write(SETTINGS_DIR, fileContent, true);
     }
 
-    public void checkBypass() {
-
-    }
-
     public static void loadStatus() {
         try {
             List<String> fileContent = FileUtils.read(MODULE_DIR);
@@ -95,7 +85,7 @@ public abstract class Module extends Saveable implements EventListener, Bindable
                         boolean enabled = Boolean.parseBoolean(strEnabled);
                         String key = split[2];
                         module.setKeybind(new Keybind(module, Integer.parseInt(key)));
-                        if(split.length == 4) {
+                        if (split.length == 4) {
                             module.isHidden = Boolean.parseBoolean(split[3]);
                         }
                         if (enabled && !module.isEnabled()) {
@@ -165,98 +155,6 @@ public abstract class Module extends Saveable implements EventListener, Bindable
     }
 
     /**
-     * Handles the toggling of the module
-     */
-    @Override
-    public void toggle() {
-        enabled = !enabled;
-        if (Client.getModuleManager().isSetup()) {
-            checkBypass();
-            saveStatus();
-            saveSettings();
-        }
-        if (enabled) {
-            EventSystem.register(this);
-            onEnable();
-        } else {
-            // Save module data
-            EventSystem.unregister(this);
-            onDisable();
-        }
-    }
-
-    @Override
-    public void onEnable() {
-
-    }
-
-    @Override
-    public void onDisable() {
-
-    }
-
-    @Override
-    public void onBindPress() {
-        toggle();
-        if(mc.thePlayer != null && !(this instanceof ClickGui))
-            mc.thePlayer.playSound("random.click",0.15F,enabled ? 0.7F : 0.6F);
-    }
-
-    @Override
-    public void onBindRelease() {
-
-    }
-
-    /**
-     * Sets the current keybind to another.
-     *
-     * @param newBind
-     */
-    @Override
-    public void setKeybind(Keybind newBind) {
-        if (newBind == null) {
-            return;
-        }
-        // Client init
-        if (keybind == null) {
-            keybind = newBind;
-            KeyHandler.register(keybind);
-            return;
-        }
-        // Not client setup
-        boolean sameKey = newBind.getKeyInt() == keybind.getKeyInt();
-        boolean sameMask = newBind.getMask() == keybind.getMask();
-        if (sameKey && !sameMask) {
-            KeyHandler.update(this, keybind, newBind);
-        } else if (!sameKey) {
-            if (KeyHandler.keyHasBinds(keybind.getKeyInt())) {
-                KeyHandler.unregister(this, keybind);
-            }
-            KeyHandler.register(newBind);
-        }
-        keybind.update(newBind);
-        data.key = keybind.getKeyInt();
-        data.mask = keybind.getMask();
-        if (Client.getModuleManager().isSetup()) {
-            saveStatus();
-        }
-        /*
-         * boolean noBind = newBind.getKeyInt() == Keyboard.CHAR_NONE; boolean
-		 * isRegistered = KeyHandler.isRegistered(keybind); if (isRegistered) {
-		 * if (noBind) { // Unegister the now-unused keybind
-		 * KeyHandler.unregister(keybind); } else { // Update the existing
-		 * keybind with new information int curKey = keybind.getKeyInt(); int
-		 * newKey = newBind.getKeyInt(); if (curKey == newKey) {
-		 * KeyHandler.update(keybind, newBind); } else {
-		 * KeyHandler.unregister(keybind); KeyHandler.register(newBind); } }
-		 * }else{ KeyHandler.register(newBind); } keybind.update(newBind); // if
-		 * (!isRegistered && !noBind) { // Register the new keybind
-		 * //KeyHandler.register(keybind); // } if (keybind != null) { data.key
-		 * = keybind.getKeyInt(); }
-		 */
-    }
-
-    /**
      * TODO: UN FUCK THE GOD FUCKING KEYBINDS
      * <p>
      * What I want to happen: - Client loads up - Module init - - Checks if
@@ -294,8 +192,108 @@ public abstract class Module extends Saveable implements EventListener, Bindable
         return color;
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void checkBypass() {
+
+    }
+
+    /**
+     * Handles the toggling of the module
+     */
+    @Override
+    public void toggle() {
+        enabled = !enabled;
+        if (Client.getModuleManager().isSetup()) {
+            checkBypass();
+            saveStatus();
+            saveSettings();
+        }
+        if (enabled) {
+            EventSystem.register(this);
+            onEnable();
+        } else {
+            // Save module data
+            EventSystem.unregister(this);
+            onDisable();
+        }
+    }
+
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+
+    @Override
+    public void onBindPress() {
+        toggle();
+        if (mc.thePlayer != null && !(this instanceof ClickGui))
+            mc.thePlayer.playSound("random.click", 0.15F, enabled ? 0.7F : 0.6F);
+    }
+
+    @Override
+    public void onBindRelease() {
+
+    }
+
     public Keybind getKeybind() {
         return keybind;
+    }
+
+    /**
+     * Sets the current keybind to another.
+     *
+     * @param newBind
+     */
+    @Override
+    public void setKeybind(Keybind newBind) {
+        if (newBind == null) {
+            return;
+        }
+        // Client init
+        if (keybind == null) {
+            keybind = newBind;
+            KeyHandler.register(keybind);
+            return;
+        }
+        // Not client setup
+        boolean sameKey = newBind.getKeyInt() == keybind.getKeyInt();
+        boolean sameMask = newBind.getMask() == keybind.getMask();
+        if (sameKey && !sameMask) {
+            KeyHandler.update(this, keybind, newBind);
+        } else if (!sameKey) {
+            if (KeyHandler.keyHasBinds(keybind.getKeyInt())) {
+                KeyHandler.unregister(this, keybind);
+            }
+            KeyHandler.register(newBind);
+        }
+        keybind.update(newBind);
+        data.key = keybind.getKeyInt();
+        data.mask = keybind.getMask();
+        if (Client.getModuleManager().isSetup()) {
+            saveStatus();
+        }
+        /*
+         * boolean noBind = newBind.getKeyInt() == Keyboard.CHAR_NONE; boolean
+         * isRegistered = KeyHandler.isRegistered(keybind); if (isRegistered) {
+         * if (noBind) { // Unegister the now-unused keybind
+         * KeyHandler.unregister(keybind); } else { // Update the existing
+         * keybind with new information int curKey = keybind.getKeyInt(); int
+         * newKey = newBind.getKeyInt(); if (curKey == newKey) {
+         * KeyHandler.update(keybind, newBind); } else {
+         * KeyHandler.unregister(keybind); KeyHandler.register(newBind); } }
+         * }else{ KeyHandler.register(newBind); } keybind.update(newBind); // if
+         * (!isRegistered && !noBind) { // Register the new keybind
+         * //KeyHandler.register(keybind); // } if (keybind != null) { data.key
+         * = keybind.getKeyInt(); }
+         */
     }
 
     /**

@@ -33,7 +33,6 @@ import java.net.SocketAddress;
 import java.util.Queue;
 
 public class NetworkManager extends SimpleChannelInboundHandler {
-    private static final Logger logger = LogManager.getLogger();
     public static final Marker logMarkerNetwork = MarkerManager.getMarker("NETWORK");
     public static final Marker logMarkerPackets = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.logMarkerNetwork);
     public static final AttributeKey attrKeyConnectionState = AttributeKey.valueOf("protocol");
@@ -61,38 +60,80 @@ public class NetworkManager extends SimpleChannelInboundHandler {
             return genericLoad();
         }
     };
+    private static final Logger logger = LogManager.getLogger();
+    private static final String __OBFID = "CL_00001240";
     private final EnumPacketDirection direction;
-
     /**
      * The queue for packets that require transmission
      */
     private final Queue outboundPacketsQueue = Queues.newConcurrentLinkedQueue();
-
     /**
      * The active channel
      */
     private Channel channel;
-
     /**
      * The address of the remote party
      */
     private SocketAddress socketAddress;
-
     /**
      * The INetHandler instance responsible for processing received packets
      */
     private INetHandler packetListener;
-
     /**
      * A String indicating why the network has shutdown.
      */
     private IChatComponent terminationReason;
     private boolean isEncrypted;
     private boolean disconnected;
-    private static final String __OBFID = "CL_00001240";
 
     public NetworkManager(EnumPacketDirection packetDirection) {
         direction = packetDirection;
+    }
+
+    /**
+     * Prepares a clientside NetworkManager: establishes a connection to the
+     * address and port supplied and configures the channel pipeline. Returns
+     * the newly created instance.
+     */
+    public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_) {
+        final NetworkManager var2 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+        (new Bootstrap()).group((EventLoopGroup) NetworkManager.CLIENT_NIO_EVENTLOOP.getValue()).handler(new ChannelInitializer() {
+            private static final String __OBFID = "CL_00002312";
+
+            @Override
+            protected void initChannel(Channel p_initChannel_1_) {
+                try {
+                    p_initChannel_1_.config().setOption(ChannelOption.IP_TOS, Integer.valueOf(24));
+                } catch (ChannelException var4) {
+                }
+
+                try {
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(false));
+                } catch (ChannelException var3) {
+                }
+
+                p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(20)).addLast("splitter", new MessageDeserializer2()).addLast("decoder", new MessageDeserializer(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new MessageSerializer2()).addLast("encoder", new MessageSerializer(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", var2);
+            }
+        }).channel(NioSocketChannel.class).connect(p_150726_0_, p_150726_1_).syncUninterruptibly();
+        return var2;
+    }
+
+    /**
+     * Prepares a clientside NetworkManager: establishes a connection to the
+     * socket supplied and configures the channel pipeline. Returns the newly
+     * created instance.
+     */
+    public static NetworkManager provideLocalClient(SocketAddress p_150722_0_) {
+        final NetworkManager var1 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+        (new Bootstrap()).group((EventLoopGroup) NetworkManager.CLIENT_LOCAL_EVENTLOOP.getValue()).handler(new ChannelInitializer() {
+            private static final String __OBFID = "CL_00002311";
+
+            @Override
+            protected void initChannel(Channel p_initChannel_1_) {
+                p_initChannel_1_.pipeline().addLast("packet_handler", var1);
+            }
+        }).channel(LocalChannel.class).connect(p_150722_0_).syncUninterruptibly();
+        return var1;
     }
 
     @Override
@@ -183,16 +224,6 @@ public class NetworkManager extends SimpleChannelInboundHandler {
 
             }
         }
-    }
-
-    /**
-     * Sets the NetHandler for this NetworkManager, no checks are made if this
-     * handler is suitable for the particular connection state (protocol)
-     */
-    public void setNetHandler(INetHandler handler) {
-        Validate.notNull(handler, "packetListener");
-        NetworkManager.logger.debug("Set listener of {} to {}", this, handler);
-        packetListener = handler;
     }
 
     public void sendPacket(Packet packet) {
@@ -329,52 +360,6 @@ public class NetworkManager extends SimpleChannelInboundHandler {
     }
 
     /**
-     * Prepares a clientside NetworkManager: establishes a connection to the
-     * address and port supplied and configures the channel pipeline. Returns
-     * the newly created instance.
-     */
-    public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_) {
-        final NetworkManager var2 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
-        (new Bootstrap()).group((EventLoopGroup) NetworkManager.CLIENT_NIO_EVENTLOOP.getValue()).handler(new ChannelInitializer() {
-            private static final String __OBFID = "CL_00002312";
-
-            @Override
-            protected void initChannel(Channel p_initChannel_1_) {
-                try {
-                    p_initChannel_1_.config().setOption(ChannelOption.IP_TOS, Integer.valueOf(24));
-                } catch (ChannelException var4) {
-                }
-
-                try {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(false));
-                } catch (ChannelException var3) {
-                }
-
-                p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(20)).addLast("splitter", new MessageDeserializer2()).addLast("decoder", new MessageDeserializer(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new MessageSerializer2()).addLast("encoder", new MessageSerializer(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", var2);
-            }
-        }).channel(NioSocketChannel.class).connect(p_150726_0_, p_150726_1_).syncUninterruptibly();
-        return var2;
-    }
-
-    /**
-     * Prepares a clientside NetworkManager: establishes a connection to the
-     * socket supplied and configures the channel pipeline. Returns the newly
-     * created instance.
-     */
-    public static NetworkManager provideLocalClient(SocketAddress p_150722_0_) {
-        final NetworkManager var1 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
-        (new Bootstrap()).group((EventLoopGroup) NetworkManager.CLIENT_LOCAL_EVENTLOOP.getValue()).handler(new ChannelInitializer() {
-            private static final String __OBFID = "CL_00002311";
-
-            @Override
-            protected void initChannel(Channel p_initChannel_1_) {
-                p_initChannel_1_.pipeline().addLast("packet_handler", var1);
-            }
-        }).channel(LocalChannel.class).connect(p_150722_0_).syncUninterruptibly();
-        return var1;
-    }
-
-    /**
      * Adds an encoder+decoder to the channel pipeline. The parameter is the
      * secret key used for encrypted communication
      */
@@ -405,6 +390,16 @@ public class NetworkManager extends SimpleChannelInboundHandler {
      */
     public INetHandler getNetHandler() {
         return packetListener;
+    }
+
+    /**
+     * Sets the NetHandler for this NetworkManager, no checks are made if this
+     * handler is suitable for the particular connection state (protocol)
+     */
+    public void setNetHandler(INetHandler handler) {
+        Validate.notNull(handler, "packetListener");
+        NetworkManager.logger.debug("Set listener of {} to {}", this, handler);
+        packetListener = handler;
     }
 
     /**
@@ -463,9 +458,9 @@ public class NetworkManager extends SimpleChannelInboundHandler {
     }
 
     static class InboundHandlerTuplePacketListener {
+        private static final String __OBFID = "CL_00001244";
         private final Packet packet;
         private final GenericFutureListener[] futureListeners;
-        private static final String __OBFID = "CL_00001244";
 
         public InboundHandlerTuplePacketListener(Packet inPacket, GenericFutureListener... inFutureListeners) {
             packet = inPacket;

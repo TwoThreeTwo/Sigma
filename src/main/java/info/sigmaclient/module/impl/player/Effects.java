@@ -1,11 +1,11 @@
 package info.sigmaclient.module.impl.player;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.util.PlayerUtil;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
+import info.sigmaclient.util.PlayerUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -22,8 +22,8 @@ public class Effects extends Module {
     @Override
     @RegisterEvent(events = EventUpdate.class)
     public void onEvent(Event event) {
-        EventUpdate em = (EventUpdate)event;
-        if(em.isPre()){
+        EventUpdate em = (EventUpdate) event;
+        if (em.isPre()) {
             if (PlayerUtil.isOnLiquid() || PlayerUtil.isInLiquid()) {
                 return;
             }

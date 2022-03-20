@@ -1,7 +1,5 @@
 package net.minecraft.client.renderer.entity;
 
-import java.util.Random;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -13,10 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Random;
+
 public class RenderEntityItem extends Render {
+    private static final String __OBFID = "CL_00002442";
     private final RenderItem field_177080_a;
     private Random field_177079_e = new Random();
-    private static final String __OBFID = "CL_00002442";
 
     public RenderEntityItem(RenderManager p_i46167_1_, RenderItem p_i46167_2_) {
         super(p_i46167_1_);
@@ -41,7 +41,7 @@ public class RenderEntityItem extends Render {
             boolean original = renderManager.options.fancyGraphics;
             if (!(var11 instanceof ItemBlock)) {
                 renderManager.options.fancyGraphics = false;
-                GlStateManager.rotate(90,90,0,0);
+                GlStateManager.rotate(90, 90, 0, 0);
             }
             if (var12 || this.renderManager.options != null && this.renderManager.options.fancyGraphics) {
                 var16 = (((float) p_177077_1_.func_174872_o() + p_177077_8_) / 20.0F + p_177077_1_.hoverStart) * (180F / (float) Math.PI);

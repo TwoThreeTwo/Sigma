@@ -18,9 +18,9 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class Fly extends Module {
 
-    public static String SPEED = "SPEED";
     public static final String MODE = "MODE";
     public static final String BYPASS = "HYPIXEL";
+    public static String SPEED = "SPEED";
     Timer kickTimer = new Timer();
     private double flyHeight;
     private double startY;
@@ -31,6 +31,14 @@ public class Fly extends Module {
         settings.put(MODE, new Setting<>(MODE, new Options("Fly Mode", "Motion", new String[]{"Vanilla", "AntiKick", "Glide", "Motion"}), "Fly method."));
     }
 
+    public static double getBaseMoveSpeed() {
+        double baseSpeed = 0.2873D;
+        if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+            int amplifier = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+            baseSpeed *= (1.0D + 0.2D * (amplifier + 1));
+        }
+        return baseSpeed;
+    }
 
     private boolean allowBypass() {
         Setting setting;
@@ -151,16 +159,6 @@ public class Fly extends Module {
                 }
             }
         }
-    }
-
-
-    public static double getBaseMoveSpeed() {
-        double baseSpeed = 0.2873D;
-        if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
-            int amplifier = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
-            baseSpeed *= (1.0D + 0.2D * (amplifier + 1));
-        }
-        return baseSpeed;
     }
 
     public void updateFlyHeight() {

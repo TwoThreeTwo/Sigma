@@ -22,13 +22,13 @@ public class DropdownButton {
 
 
     public void draw(final float x, final float y) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.dropDownButtonDraw(this, box, x, y);
         }
     }
 
     public void mouseClicked(final int x, final int y, final int button) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.dropDownButtonMouseClicked(this, box, x, y, button);
         }
     }

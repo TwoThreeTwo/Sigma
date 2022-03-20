@@ -1,13 +1,12 @@
 package info.sigmaclient.util;
 
-import java.util.List;
-import java.util.Objects;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+
+import java.util.List;
+import java.util.Objects;
 
 public class RotationUtils {
     public static float[] getRotations(EntityLivingBase ent) {

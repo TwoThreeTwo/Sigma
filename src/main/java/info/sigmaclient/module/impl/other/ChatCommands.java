@@ -1,16 +1,16 @@
 package info.sigmaclient.module.impl.other;
 
-import java.util.*;
-
 import info.sigmaclient.event.Event;
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventChat;
 import info.sigmaclient.management.command.Command;
+import info.sigmaclient.management.command.CommandManager;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.misc.ChatUtil;
-import info.sigmaclient.management.command.CommandManager;
-import info.sigmaclient.event.RegisterEvent;
+
+import java.util.Arrays;
 
 public class ChatCommands extends Module {
     private static final String KEY_PREFIX = "CHAT-PREFIX";
@@ -19,7 +19,6 @@ public class ChatCommands extends Module {
         super(data);
         settings.put(ChatCommands.KEY_PREFIX, new Setting(ChatCommands.KEY_PREFIX, ".", "Command prefix."));
     }
-
 
 
     @Override
@@ -53,7 +52,6 @@ public class ChatCommands extends Module {
     /**
      * Registers commands
      */
-
 
 
 }

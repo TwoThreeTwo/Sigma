@@ -6,8 +6,7 @@ import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderRabbit extends RenderLiving
-{
+public class RenderRabbit extends RenderLiving {
     private static final ResourceLocation field_177127_a = new ResourceLocation("textures/entity/rabbit/brown.png");
     private static final ResourceLocation field_177126_e = new ResourceLocation("textures/entity/rabbit/white.png");
     private static final ResourceLocation field_177132_j = new ResourceLocation("textures/entity/rabbit/black.png");
@@ -18,23 +17,17 @@ public class RenderRabbit extends RenderLiving
     private static final ResourceLocation field_177129_o = new ResourceLocation("textures/entity/rabbit/caerbannog.png");
     private static final String __OBFID = "CL_00002432";
 
-    public RenderRabbit(RenderManager p_i46146_1_, ModelBase p_i46146_2_, float p_i46146_3_)
-    {
+    public RenderRabbit(RenderManager p_i46146_1_, ModelBase p_i46146_2_, float p_i46146_3_) {
         super(p_i46146_1_, p_i46146_2_, p_i46146_3_);
     }
 
-    protected ResourceLocation func_177125_a(EntityRabbit p_177125_1_)
-    {
+    protected ResourceLocation func_177125_a(EntityRabbit p_177125_1_) {
         String var2 = EnumChatFormatting.getTextWithoutFormattingCodes(p_177125_1_.getName());
 
-        if (var2 != null && var2.equals("Toast"))
-        {
+        if (var2 != null && var2.equals("Toast")) {
             return field_177128_n;
-        }
-        else
-        {
-            switch (p_177125_1_.func_175531_cl())
-            {
+        } else {
+            switch (p_177125_1_.func_175531_cl()) {
                 case 0:
                 default:
                     return field_177127_a;
@@ -63,8 +56,7 @@ public class RenderRabbit extends RenderLiving
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(Entity p_110775_1_)
-    {
-        return this.func_177125_a((EntityRabbit)p_110775_1_);
+    protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
+        return this.func_177125_a((EntityRabbit) p_110775_1_);
     }
 }

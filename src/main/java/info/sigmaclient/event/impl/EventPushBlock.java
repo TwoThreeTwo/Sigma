@@ -9,12 +9,11 @@ import info.sigmaclient.event.Event;
 
 /**
  * @author cool1
- *
  */
 public class EventPushBlock extends Event {
 
-	public void fire(){
-		
-	}
-	
+    public void fire() {
+
+    }
+
 }

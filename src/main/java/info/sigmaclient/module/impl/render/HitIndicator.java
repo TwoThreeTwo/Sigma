@@ -1,12 +1,11 @@
 package info.sigmaclient.module.impl.render;
 
 import info.sigmaclient.event.Event;
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventPacket;
 import info.sigmaclient.event.impl.EventRender3D;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.module.Module;
-import net.minecraft.network.play.server.S06PacketUpdateHealth;
+import info.sigmaclient.module.data.ModuleData;
 
 /**
  * Created by Arithmo on 5/1/2017 at 8:47 PM.

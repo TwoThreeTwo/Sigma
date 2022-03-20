@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class WaypointManager {
 
     private static WaypointManager waypointManager;
-
+    private final File WAYPOINT_DIR = FileUtils.getConfigFile("Waypoints");
     private List<Waypoint> waypoints = new CopyOnWriteArrayList<>();
 
     public WaypointManager() {
@@ -22,7 +22,9 @@ public class WaypointManager {
         loadWaypoints();
     }
 
-    private final File WAYPOINT_DIR = FileUtils.getConfigFile("Waypoints");
+    public static WaypointManager getManager() {
+        return waypointManager;
+    }
 
     public void loadWaypoints() {
         try {
@@ -63,10 +65,6 @@ public class WaypointManager {
 
     public List<Waypoint> getWaypoints() {
         return waypoints;
-    }
-
-    public static WaypointManager getManager() {
-        return waypointManager;
     }
 
     public boolean containsName(String name) {

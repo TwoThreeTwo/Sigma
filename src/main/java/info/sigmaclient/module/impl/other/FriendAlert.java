@@ -21,10 +21,10 @@ import net.minecraft.network.play.server.S38PacketPlayerListItem;
  */
 public class FriendAlert extends Module {
 
+    Timer timer = new Timer();
     private boolean connect;
     private String name;
     private int currentY, targetY;
-    Timer timer = new Timer();
 
     public FriendAlert(ModuleData data) {
         super(data);

@@ -1,13 +1,13 @@
 package net.minecraft.world.chunk;
 
-import java.util.List;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 
-public interface IChunkProvider
-{
+import java.util.List;
+
+public interface IChunkProvider {
     /**
      * Checks to see if a chunk exists at x, y
      */

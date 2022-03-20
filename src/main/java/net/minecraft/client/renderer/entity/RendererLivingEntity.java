@@ -1,25 +1,15 @@
 package net.minecraft.client.renderer.entity;
 
 import com.google.common.collect.Lists;
-
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.EventSystem;
 import info.sigmaclient.event.impl.EventNametagRender;
 import info.sigmaclient.event.impl.EventRenderEntity;
-
-import java.nio.FloatBuffer;
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.Entity;
@@ -34,15 +24,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
+import java.nio.FloatBuffer;
+import java.util.Iterator;
+import java.util.List;
+
 public abstract class RendererLivingEntity extends Render {
     private static final Logger logger = LogManager.getLogger();
     private static final DynamicTexture field_177096_e = new DynamicTexture(16, 16);
+    private static final String __OBFID = "CL_00001012";
+    public static boolean field_177098_i = false;
+    public static boolean renderLayers = true;
+
+    static {
+        int[] var0 = field_177096_e.getTextureData();
+
+        for (int var1 = 0; var1 < 256; ++var1) {
+            var0[var1] = -1;
+        }
+
+        field_177096_e.updateDynamicTexture();
+    }
+
     protected ModelBase mainModel;
     protected FloatBuffer field_177095_g = GLAllocation.createDirectFloatBuffer(4);
     protected List field_177097_h = Lists.newArrayList();
-    public static boolean field_177098_i = false;
-    private static final String __OBFID = "CL_00001012";
-    public static boolean renderLayers = true;
 
     public RendererLivingEntity(RenderManager p_i46156_1_, ModelBase p_i46156_2_, float p_i46156_3_) {
         super(p_i46156_1_);
@@ -94,7 +99,7 @@ public abstract class RendererLivingEntity extends Render {
 
         EventRenderEntity em = (EventRenderEntity) EventSystem.getInstance(EventRenderEntity.class);
         em.fire(p_76986_1_, true);
-        if(em.isCancelled()) return;
+        if (em.isCancelled()) return;
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();
         this.mainModel.swingProgress = this.getSwingProgress(p_76986_1_, p_76986_9_);
@@ -427,7 +432,7 @@ public abstract class RendererLivingEntity extends Render {
             LayerRenderer var10 = (LayerRenderer) var9.next();
             boolean var11 = this.func_177092_a(p_177093_1_, p_177093_4_, var10.shouldCombineTextures());
             if (renderLayers)
-            var10.doRenderLayer(p_177093_1_, p_177093_2_, p_177093_3_, p_177093_4_, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
+                var10.doRenderLayer(p_177093_1_, p_177093_2_, p_177093_3_, p_177093_4_, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
 
             if (var11) {
                 this.func_177091_f();
@@ -564,16 +569,6 @@ public abstract class RendererLivingEntity extends Render {
      */
     public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
         this.doRender((EntityLivingBase) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    }
-
-    static {
-        int[] var0 = field_177096_e.getTextureData();
-
-        for (int var1 = 0; var1 < 256; ++var1) {
-            var0[var1] = -1;
-        }
-
-        field_177096_e.updateDynamicTexture();
     }
 
     static final class SwitchEnumVisible {

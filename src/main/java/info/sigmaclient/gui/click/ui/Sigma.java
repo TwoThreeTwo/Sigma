@@ -33,6 +33,28 @@ public class Sigma extends UI {
 
     public Expand expand = new Expand(0, 0, 0, 0);
     public Expand setExpand = new Expand(200, 175, 0, 0);
+    private ResourceLocation gear = new ResourceLocation("textures/gear.png");
+    //Hovered icons
+    private ResourceLocation gear2 = new ResourceLocation("textures/gear2.png");
+    private ResourceLocation darrow = new ResourceLocation("textures/downarrow.png");
+    private ResourceLocation uparrow = new ResourceLocation("textures/uparrow.png");
+    private ResourceLocation msgo = new ResourceLocation("textures/minigames.png");
+    private ResourceLocation others = new ResourceLocation("textures/others.png");
+    private ResourceLocation xmark = new ResourceLocation("textures/xmark.png");
+    private ResourceLocation combat = new ResourceLocation("textures/combat.png");
+    private ResourceLocation player = new ResourceLocation("textures/player.png");
+    private ResourceLocation visuals = new ResourceLocation("textures/visuals.png");
+    private ResourceLocation movement = new ResourceLocation("textures/movement.png");
+    private ResourceLocation colors = new ResourceLocation("textures/colors.png");
+    //Hovered icons
+    private ResourceLocation msgo2 = new ResourceLocation("textures/msgo2.png");
+    private ResourceLocation others2 = new ResourceLocation("textures/others2.png");
+    private ResourceLocation xmark2 = new ResourceLocation("textures/xmark2.png");
+    private ResourceLocation combat2 = new ResourceLocation("textures/combat2.png");
+    private ResourceLocation player2 = new ResourceLocation("textures/player2.png");
+    private ResourceLocation visuals2 = new ResourceLocation("textures/visuals2.png");
+    private ResourceLocation movement2 = new ResourceLocation("textures/movement2.png");
+    private ResourceLocation colors2 = new ResourceLocation("textures/colors2.png");
 
     @Override
     public void mainConstructor(ClickGui p0, MainPanel panel) {
@@ -192,7 +214,6 @@ public class Sigma extends UI {
         }
         p0.categoryPanel.mouseClicked(p2, p3, p4);
     }
-
 
     @Override
     public void categoryButtonDraw(CategoryButton p0, float p2, float p3) {
@@ -626,10 +647,6 @@ public class Sigma extends UI {
         }
     }
 
-    private ResourceLocation gear = new ResourceLocation("textures/gear.png");
-    //Hovered icons
-    private ResourceLocation gear2 = new ResourceLocation("textures/gear2.png");
-
     @Override
     public void buttonDraw(info.sigmaclient.gui.click.components.Button p0, float p2, float p3, CategoryPanel panel) {
         ScaledResolution res = new ScaledResolution(g, g.displayWidth, g.displayHeight);
@@ -788,7 +805,6 @@ public class Sigma extends UI {
             }
         }
     }
-
 
     @Override
     public void dropDownButtonMouseClicked(DropdownButton p0, DropdownBox p1, int x, int y, int mouse) {
@@ -1036,26 +1052,5 @@ public class Sigma extends UI {
         var10.draw();
         GlStateManager.popMatrix();
     }
-
-    private ResourceLocation darrow = new ResourceLocation("textures/downarrow.png");
-    private ResourceLocation uparrow = new ResourceLocation("textures/uparrow.png");
-
-    private ResourceLocation msgo = new ResourceLocation("textures/minigames.png");
-    private ResourceLocation others = new ResourceLocation("textures/others.png");
-    private ResourceLocation xmark = new ResourceLocation("textures/xmark.png");
-    private ResourceLocation combat = new ResourceLocation("textures/combat.png");
-    private ResourceLocation player = new ResourceLocation("textures/player.png");
-    private ResourceLocation visuals = new ResourceLocation("textures/visuals.png");
-    private ResourceLocation movement = new ResourceLocation("textures/movement.png");
-    private ResourceLocation colors = new ResourceLocation("textures/colors.png");
-    //Hovered icons
-    private ResourceLocation msgo2 = new ResourceLocation("textures/msgo2.png");
-    private ResourceLocation others2 = new ResourceLocation("textures/others2.png");
-    private ResourceLocation xmark2 = new ResourceLocation("textures/xmark2.png");
-    private ResourceLocation combat2 = new ResourceLocation("textures/combat2.png");
-    private ResourceLocation player2 = new ResourceLocation("textures/player2.png");
-    private ResourceLocation visuals2 = new ResourceLocation("textures/visuals2.png");
-    private ResourceLocation movement2 = new ResourceLocation("textures/movement2.png");
-    private ResourceLocation colors2 = new ResourceLocation("textures/colors2.png");
 
 }

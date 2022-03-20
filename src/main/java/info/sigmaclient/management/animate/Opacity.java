@@ -14,7 +14,7 @@ public class Opacity {
     }
 
     public void interpolate(int targetOpacity) {
-        opacity = (int) AnimationUtil.calculateCompensation(targetOpacity, opacity, 16,5);
+        opacity = (int) AnimationUtil.calculateCompensation(targetOpacity, opacity, 16, 5);
     }
 
     public void interp(int targetOpacity, int speed) {

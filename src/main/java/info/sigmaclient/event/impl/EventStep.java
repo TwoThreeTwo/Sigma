@@ -29,33 +29,27 @@ public class EventStep extends Event {
         return pre;
     }
 
-    public double getStepHeight()
-    {
+    public double getStepHeight() {
         return this.stepHeight;
     }
 
-    public boolean isActive()
-    {
-        return this.active;
-    }
-
-    public void setStepHeight(double stepHeight)
-    {
+    public void setStepHeight(double stepHeight) {
         this.stepHeight = stepHeight;
     }
 
-    public void setActive(boolean bypass)
-    {
+    public boolean isActive() {
+        return this.active;
+    }
+
+    public void setActive(boolean bypass) {
         this.active = bypass;
     }
 
-    public double getRealHeight()
-    {
+    public double getRealHeight() {
         return this.realHeight;
     }
 
-    public void setRealHeight(double realHeight)
-    {
+    public void setRealHeight(double realHeight) {
         this.realHeight = realHeight;
     }
 

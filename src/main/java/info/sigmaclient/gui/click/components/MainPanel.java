@@ -15,12 +15,11 @@ public class MainPanel {
     public float lastDragX;
     public float lastDragY;
     public boolean dragging;
-    UI theme;
-
     public CategoryPanel currentPanel = null;
     public ArrayList<CategoryButton> typeButton;
     public ArrayList<CategoryPanel> typePanel;
     public ArrayList<SLButton> slButtons;
+    UI theme;
 
     public MainPanel(String header, float x, float y, UI theme) {
         this.headerString = header;
@@ -35,26 +34,26 @@ public class MainPanel {
 
 
     public void mouseClicked(final int x, final int y, final int state) {
-        for(UI theme : Client.getClickGui().getThemes()) {
-                theme.panelMouseClicked(this, x, y, state);
+        for (UI theme : Client.getClickGui().getThemes()) {
+            theme.panelMouseClicked(this, x, y, state);
         }
     }
 
     public void mouseMovedOrUp(final int x, final int y, final int state) {
-        for(UI theme : Client.getClickGui().getThemes()) {
-                theme.panelMouseMovedOrUp(this, x, y, state);
+        for (UI theme : Client.getClickGui().getThemes()) {
+            theme.panelMouseMovedOrUp(this, x, y, state);
         }
     }
 
 
     public void draw(int mouseX, int mouseY) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.mainPanelDraw(this, mouseX, mouseY);
         }
     }
 
     public void keyPressed(int key) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.mainPanelKeyPress(this, key);
         }
     }

@@ -6,15 +6,12 @@ import info.sigmaclient.util.render.Colors;
 /**
  * Created by Arithmo on 5/10/2017 at 9:05 PM.
  */
-public class TopLeftParticle   extends Particle
-{
-    public TopLeftParticle(float posX, float posY, float size, float speed, float alpha)
-    {
+public class TopLeftParticle extends Particle {
+    public TopLeftParticle(float posX, float posY, float size, float speed, float alpha) {
         super(posX, posY, size, speed, alpha);
     }
 
-    public void render(ParticleManager p)
-    {
+    public void render(ParticleManager p) {
         super.render(p);
         setPosY(getPosY() + getSpeed());
         setPosX(getPosX() + getSpeed());

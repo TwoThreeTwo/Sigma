@@ -4,12 +4,10 @@ import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventMouse;
 import info.sigmaclient.management.command.Command;
-import info.sigmaclient.management.friend.Friend;
 import info.sigmaclient.management.friend.FriendManager;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.util.misc.ChatUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Mouse;
 

@@ -10,31 +10,30 @@ import net.minecraft.network.Packet;
 
 /**
  * @author cool1
- *
  */
 public class EventSendPacket extends Event {
-	private Packet packet;
-	private boolean pre;
+    private Packet packet;
+    private boolean pre;
 
-	public void fire(boolean state, Packet packet) {
-		this.pre = state;
-		this.packet = packet;
-		super.fire();
-	}
+    public void fire(boolean state, Packet packet) {
+        this.pre = state;
+        this.packet = packet;
+        super.fire();
+    }
 
-	public Packet getPacket() {
-		return this.packet;
-	}
+    public Packet getPacket() {
+        return this.packet;
+    }
 
-	public boolean isPre() {
-		return pre;
-	}
+    public void setPacket(Packet packet) {
+        this.packet = packet;
+    }
 
-	public void setPacket(Packet packet) {
-		this.packet = packet;
-	}
+    public boolean isPre() {
+        return pre;
+    }
 
-	public void setState(boolean state) {
-		pre = state;
-	}
+    public void setState(boolean state) {
+        pre = state;
+    }
 }

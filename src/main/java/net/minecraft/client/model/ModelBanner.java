@@ -1,14 +1,12 @@
 package net.minecraft.client.model;
 
-public class ModelBanner extends ModelBase
-{
+public class ModelBanner extends ModelBase {
+    private static final String __OBFID = "CL_00002630";
     public ModelRenderer bannerSlate;
     public ModelRenderer bannerStand;
     public ModelRenderer bannerTop;
-    private static final String __OBFID = "CL_00002630";
 
-    public ModelBanner()
-    {
+    public ModelBanner() {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.bannerSlate = new ModelRenderer(this, 0, 0);
@@ -19,8 +17,7 @@ public class ModelBanner extends ModelBase
         this.bannerTop.addBox(-10.0F, -32.0F, -1.0F, 20, 2, 2, 0.0F);
     }
 
-    public void func_178687_a()
-    {
+    public void func_178687_a() {
         this.bannerSlate.rotationPointY = -32.0F;
         this.bannerSlate.render(0.0625F);
         this.bannerStand.render(0.0625F);

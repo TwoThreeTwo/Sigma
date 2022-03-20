@@ -4,18 +4,13 @@
 
 package info.sigmaclient.gui.altmanager;
 
-import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 
-public class Alts extends FileManager.CustomFile
-{
+public class Alts extends FileManager.CustomFile {
     public Alts(final String name, final boolean Module, final boolean loadOnStart) {
         super(name, Module, loadOnStart);
     }
-    
+
     @Override
     public void loadFile() throws IOException {
         final BufferedReader variable9 = new BufferedReader(new FileReader(this.getFile()));
@@ -27,23 +22,21 @@ public class Alts extends FileManager.CustomFile
             }
             if (arguments.length > 2) {
                 AltManager.registry.add(new Alt(arguments[0], arguments[1], arguments[2]));
-            }
-            else {
+            } else {
                 AltManager.registry.add(new Alt(arguments[0], arguments[1]));
             }
         }
         variable9.close();
         System.out.println("Loaded " + this.getName() + " File!");
     }
-    
+
     @Override
     public void saveFile() throws IOException {
         final PrintWriter alts = new PrintWriter(new FileWriter(this.getFile()));
         for (final Alt alt : AltManager.registry) {
             if (alt.getMask().equals("")) {
                 alts.println(String.valueOf(alt.getUsername()) + ":" + alt.getPassword());
-            }
-            else {
+            } else {
                 alts.println(String.valueOf(alt.getUsername()) + ":" + alt.getPassword() + ":" + alt.getMask());
             }
         }

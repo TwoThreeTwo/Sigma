@@ -5,52 +5,23 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.ProfileLookupCallback;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
-import info.sigmaclient.module.impl.movement.Bhop;
-import info.sigmaclient.util.security.HTTPUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Util;
-import org.apache.commons.io.IOUtils;
+import java.util.*;
 
 public class PlayerProfileCache {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-    private final Map field_152661_c = Maps.newHashMap();
-    private final Map field_152662_d = Maps.newHashMap();
-    private final LinkedList field_152663_e = Lists.newLinkedList();
-    private final MinecraftServer field_152664_f;
-    protected final Gson gson;
-    private final File usercacheFile;
     private static final ParameterizedType field_152666_h = new ParameterizedType() {
         private static final String __OBFID = "CL_00001886";
 
@@ -67,6 +38,12 @@ public class PlayerProfileCache {
         }
     };
     private static final String __OBFID = "CL_00001888";
+    protected final Gson gson;
+    private final Map field_152661_c = Maps.newHashMap();
+    private final Map field_152662_d = Maps.newHashMap();
+    private final LinkedList field_152663_e = Lists.newLinkedList();
+    private final MinecraftServer field_152664_f;
+    private final File usercacheFile;
 
     public PlayerProfileCache(MinecraftServer p_i1171_1_, File p_i1171_2_) {
         this.field_152664_f = p_i1171_1_;
@@ -253,13 +230,17 @@ public class PlayerProfileCache {
     }
 
     class ProfileEntry {
+        private static final String __OBFID = "CL_00001885";
         private final GameProfile field_152672_b;
         private final Date field_152673_c;
-        private static final String __OBFID = "CL_00001885";
 
         private ProfileEntry(GameProfile p_i46333_2_, Date p_i46333_3_) {
             this.field_152672_b = p_i46333_2_;
             this.field_152673_c = p_i46333_3_;
+        }
+
+        ProfileEntry(GameProfile p_i1166_2_, Date p_i1166_3_, Object p_i1166_4_) {
+            this(p_i1166_2_, p_i1166_3_);
         }
 
         public GameProfile func_152668_a() {
@@ -269,16 +250,16 @@ public class PlayerProfileCache {
         public Date func_152670_b() {
             return this.field_152673_c;
         }
-
-        ProfileEntry(GameProfile p_i1166_2_, Date p_i1166_3_, Object p_i1166_4_) {
-            this(p_i1166_2_, p_i1166_3_);
-        }
     }
 
     class Serializer implements JsonDeserializer, JsonSerializer {
         private static final String __OBFID = "CL_00001884";
 
         private Serializer() {
+        }
+
+        Serializer(Object p_i46332_2_) {
+            this();
         }
 
         public JsonElement func_152676_a(PlayerProfileCache.ProfileEntry p_152676_1_, Type p_152676_2_, JsonSerializationContext p_152676_3_) {
@@ -338,10 +319,6 @@ public class PlayerProfileCache {
 
         public Object deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) {
             return this.func_152675_a(p_deserialize_1_, p_deserialize_2_, p_deserialize_3_);
-        }
-
-        Serializer(Object p_i46332_2_) {
-            this();
         }
     }
 }

@@ -58,7 +58,7 @@ public class ChestESP extends Module {
         mc.entityRenderer.setupCameraTransform(mc.timer.renderPartialTicks, 2);
         if (chest.getChestType() == 1) {
             GL11.glColor4d(0.7, 0.1, 0.1, 0.5);
-        } else if(chest.isEmpty && Client.getModuleManager().isEnabled(ChestStealer.class)) {
+        } else if (chest.isEmpty && Client.getModuleManager().isEnabled(ChestStealer.class)) {
             GL11.glColor4d(0.4, 0.2, 0.2, 0.5);
         } else {
             GL11.glColor4d(0.7, 0.4, 0, 0.5);

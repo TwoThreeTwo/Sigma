@@ -1,3 +1,4 @@
 package net.minecraft.dispenser;
 
-public interface ILocatableSource extends ILocation {}
+public interface ILocatableSource extends ILocation {
+}

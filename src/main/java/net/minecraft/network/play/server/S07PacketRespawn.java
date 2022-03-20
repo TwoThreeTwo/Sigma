@@ -1,6 +1,5 @@
 package net.minecraft.network.play.server;
 
-import java.io.IOException;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,18 +8,19 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 
-public class S07PacketRespawn implements Packet
-{
+import java.io.IOException;
+
+public class S07PacketRespawn implements Packet {
+    private static final String __OBFID = "CL_00001322";
     private int field_149088_a;
     private EnumDifficulty field_149086_b;
     private WorldSettings.GameType field_149087_c;
     private WorldType field_149085_d;
-    private static final String __OBFID = "CL_00001322";
 
-    public S07PacketRespawn() {}
+    public S07PacketRespawn() {
+    }
 
-    public S07PacketRespawn(int p_i45213_1_, EnumDifficulty p_i45213_2_, WorldType p_i45213_3_, WorldSettings.GameType p_i45213_4_)
-    {
+    public S07PacketRespawn(int p_i45213_1_, EnumDifficulty p_i45213_2_, WorldType p_i45213_3_, WorldSettings.GameType p_i45213_4_) {
         this.field_149088_a = p_i45213_1_;
         this.field_149086_b = p_i45213_2_;
         this.field_149087_c = p_i45213_4_;
@@ -30,23 +30,20 @@ public class S07PacketRespawn implements Packet
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandlerPlayClient handler)
-    {
+    public void processPacket(INetHandlerPlayClient handler) {
         handler.handleRespawn(this);
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer data) throws IOException
-    {
+    public void readPacketData(PacketBuffer data) throws IOException {
         this.field_149088_a = data.readInt();
         this.field_149086_b = EnumDifficulty.getDifficultyEnum(data.readUnsignedByte());
         this.field_149087_c = WorldSettings.GameType.getByID(data.readUnsignedByte());
         this.field_149085_d = WorldType.parseWorldType(data.readStringFromBuffer(16));
 
-        if (this.field_149085_d == null)
-        {
+        if (this.field_149085_d == null) {
             this.field_149085_d = WorldType.DEFAULT;
         }
     }
@@ -54,39 +51,33 @@ public class S07PacketRespawn implements Packet
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer data) throws IOException
-    {
+    public void writePacketData(PacketBuffer data) throws IOException {
         data.writeInt(this.field_149088_a);
         data.writeByte(this.field_149086_b.getDifficultyId());
         data.writeByte(this.field_149087_c.getID());
         data.writeString(this.field_149085_d.getWorldTypeName());
     }
 
-    public int func_149082_c()
-    {
+    public int func_149082_c() {
         return this.field_149088_a;
     }
 
-    public EnumDifficulty func_149081_d()
-    {
+    public EnumDifficulty func_149081_d() {
         return this.field_149086_b;
     }
 
-    public WorldSettings.GameType func_149083_e()
-    {
+    public WorldSettings.GameType func_149083_e() {
         return this.field_149087_c;
     }
 
-    public WorldType func_149080_f()
-    {
+    public WorldType func_149080_f() {
         return this.field_149085_d;
     }
 
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandler handler)
-    {
-        this.processPacket((INetHandlerPlayClient)handler);
+    public void processPacket(INetHandler handler) {
+        this.processPacket((INetHandlerPlayClient) handler);
     }
 }

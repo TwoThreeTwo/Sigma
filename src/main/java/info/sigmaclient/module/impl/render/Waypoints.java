@@ -34,8 +34,9 @@ import java.util.Objects;
  */
 public class Waypoints extends Module {
 
-    private double gradualFOVModifier;
     public static Map<Waypoint, double[]> waypointMap = new HashMap();
+    boolean forward = true;
+    private double gradualFOVModifier;
     private Opacity opacity = new Opacity(0);
     private String ARROWS = "ARROWS";
     private String RADIUS = "RADIUS";
@@ -46,8 +47,6 @@ public class Waypoints extends Module {
         settings.put(RADIUS, new Setting<>(RADIUS, 100, "Radius for arrows.", 10, 30, 500));
     }
 
-    boolean forward = true;
-
     @RegisterEvent(events = {EventRenderGui.class, EventRender3D.class})
     public void onEvent(Event event) {
         if (mc.getCurrentServerData() == null)
@@ -57,8 +56,8 @@ public class Waypoints extends Module {
         } else {
             GlStateManager.pushMatrix();
             ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-            float radius = scaledRes.getScaledHeight()/2 - 25;
-            float radius2 = scaledRes.getScaledWidth()/2 - 25;
+            float radius = scaledRes.getScaledHeight() / 2 - 25;
+            float radius2 = scaledRes.getScaledWidth() / 2 - 25;
             float w = scaledRes.getScaledWidth() / 2;
             float h = scaledRes.getScaledHeight() / 2;
             for (Waypoint waypoint : waypointMap.keySet()) {
@@ -71,14 +70,14 @@ public class Waypoints extends Module {
                     scale();
                     GlStateManager.translate(0.0D, -2.5D, 0.0D);
                     float strWidth = font.getWidth(str);
-                    RenderingUtil.rectangleBordered(-strWidth / 2 - 3, -12.0D, strWidth / 2 + 3, 1.0D, 0.5f, Colors.getColor(0,100), waypoint.getColor());
+                    RenderingUtil.rectangleBordered(-strWidth / 2 - 3, -12.0D, strWidth / 2 + 3, 1.0D, 0.5f, Colors.getColor(0, 100), waypoint.getColor());
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     font.drawStringWithShadow(str, -strWidth / 2, -7.5f, -1);
-                    GlStateManager.rotate(90,0,0,1);
-                    RenderingUtil.drawCircle(3f, 0,4,3,waypoint.getColor());
-                    RenderingUtil.drawCircle(3f, 0,3,3,waypoint.getColor());
-                    RenderingUtil.drawCircle(3f, 0,2,3,waypoint.getColor());
-                    RenderingUtil.drawCircle(3f, 0,1,3,waypoint.getColor());
+                    GlStateManager.rotate(90, 0, 0, 1);
+                    RenderingUtil.drawCircle(3f, 0, 4, 3, waypoint.getColor());
+                    RenderingUtil.drawCircle(3f, 0, 3, 3, waypoint.getColor());
+                    RenderingUtil.drawCircle(3f, 0, 2, 3, waypoint.getColor());
+                    RenderingUtil.drawCircle(3f, 0, 1, 3, waypoint.getColor());
 
                     GlStateManager.popMatrix();
 
@@ -89,7 +88,7 @@ public class Waypoints extends Module {
 
                     double x = (radius2) * Math.cos(Math.toRadians(angle)); // angle is in radians
                     double y = (radius) * Math.sin(Math.toRadians(angle));
-                    double t = Math.atan( scaledRes.getScaledWidth() * Math.tan( angle * Math.PI/180.0 ) / scaledRes.getScaledHeight()) + Math.PI;
+                    double t = Math.atan(scaledRes.getScaledWidth() * Math.tan(angle * Math.PI / 180.0) / scaledRes.getScaledHeight()) + Math.PI;
                     double x1 = scaledRes.getScaledWidth() - 50 * Math.cos(t);
                     double y1 = scaledRes.getScaledHeight() - 50 * Math.sin(t);
 
@@ -97,19 +96,19 @@ public class Waypoints extends Module {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(x + scaledRes.getScaledWidth() / 2, y + scaledRes.getScaledHeight() / 2, 0);
                     GlStateManager.rotate(angle, 0, 0, 1);
-                    GlStateManager.scale(1.5f,1,1);
+                    GlStateManager.scale(1.5f, 1, 1);
 
-                    if(forward && opacity.getOpacity() >= 300) {
+                    if (forward && opacity.getOpacity() >= 300) {
                         forward = false;
-                    } else if(!forward && opacity.getOpacity() <= 51) {
+                    } else if (!forward && opacity.getOpacity() <= 51) {
                         forward = true;
                     }
                     opacity.interp(forward ? 300 : 50, 3);
 
-                    int alpha = (int)opacity.getOpacity();
-                    if(alpha > 255) {
+                    int alpha = (int) opacity.getOpacity();
+                    if (alpha > 255) {
                         alpha = 255;
-                    } else if(alpha < 0) {
+                    } else if (alpha < 0) {
                         alpha = 0;
                     }
 
@@ -118,9 +117,9 @@ public class Waypoints extends Module {
                     int f1 = (waypoint.getColor() >> 16 & 0xFF);
                     int f2 = (waypoint.getColor() >> 8 & 0xFF);
                     int f3 = (waypoint.getColor() & 0xFF);
-                    int color = Colors.getColor(f1,f2,f3,f);
+                    int color = Colors.getColor(f1, f2, f3, f);
 
-                    RenderingUtil.drawCircle(0, 0, 6, 3, Colors.getColor(0,f));
+                    RenderingUtil.drawCircle(0, 0, 6, 3, Colors.getColor(0, f));
                     RenderingUtil.drawCircle(0, 0, 5, 3, color);
                     RenderingUtil.drawCircle(0, 0, 4, 3, color);
                     RenderingUtil.drawCircle(0, 0, 3, 3, color);

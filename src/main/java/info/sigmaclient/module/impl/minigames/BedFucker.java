@@ -1,12 +1,12 @@
 package info.sigmaclient.module.impl.minigames;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.event.impl.EventUpdate;
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventRender3D;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.util.render.Colors;
-import info.sigmaclient.event.RegisterEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.init.Blocks;
@@ -18,67 +18,11 @@ import org.lwjgl.opengl.GL11;
  */
 public class BedFucker extends Module {
 
-    private BlockPos blockBreaking;
     info.sigmaclient.util.Timer timer = new info.sigmaclient.util.Timer();
+    private BlockPos blockBreaking;
 
     public BedFucker(ModuleData data) {
         super(data);
-    }
-
-    @Override
-    @RegisterEvent(events = {EventUpdate.class, EventRender3D.class})
-    public void onEvent(Event event) {
-        if(event instanceof EventUpdate) {
-            EventUpdate em = (EventUpdate) event;
-            if (em.isPre()) {
-                for (int y = 6; y >= -6; --y) {
-                    for (int x = -6; x <= 6; ++x) {
-                        for (int z = -6; z <= 6; ++z) {
-                            boolean uwot = x != 0 || z != 0;
-                            if (mc.thePlayer.isSneaking()) {
-                                uwot = !uwot;
-                            }
-                            if (uwot) {
-                                BlockPos pos = new BlockPos(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z);
-                                if (getFacingDirection(pos) != null && blockChecks(mc.theWorld.getBlockState(pos).getBlock()) && mc.thePlayer.getDistance(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z) < mc.playerController.getBlockReachDistance() - 0.5) {
-                                    float[] rotations = getBlockRotations(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z);
-                                    em.setYaw(rotations[0]);
-                                    em.setPitch(rotations[1]);
-                                    blockBreaking = pos;
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-                blockBreaking = null;
-            } else {
-                if (blockBreaking != null) {
-                    if (mc.playerController.blockHitDelay > 1) {
-                        mc.playerController.blockHitDelay = 1;
-                    }
-                    mc.thePlayer.swingItem();
-                    EnumFacing direction = getFacingDirection(blockBreaking);
-                    if (direction != null) {
-                        mc.playerController.breakBlock(blockBreaking, direction);
-                    }
-                }
-            }
-        } else {
-            if(blockBreaking != null) {
-                drawESP(blockBreaking.getX(), blockBreaking.getY(), blockBreaking.getZ(), blockBreaking.getX() + 1, blockBreaking.getY() + 1, blockBreaking.getZ() + 1, 100, 100, 100);
-            }
-        }
-    }
-
-    public void drawESP(double x, double y, double z, double x2, double y2, double z2, double r, double g, double b) {
-        double x3 = x - RenderManager.renderPosX;
-        double y3 = y - RenderManager.renderPosY;
-        double z3 = z - RenderManager.renderPosZ;
-        double x4 = x2 - RenderManager.renderPosX;
-        double y4 = y2 - RenderManager.renderPosY;
-        drawFilledBBESP(new AxisAlignedBB(x3, y3, z3, x4, y4, z2 - RenderManager.renderPosZ), Colors.getColor(0,0,50,0));
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public static void drawFilledBox(AxisAlignedBB boundingBox) {
@@ -151,6 +95,62 @@ public class BedFucker extends Module {
         GL11.glVertex3d(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
         GL11.glVertex3d(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
         GL11.glEnd();
+    }
+
+    @Override
+    @RegisterEvent(events = {EventUpdate.class, EventRender3D.class})
+    public void onEvent(Event event) {
+        if (event instanceof EventUpdate) {
+            EventUpdate em = (EventUpdate) event;
+            if (em.isPre()) {
+                for (int y = 6; y >= -6; --y) {
+                    for (int x = -6; x <= 6; ++x) {
+                        for (int z = -6; z <= 6; ++z) {
+                            boolean uwot = x != 0 || z != 0;
+                            if (mc.thePlayer.isSneaking()) {
+                                uwot = !uwot;
+                            }
+                            if (uwot) {
+                                BlockPos pos = new BlockPos(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z);
+                                if (getFacingDirection(pos) != null && blockChecks(mc.theWorld.getBlockState(pos).getBlock()) && mc.thePlayer.getDistance(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z) < mc.playerController.getBlockReachDistance() - 0.5) {
+                                    float[] rotations = getBlockRotations(mc.thePlayer.posX + x, mc.thePlayer.posY + y, mc.thePlayer.posZ + z);
+                                    em.setYaw(rotations[0]);
+                                    em.setPitch(rotations[1]);
+                                    blockBreaking = pos;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                blockBreaking = null;
+            } else {
+                if (blockBreaking != null) {
+                    if (mc.playerController.blockHitDelay > 1) {
+                        mc.playerController.blockHitDelay = 1;
+                    }
+                    mc.thePlayer.swingItem();
+                    EnumFacing direction = getFacingDirection(blockBreaking);
+                    if (direction != null) {
+                        mc.playerController.breakBlock(blockBreaking, direction);
+                    }
+                }
+            }
+        } else {
+            if (blockBreaking != null) {
+                drawESP(blockBreaking.getX(), blockBreaking.getY(), blockBreaking.getZ(), blockBreaking.getX() + 1, blockBreaking.getY() + 1, blockBreaking.getZ() + 1, 100, 100, 100);
+            }
+        }
+    }
+
+    public void drawESP(double x, double y, double z, double x2, double y2, double z2, double r, double g, double b) {
+        double x3 = x - RenderManager.renderPosX;
+        double y3 = y - RenderManager.renderPosY;
+        double z3 = z - RenderManager.renderPosZ;
+        double x4 = x2 - RenderManager.renderPosX;
+        double y4 = y2 - RenderManager.renderPosY;
+        drawFilledBBESP(new AxisAlignedBB(x3, y3, z3, x4, y4, z2 - RenderManager.renderPosZ), Colors.getColor(0, 0, 50, 0));
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public void drawFilledBBESP(AxisAlignedBB axisalignedbb, int color) {

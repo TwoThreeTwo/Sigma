@@ -1,32 +1,26 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-
 import info.sigmaclient.gui.screen.impl.mainmenu.ClientMainMenu;
 import net.minecraft.client.resources.I18n;
 
-public class GuiMemoryErrorScreen extends GuiScreen
-{
+import java.io.IOException;
+
+public class GuiMemoryErrorScreen extends GuiScreen {
     private static final String __OBFID = "CL_00000702";
 
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
-    public void initGui()
-    {
+    public void initGui() {
         this.buttonList.clear();
         this.buttonList.add(new GuiOptionButton(0, this.width / 2 - 155, this.height / 4 + 120 + 12, I18n.format("gui.toMenu", new Object[0])));
         this.buttonList.add(new GuiOptionButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, I18n.format("menu.quit", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.id == 0)
-        {
+    protected void actionPerformed(GuiButton button) throws IOException {
+        if (button.id == 0) {
             this.mc.displayGuiScreen(new ClientMainMenu());
-        }
-        else if (button.id == 1)
-        {
+        } else if (button.id == 1) {
             this.mc.shutdown();
         }
     }
@@ -35,13 +29,13 @@ public class GuiMemoryErrorScreen extends GuiScreen
      * Fired when a key is typed (except F11 who toggle full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
      */
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {}
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    }
 
     /**
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, "Out of memory!", this.width / 2, this.height / 4 - 60 + 20, 16777215);
         this.drawString(this.fontRendererObj, "Minecraft has run out of memory.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);

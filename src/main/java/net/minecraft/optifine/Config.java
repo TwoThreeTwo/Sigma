@@ -1,34 +1,6 @@
 package net.minecraft.optifine;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import javax.imageio.ImageIO;
-
 import info.sigmaclient.Client;
-import info.sigmaclient.management.notifications.Notifications;
-import info.sigmaclient.util.misc.ChatUtil;
 import net.minecraft.client.LoadingScreenRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -50,12 +22,19 @@ import net.minecraft.world.WorldServer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.*;
 
 public class Config {
     public static final String OF_NAME = "OptiFine";
@@ -63,23 +42,6 @@ public class Config {
     public static final String OF_EDITION = "HD_U";
     public static final String OF_RELEASE = "B2";
     public static final String VERSION = "OptiFine_1.8_HD_U_B2";
-    private static String newRelease = null;
-    public static String openGlVersion = null;
-    public static String openGlRenderer = null;
-    public static String openGlVendor = null;
-    private static GameSettings gameSettings = null;
-    private static Minecraft minecraft = null;
-    private static boolean initialized = false;
-    private static Thread minecraftThread = null;
-    private static DisplayMode desktopDisplayMode = null;
-    private static int antialiasingLevel = 0;
-    private static int availableProcessors = 0;
-    public static boolean zoomMode = false;
-    private static int texturePackClouds = 0;
-    public static boolean waterOpacityChanged = false;
-    private static boolean fullscreenModeChecked = false;
-    private static boolean desktopModeChecked = false;
-    private static PrintStream systemOut = new PrintStream(new FileOutputStream(FileDescriptor.out));
     public static final Boolean DEF_FOG_FANCY = Boolean.valueOf(true);
     public static final Float DEF_FOG_START = Float.valueOf(0.2F);
     public static final Boolean DEF_OPTIMIZE_RENDER_DISTANCE = Boolean.valueOf(false);
@@ -92,6 +54,23 @@ public class Config {
     public static final Integer DEF_CHUNKS_LIMIT = Integer.valueOf(25);
     public static final Integer DEF_UPDATES_PER_FRAME = Integer.valueOf(3);
     public static final Boolean DEF_DYNAMIC_UPDATES = Boolean.valueOf(false);
+    public static String openGlVersion = null;
+    public static String openGlRenderer = null;
+    public static String openGlVendor = null;
+    public static boolean zoomMode = false;
+    public static boolean waterOpacityChanged = false;
+    private static String newRelease = null;
+    private static GameSettings gameSettings = null;
+    private static Minecraft minecraft = null;
+    private static boolean initialized = false;
+    private static Thread minecraftThread = null;
+    private static DisplayMode desktopDisplayMode = null;
+    private static int antialiasingLevel = 0;
+    private static int availableProcessors = 0;
+    private static int texturePackClouds = 0;
+    private static boolean fullscreenModeChecked = false;
+    private static boolean desktopModeChecked = false;
+    private static PrintStream systemOut = new PrintStream(new FileOutputStream(FileDescriptor.out));
     private static long lastActionTime = System.currentTimeMillis();
 
     public static String getVersion() {

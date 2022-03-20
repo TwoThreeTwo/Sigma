@@ -1,20 +1,22 @@
 package info.sigmaclient.module.impl.movement;
 
 import info.sigmaclient.event.Event;
+import info.sigmaclient.event.RegisterEvent;
+import info.sigmaclient.event.impl.EventMove;
 import info.sigmaclient.event.impl.EventUpdate;
+import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.PlayerUtil;
-import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.event.impl.EventMove;
-import info.sigmaclient.module.Module;
 
 public class LongJump extends Module {
 
+    private final String BOOST = "BOOST";
     private String OFF = "TOGGLE";
-
     private boolean wasOnGround;
-
+    private double speed;
+    private boolean onGroundLastTick;
+    private double distance;
     public LongJump(ModuleData data) {
         super(data);
         settings.put(BOOST, new Setting<>(BOOST, 3, "Boost speed.", 0.1, 3, 5));
@@ -31,12 +33,6 @@ public class LongJump extends Module {
         distance = 0.0;
         wasOnGround = false;
     }
-
-    private double speed;
-    private boolean onGroundLastTick;
-    private double distance;
-
-    private final String BOOST = "BOOST";
 
     @Override
     @RegisterEvent(events = {EventMove.class, EventUpdate.class})

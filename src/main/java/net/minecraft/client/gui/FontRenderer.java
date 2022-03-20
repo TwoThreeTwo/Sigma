@@ -3,18 +3,6 @@ package net.minecraft.client.gui;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
-
 import info.sigmaclient.Client;
 import info.sigmaclient.module.impl.other.StreamerMode;
 import net.minecraft.client.Minecraft;
@@ -32,117 +20,104 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+
 import static info.sigmaclient.util.MinecraftUtil.mc;
 
 public class FontRenderer implements IResourceManagerReloadListener {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
-
+    private static final String __OBFID = "CL_00000660";
     /**
-     * Array of width of all the characters in default.png
+     * The RenderEngine used to load and setup glyph textures.
      */
-    private float[] charWidth = new float[256];
-
+    private final TextureManager renderEngine;
     /**
      * the height in pixels of default text
      */
     public int FONT_HEIGHT = 9;
     public Random fontRandom = new Random();
-
-    /**
-     * Array of the start/end column (in upper/lower nibble) for every glyph in
-     * the /font directory.
-     */
-    private byte[] glyphWidth = new byte[65536];
-
     /**
      * Array of RGB triplets defining the 16 standard chat colors followed by 16
      * darker version of the same colors for drop shadows.
      */
     public int[] colorCode = new int[32];
-    private ResourceLocation locationFontTexture;
-
+    public GameSettings gameSettings;
+    public ResourceLocation locationFontTextureBase;
+    public boolean enabled = true;
+    public float scaleFactor = 1.0F;
     /**
-     * The RenderEngine used to load and setup glyph textures.
+     * Array of width of all the characters in default.png
      */
-    private final TextureManager renderEngine;
-
+    private float[] charWidth = new float[256];
+    /**
+     * Array of the start/end column (in upper/lower nibble) for every glyph in
+     * the /font directory.
+     */
+    private byte[] glyphWidth = new byte[65536];
+    private ResourceLocation locationFontTexture;
     /**
      * Current X coordinate at which to draw the next character.
      */
     private float posX;
-
     /**
      * Current Y coordinate at which to draw the next character.
      */
     private float posY;
-
     /**
      * If true, strings should be rendered with Unicode fonts instead of the
      * default.png font
      */
     private boolean unicodeFlag;
-
     /**
      * If true, the Unicode Bidirectional Algorithm should be run before
      * rendering any string.
      */
     private boolean bidiFlag;
-
     /**
      * Used to specify new red value for the current color.
      */
     private float red;
-
     /**
      * Used to specify new blue value for the current color.
      */
     private float blue;
-
     /**
      * Used to specify new green value for the current color.
      */
     private float green;
-
     /**
      * Used to speify new alpha value for the current color.
      */
     private float alpha;
-
     /**
      * Text color of the currently rendering string.
      */
     private int textColor;
-
     /**
      * Set if the "k" style (random) is active in currently rendering string
      */
     private boolean randomStyle;
-
     /**
      * Set if the "l" style (bold) is active in currently rendering string
      */
     private boolean boldStyle;
-
     /**
      * Set if the "o" style (italic) is active in currently rendering string
      */
     private boolean italicStyle;
-
     /**
      * Set if the "n" style (underlined) is active in currently rendering string
      */
     private boolean underlineStyle;
-
     /**
      * Set if the "m" style (strikethrough) is active in currently rendering
      * string
      */
     private boolean strikethroughStyle;
-    private static final String __OBFID = "CL_00000660";
-    public GameSettings gameSettings;
-    public ResourceLocation locationFontTextureBase;
-    public boolean enabled = true;
-    public float scaleFactor = 1.0F;
 
     public FontRenderer(GameSettings p_i1035_1_, ResourceLocation p_i1035_2_, TextureManager p_i1035_3_, boolean p_i1035_4_) {
         this.gameSettings = p_i1035_1_;
@@ -182,6 +157,66 @@ public class FontRenderer implements IResourceManagerReloadListener {
         }
 
         this.readGlyphSizes();
+    }
+
+    /**
+     * Checks if the char code is a hexadecimal character, used to set colour.
+     */
+    private static boolean isFormatColor(char colorChar) {
+        return colorChar >= 48 && colorChar <= 57 || colorChar >= 97 && colorChar <= 102 || colorChar >= 65 && colorChar <= 70;
+    }
+
+    /**
+     * Checks if the char code is O-K...lLrRk-o... used to set special
+     * formatting.
+     */
+    private static boolean isFormatSpecial(char formatChar) {
+        return formatChar >= 107 && formatChar <= 111 || formatChar >= 75 && formatChar <= 79 || formatChar == 114 || formatChar == 82;
+    }
+
+    /**
+     * Digests a string for nonprinting formatting characters then returns a
+     * string containing only that formatting.
+     */
+    public static String getFormatFromString(String p_78282_0_) {
+        String var1 = "";
+        int var2 = -1;
+        int var3 = p_78282_0_.length();
+
+        while ((var2 = p_78282_0_.indexOf(167, var2 + 1)) != -1) {
+            if (var2 < var3 - 1) {
+                char var4 = p_78282_0_.charAt(var2 + 1);
+
+                if (isFormatColor(var4)) {
+                    var1 = "\u00a7" + var4;
+                } else if (isFormatSpecial(var4)) {
+                    var1 = var1 + "\u00a7" + var4;
+                }
+            }
+        }
+
+        return var1;
+    }
+
+    private static ResourceLocation getHdFontLocation(ResourceLocation fontLoc) {
+        if (!Config.isCustomFonts()) {
+            return fontLoc;
+        } else if (fontLoc == null) {
+            return fontLoc;
+        } else {
+            String fontName = fontLoc.getResourcePath();
+            String texturesStr = "textures/";
+            String mcpatcherStr = "mcpatcher/";
+
+            if (!fontName.startsWith(texturesStr)) {
+                return fontLoc;
+            } else {
+                fontName = fontName.substring(texturesStr.length());
+                fontName = mcpatcherStr + fontName;
+                ResourceLocation fontLocHD = new ResourceLocation(fontLoc.getResourceDomain(), fontName);
+                return Config.hasResource(Config.getResourceManager(), fontLocHD) ? fontLocHD : fontLoc;
+            }
+        }
     }
 
     public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -368,15 +403,15 @@ public class FontRenderer implements IResourceManagerReloadListener {
 
             for (String str : StreamerMode.strings) {
                 if (text.contains(str)) {
-                    text = text.replaceAll(str,"\247k" + str + "\247r");
+                    text = text.replaceAll(str, "\247k" + str + "\247r");
                     break;
                 }
             }
-            for(Object o : mc.theWorld.playerEntities) {
-                if(o instanceof EntityPlayer && o != mc.thePlayer) {
-                    EntityPlayer ent = (EntityPlayer)o;
+            for (Object o : mc.theWorld.playerEntities) {
+                if (o instanceof EntityPlayer && o != mc.thePlayer) {
+                    EntityPlayer ent = (EntityPlayer) o;
                     if (text.contains(ent.getName())) {
-                        text = text.replaceAll(ent.getName(),"\247k" + ent.getName() + "\247r");
+                        text = text.replaceAll(ent.getName(), "\247k" + ent.getName() + "\247r");
                         break;
                     }
                 }
@@ -770,14 +805,6 @@ public class FontRenderer implements IResourceManagerReloadListener {
     }
 
     /**
-     * Set unicodeFlag controlling whether strings should be rendered with
-     * Unicode fonts instead of the default.png font.
-     */
-    public void setUnicodeFlag(boolean p_78264_1_) {
-        this.unicodeFlag = p_78264_1_;
-    }
-
-    /**
      * Get unicodeFlag controlling whether strings should be rendered with
      * Unicode fonts instead of the default.png font.
      */
@@ -786,11 +813,11 @@ public class FontRenderer implements IResourceManagerReloadListener {
     }
 
     /**
-     * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be
-     * run before rendering any string.
+     * Set unicodeFlag controlling whether strings should be rendered with
+     * Unicode fonts instead of the default.png font.
      */
-    public void setBidiFlag(boolean p_78275_1_) {
-        this.bidiFlag = p_78275_1_;
+    public void setUnicodeFlag(boolean p_78264_1_) {
+        this.unicodeFlag = p_78264_1_;
     }
 
     /**
@@ -878,50 +905,19 @@ public class FontRenderer implements IResourceManagerReloadListener {
     }
 
     /**
-     * Checks if the char code is a hexadecimal character, used to set colour.
-     */
-    private static boolean isFormatColor(char colorChar) {
-        return colorChar >= 48 && colorChar <= 57 || colorChar >= 97 && colorChar <= 102 || colorChar >= 65 && colorChar <= 70;
-    }
-
-    /**
-     * Checks if the char code is O-K...lLrRk-o... used to set special
-     * formatting.
-     */
-    private static boolean isFormatSpecial(char formatChar) {
-        return formatChar >= 107 && formatChar <= 111 || formatChar >= 75 && formatChar <= 79 || formatChar == 114 || formatChar == 82;
-    }
-
-    /**
-     * Digests a string for nonprinting formatting characters then returns a
-     * string containing only that formatting.
-     */
-    public static String getFormatFromString(String p_78282_0_) {
-        String var1 = "";
-        int var2 = -1;
-        int var3 = p_78282_0_.length();
-
-        while ((var2 = p_78282_0_.indexOf(167, var2 + 1)) != -1) {
-            if (var2 < var3 - 1) {
-                char var4 = p_78282_0_.charAt(var2 + 1);
-
-                if (isFormatColor(var4)) {
-                    var1 = "\u00a7" + var4;
-                } else if (isFormatSpecial(var4)) {
-                    var1 = var1 + "\u00a7" + var4;
-                }
-            }
-        }
-
-        return var1;
-    }
-
-    /**
      * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should
      * be run before rendering any string
      */
     public boolean getBidiFlag() {
         return this.bidiFlag;
+    }
+
+    /**
+     * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be
+     * run before rendering any string.
+     */
+    public void setBidiFlag(boolean p_78275_1_) {
+        this.bidiFlag = p_78275_1_;
     }
 
     public int func_175064_b(char p_175064_1_) {
@@ -972,27 +968,6 @@ public class FontRenderer implements IResourceManagerReloadListener {
                 ;
             } catch (IOException var16) {
                 var16.printStackTrace();
-            }
-        }
-    }
-
-    private static ResourceLocation getHdFontLocation(ResourceLocation fontLoc) {
-        if (!Config.isCustomFonts()) {
-            return fontLoc;
-        } else if (fontLoc == null) {
-            return fontLoc;
-        } else {
-            String fontName = fontLoc.getResourcePath();
-            String texturesStr = "textures/";
-            String mcpatcherStr = "mcpatcher/";
-
-            if (!fontName.startsWith(texturesStr)) {
-                return fontLoc;
-            } else {
-                fontName = fontName.substring(texturesStr.length());
-                fontName = mcpatcherStr + fontName;
-                ResourceLocation fontLocHD = new ResourceLocation(fontLoc.getResourceDomain(), fontName);
-                return Config.hasResource(Config.getResourceManager(), fontLocHD) ? fontLocHD : fontLoc;
             }
         }
     }

@@ -19,13 +19,13 @@ public class UpgradeManager {
 
         //Check if there are any saved player mods
         /*
-        * if(fileExists) {
-        *   loadModels();
-        * } else {
-        *   creatModelsFile();
-        * }
-        *
-        * */
+         * if(fileExists) {
+         *   loadModels();
+         * } else {
+         *   creatModelsFile();
+         * }
+         *
+         * */
 
     }
 

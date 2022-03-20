@@ -1,12 +1,12 @@
 package info.sigmaclient.management.command.impl;
 
+import info.sigmaclient.Client;
 import info.sigmaclient.event.Event;
+import info.sigmaclient.management.command.Command;
 import info.sigmaclient.management.notifications.Notifications;
+import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.Options;
 import info.sigmaclient.module.data.Setting;
-import info.sigmaclient.Client;
-import info.sigmaclient.management.command.Command;
-import info.sigmaclient.module.Module;
 import info.sigmaclient.util.StringConversions;
 import info.sigmaclient.util.misc.ChatUtil;
 

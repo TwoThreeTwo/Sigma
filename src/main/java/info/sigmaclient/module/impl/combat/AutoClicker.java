@@ -7,8 +7,8 @@ package info.sigmaclient.module.impl.combat;
 
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.event.impl.EventMouse;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Setting;
@@ -21,6 +21,13 @@ import org.lwjgl.input.Mouse;
  */
 public class AutoClicker extends Module {
 
+    public static final String DELAY = "DELAY";
+    public static final String RANDOM = "RANDOM";
+    public static final String MIN = "MINRAND";
+    public static final String MAX = "MAXRAND";
+    public static final String MOUSE = "ON-MOUSE";
+    public EntityLivingBase targ;
+    Timer timer = new Timer();
     /**
      * @param data
      */
@@ -33,20 +40,11 @@ public class AutoClicker extends Module {
         settings.put(MOUSE, new Setting<>(MOUSE, true, "Click when mouse is held down."));
     }
 
-    public static final String DELAY = "DELAY";
-    public static final String RANDOM = "RANDOM";
-    public static final String MIN = "MINRAND";
-    public static final String MAX = "MAXRAND";
-    public static final String MOUSE = "ON-MOUSE";
-
-    public EntityLivingBase targ;
-    Timer timer = new Timer();
-
-	/*
+    /*
      * (non-Javadoc)
-	 * 
-	 * @see EventListener#onEvent(Event)
-	 */
+     *
+     * @see EventListener#onEvent(Event)
+     */
 
     public static int randomNumber(int max, int min) {
         // Random rand = new Random();

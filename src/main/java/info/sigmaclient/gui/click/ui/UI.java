@@ -7,8 +7,7 @@ import net.minecraft.client.Minecraft;
 /**
  * Created by cool1 on 1/21/2017.
  */
-public abstract class UI
-{
+public abstract class UI {
 
     public Minecraft g = Minecraft.getMinecraft();
 

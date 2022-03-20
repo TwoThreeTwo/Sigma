@@ -8,24 +8,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockCompressedPowered extends BlockCompressed {
-	private static final String __OBFID = "CL_00000287";
+    private static final String __OBFID = "CL_00000287";
 
-	public BlockCompressedPowered(MapColor p_i45416_1_) {
-		super(p_i45416_1_);
-		setCreativeTab(CreativeTabs.tabRedstone);
-	}
+    public BlockCompressedPowered(MapColor p_i45416_1_) {
+        super(p_i45416_1_);
+        setCreativeTab(CreativeTabs.tabRedstone);
+    }
 
-	/**
-	 * Can this block provide power. Only wire currently seems to have this
-	 * change based on its state.
-	 */
-	@Override
-	public boolean canProvidePower() {
-		return true;
-	}
+    /**
+     * Can this block provide power. Only wire currently seems to have this
+     * change based on its state.
+     */
+    @Override
+    public boolean canProvidePower() {
+        return true;
+    }
 
-	@Override
-	public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
-		return 15;
-	}
+    @Override
+    public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
+        return 15;
+    }
 }

@@ -24,21 +24,13 @@ public class ColorObject {
         return red;
     }
 
-    public int getGreen() {
-        return green;
-    }
-
-    public int getBlue() {
-        return blue;
-    }
-
-    public int getAlpha() {
-        return alpha;
-    }
-
     public void setRed(int red) {
         this.red = red;
         Color.saveStatus();
+    }
+
+    public int getGreen() {
+        return green;
     }
 
     public void setGreen(int green) {
@@ -46,9 +38,17 @@ public class ColorObject {
         Color.saveStatus();
     }
 
+    public int getBlue() {
+        return blue;
+    }
+
     public void setBlue(int blue) {
         this.blue = blue;
         Color.saveStatus();
+    }
+
+    public int getAlpha() {
+        return alpha;
     }
 
     public void setAlpha(int alpha) {
@@ -57,7 +57,7 @@ public class ColorObject {
     }
 
     public int getColorInt() {
-        return Colors.getColor(red,green,blue,alpha);
+        return Colors.getColor(red, green, blue, alpha);
     }
 
     public void updateColors(int red, int green, int blue, int alpha) {

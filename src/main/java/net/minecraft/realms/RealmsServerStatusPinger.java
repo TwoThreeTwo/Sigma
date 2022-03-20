@@ -1,11 +1,6 @@
 package net.minecraft.realms;
 
 import com.google.common.collect.Lists;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.ServerStatusResponse;
@@ -20,87 +15,93 @@ import net.minecraft.util.IChatComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 public class RealmsServerStatusPinger {
-	private static final Logger LOGGER = LogManager.getLogger();
-	private final List connections = Collections.synchronizedList(Lists.newArrayList());
-	private static final String __OBFID = "CL_00001854";
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String __OBFID = "CL_00001854";
+    private final List connections = Collections.synchronizedList(Lists.newArrayList());
 
-	public void pingServer(final String p_pingServer_1_, final RealmsServerPing p_pingServer_2_) throws UnknownHostException {
-		if (p_pingServer_1_ != null && !p_pingServer_1_.startsWith("0.0.0.0") && !p_pingServer_1_.isEmpty()) {
-			RealmsServerAddress var3 = RealmsServerAddress.parseString(p_pingServer_1_);
-			final NetworkManager var4 = NetworkManager.provideLanClient(InetAddress.getByName(var3.getHost()), var3.getPort());
-			connections.add(var4);
-			var4.setNetHandler(new INetHandlerStatusClient() {
-				private boolean field_154345_e = false;
-				private static final String __OBFID = "CL_00001807";
+    public void pingServer(final String p_pingServer_1_, final RealmsServerPing p_pingServer_2_) throws UnknownHostException {
+        if (p_pingServer_1_ != null && !p_pingServer_1_.startsWith("0.0.0.0") && !p_pingServer_1_.isEmpty()) {
+            RealmsServerAddress var3 = RealmsServerAddress.parseString(p_pingServer_1_);
+            final NetworkManager var4 = NetworkManager.provideLanClient(InetAddress.getByName(var3.getHost()), var3.getPort());
+            connections.add(var4);
+            var4.setNetHandler(new INetHandlerStatusClient() {
+                private static final String __OBFID = "CL_00001807";
+                private boolean field_154345_e = false;
 
-				@Override
-				public void handleServerInfo(S00PacketServerInfo packetIn) {
-					ServerStatusResponse var2 = packetIn.func_149294_c();
+                @Override
+                public void handleServerInfo(S00PacketServerInfo packetIn) {
+                    ServerStatusResponse var2 = packetIn.func_149294_c();
 
-					if (var2.getPlayerCountData() != null) {
-						p_pingServer_2_.nrOfPlayers = String.valueOf(var2.getPlayerCountData().getOnlinePlayerCount());
-					}
+                    if (var2.getPlayerCountData() != null) {
+                        p_pingServer_2_.nrOfPlayers = String.valueOf(var2.getPlayerCountData().getOnlinePlayerCount());
+                    }
 
-					var4.sendPacket(new C01PacketPing(Realms.currentTimeMillis()));
-					field_154345_e = true;
-				}
+                    var4.sendPacket(new C01PacketPing(Realms.currentTimeMillis()));
+                    field_154345_e = true;
+                }
 
-				@Override
-				public void handlePong(S01PacketPong packetIn) {
-					var4.closeChannel(new ChatComponentText("Finished"));
-				}
+                @Override
+                public void handlePong(S01PacketPong packetIn) {
+                    var4.closeChannel(new ChatComponentText("Finished"));
+                }
 
-				@Override
-				public void onDisconnect(IChatComponent reason) {
-					if (!field_154345_e) {
-						RealmsServerStatusPinger.LOGGER.error("Can\'t ping " + p_pingServer_1_ + ": " + reason.getUnformattedText());
-					}
-				}
-			});
+                @Override
+                public void onDisconnect(IChatComponent reason) {
+                    if (!field_154345_e) {
+                        RealmsServerStatusPinger.LOGGER.error("Can\'t ping " + p_pingServer_1_ + ": " + reason.getUnformattedText());
+                    }
+                }
+            });
 
-			try {
-				var4.sendPacket(new C00Handshake(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION, var3.getHost(), var3.getPort(), EnumConnectionState.STATUS));
-				var4.sendPacket(new C00PacketServerQuery());
-			} catch (Throwable var6) {
-				RealmsServerStatusPinger.LOGGER.error(var6);
-			}
-		}
-	}
+            try {
+                var4.sendPacket(new C00Handshake(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION, var3.getHost(), var3.getPort(), EnumConnectionState.STATUS));
+                var4.sendPacket(new C00PacketServerQuery());
+            } catch (Throwable var6) {
+                RealmsServerStatusPinger.LOGGER.error(var6);
+            }
+        }
+    }
 
-	public void tick() {
-		List var1 = connections;
+    public void tick() {
+        List var1 = connections;
 
-		synchronized (connections) {
-			Iterator var2 = connections.iterator();
+        synchronized (connections) {
+            Iterator var2 = connections.iterator();
 
-			while (var2.hasNext()) {
-				NetworkManager var3 = (NetworkManager) var2.next();
+            while (var2.hasNext()) {
+                NetworkManager var3 = (NetworkManager) var2.next();
 
-				if (var3.isChannelOpen()) {
-					var3.processReceivedPackets();
-				} else {
-					var2.remove();
-					var3.checkDisconnected();
-				}
-			}
-		}
-	}
+                if (var3.isChannelOpen()) {
+                    var3.processReceivedPackets();
+                } else {
+                    var2.remove();
+                    var3.checkDisconnected();
+                }
+            }
+        }
+    }
 
-	public void removeAll() {
-		List var1 = connections;
+    public void removeAll() {
+        List var1 = connections;
 
-		synchronized (connections) {
-			Iterator var2 = connections.iterator();
+        synchronized (connections) {
+            Iterator var2 = connections.iterator();
 
-			while (var2.hasNext()) {
-				NetworkManager var3 = (NetworkManager) var2.next();
+            while (var2.hasNext()) {
+                NetworkManager var3 = (NetworkManager) var2.next();
 
-				if (var3.isChannelOpen()) {
-					var2.remove();
-					var3.closeChannel(new ChatComponentText("Cancelled"));
-				}
-			}
-		}
-	}
+                if (var3.isChannelOpen()) {
+                    var2.remove();
+                    var3.closeChannel(new ChatComponentText("Cancelled"));
+                }
+            }
+        }
+    }
 }

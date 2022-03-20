@@ -4,21 +4,22 @@ package info.sigmaclient.util.render;
  * Created by cool1 on 1/16/2017.
  */
 
-import net.minecraft.client.*;
-import net.minecraft.client.shader.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.*;
 
 import java.util.HashMap;
 
 public final class Stencil {
     private static final Stencil INSTANCE;
-    private final HashMap<Integer, StencilFunc> stencilFuncs;
-    private int layers;
-    private boolean renderMask;
 
     static {
         INSTANCE = new Stencil();
     }
+
+    private final HashMap<Integer, StencilFunc> stencilFuncs;
+    private int layers;
+    private boolean renderMask;
 
     public Stencil() {
         this.stencilFuncs = new HashMap<Integer, StencilFunc>();
@@ -27,10 +28,6 @@ public final class Stencil {
 
     public static Stencil getInstance() {
         return Stencil.INSTANCE;
-    }
-
-    public void setRenderMask(final boolean renderMask) {
-        this.renderMask = renderMask;
     }
 
     public static void checkSetupFBO() {
@@ -53,6 +50,10 @@ public final class Stencil {
         EXTFramebufferObject.glRenderbufferStorageEXT(36161, 34041, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
         EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36128, 36161, stencil_depth_buffer_ID);
         EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36096, 36161, stencil_depth_buffer_ID);
+    }
+
+    public void setRenderMask(final boolean renderMask) {
+        this.renderMask = renderMask;
     }
 
     public void startLayer() {
@@ -107,14 +108,14 @@ public final class Stencil {
         this.setStencilFunc(new StencilFunc(this, 514, this.layers, this.getMaximumLayers(), 7680, 7680, 7680));
     }
 
+    public StencilFunc getStencilFunc() {
+        return this.stencilFuncs.get(this.layers);
+    }
+
     public void setStencilFunc(final StencilFunc stencilFunc) {
         GL11.glStencilFunc(StencilFunc.func_func, StencilFunc.func_ref, StencilFunc.func_mask);
         GL11.glStencilOp(StencilFunc.op_fail, StencilFunc.op_zfail, StencilFunc.op_zpass);
         this.stencilFuncs.put(this.layers, stencilFunc);
-    }
-
-    public StencilFunc getStencilFunc() {
-        return this.stencilFuncs.get(this.layers);
     }
 
     public int getLayer() {

@@ -10,23 +10,22 @@ import net.minecraft.util.BlockPos;
 
 /**
  * @author cool1
- *
  */
 public class EventDamageBlock extends Event {
 
-	private BlockPos currentBlock;
+    private BlockPos currentBlock;
 
-	public void fire(BlockPos b) {
-		setCurrentBlock(b);
-		super.fire();
-	}
+    public void fire(BlockPos b) {
+        setCurrentBlock(b);
+        super.fire();
+    }
 
-	public BlockPos getCurrentBlock() {
-		return this.currentBlock;
-	}
+    public BlockPos getCurrentBlock() {
+        return this.currentBlock;
+    }
 
-	public void setCurrentBlock(BlockPos currentBlock) {
-		this.currentBlock = currentBlock;
-	}
+    public void setCurrentBlock(BlockPos currentBlock) {
+        this.currentBlock = currentBlock;
+    }
 
 }

@@ -3,9 +3,9 @@ package info.sigmaclient.module.impl.movement;
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventBlockBounds;
-import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.event.impl.EventPacket;
 import info.sigmaclient.event.impl.EventPushBlock;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Options;
@@ -19,16 +19,17 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 
+import java.util.Objects;
+
 /*
  * Created by cool1 on 1/17/2017.
  */
 
 public class Phase extends Module {
 
+    private final String PM = "MODE";
+    private final String DIST = "DIST";
     private int delay;
-
-    private String PM = "MODE";
-    private String DIST = "DIST";
 
     public Phase(ModuleData data) {
         super(data);
@@ -82,7 +83,7 @@ public class Phase extends Module {
         }
         if (event instanceof EventUpdate) {
             EventUpdate em = (EventUpdate) event;
-            if (em.isPre() && currentPhase == "HCF" && isInsideBlock() && mc.thePlayer.isSneaking()) {
+            if (em.isPre() && Objects.equals(currentPhase, "HCF") && isInsideBlock() && mc.thePlayer.isSneaking()) {
                 final float yaw = mc.thePlayer.rotationYaw;
                 float sped = ((Number) settings.get(DIST).getValue()).floatValue();
                 mc.thePlayer.boundingBox.offsetAndUpdate(sped * Math.cos(Math.toRadians(yaw + 90.0f)), 0.0, sped * Math.sin(Math.toRadians(yaw + 90.0f)));

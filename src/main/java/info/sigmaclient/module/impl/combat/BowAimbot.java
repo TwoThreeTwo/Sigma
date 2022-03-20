@@ -5,20 +5,20 @@
  */
 package info.sigmaclient.module.impl.combat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import info.sigmaclient.event.Event;
-import info.sigmaclient.event.impl.EventPacket;
-import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.event.RegisterEvent;
+import info.sigmaclient.event.impl.EventPacket;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.management.friend.FriendManager;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.util.RotationUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author cool1

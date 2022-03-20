@@ -1,12 +1,12 @@
 package info.sigmaclient.management.command.impl;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.event.impl.EventPacket;
-import info.sigmaclient.util.Timer;
 import info.sigmaclient.event.EventSystem;
 import info.sigmaclient.event.RegisterEvent;
+import info.sigmaclient.event.impl.EventPacket;
 import info.sigmaclient.management.command.Command;
 import info.sigmaclient.util.NetUtil;
+import info.sigmaclient.util.Timer;
 import info.sigmaclient.util.misc.ChatUtil;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.server.S3APacketTabComplete;
@@ -16,11 +16,11 @@ import net.minecraft.network.play.server.S3APacketTabComplete;
  */
 public class PluginFinder extends Command {
 
+    private Timer timer = new Timer();
+
     public PluginFinder(String[] names, String description) {
         super(names, description);
     }
-
-    private Timer timer = new Timer();
 
     @Override
     public void fire(String[] args) {

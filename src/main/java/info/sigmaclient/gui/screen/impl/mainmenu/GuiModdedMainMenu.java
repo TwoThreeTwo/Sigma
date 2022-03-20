@@ -33,6 +33,9 @@ public class GuiModdedMainMenu extends ClientMainMenu {
     private String SESSION_STATUS = "Sessions status \2477- \247fChecking...";
     private String WEBSITE_STATUS = "Website status \2477- \247fChecking...";
     private String AUTH_STATUS = "Auth status \2477- \247fChecking...";
+    private GuiTextField usernameField;
+    private ResourceLocation background = new ResourceLocation("textures/mainmenubackground.png");
+    private float currentX, targetX, currentY, targetY;
 
     @Override
     public void initGui() {
@@ -105,8 +108,6 @@ public class GuiModdedMainMenu extends ClientMainMenu {
         }).start();
     }
 
-    private GuiTextField usernameField;
-
     @Override
     protected void keyTyped(final char par1, final int par2) {
         usernameField.textboxKeyTyped(par1, par2);
@@ -122,7 +123,7 @@ public class GuiModdedMainMenu extends ClientMainMenu {
 
     @Override
     protected void mouseClicked(final int par1, final int par2, final int par3) {
-        if(usernameField.isEnabled())
+        if (usernameField.isEnabled())
             usernameField.mouseClicked(par1, par2, par3);
         try {
             super.mouseClicked(par1, par2, par3);
@@ -151,10 +152,6 @@ public class GuiModdedMainMenu extends ClientMainMenu {
             }
         }
     }
-
-    private ResourceLocation background = new ResourceLocation("textures/mainmenubackground.png");
-
-    private float currentX, targetX, currentY, targetY;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -220,9 +217,9 @@ public class GuiModdedMainMenu extends ClientMainMenu {
         TTFFontRenderer tFont = Client.fm.getFont("SFL 8");
         changeLog.sort(Comparator.comparingDouble(tFont::getWidth));
         Collections.reverse(changeLog);
-        tFont.drawStringWithShadow("--- " + Client.version + " ChangeLog ---", width - tFont.getWidth("--- " + Client.version + " ChangeLog ---"),3,-1);
+        tFont.drawStringWithShadow("--- " + Client.version + " ChangeLog ---", width - tFont.getWidth("--- " + Client.version + " ChangeLog ---"), 3, -1);
         int y = 13;
-        for(String string : changeLog) {
+        for (String string : changeLog) {
             float strWidth = tFont.getWidth(string);
             tFont.drawStringWithShadow(string, width - strWidth, y, -1);
             y += 10;

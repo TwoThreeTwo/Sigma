@@ -9,45 +9,45 @@ import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.LockCode;
 
 public abstract class TileEntityLockable extends TileEntity implements IInteractionObject, ILockableContainer {
-	private LockCode code;
-	private static final String __OBFID = "CL_00002040";
+    private static final String __OBFID = "CL_00002040";
+    private LockCode code;
 
-	public TileEntityLockable() {
-		code = LockCode.EMPTY_CODE;
-	}
+    public TileEntityLockable() {
+        code = LockCode.EMPTY_CODE;
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		code = LockCode.fromNBT(compound);
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        code = LockCode.fromNBT(compound);
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
 
-		if (code != null) {
-			code.toNBT(compound);
-		}
-	}
+        if (code != null) {
+            code.toNBT(compound);
+        }
+    }
 
-	@Override
-	public boolean isLocked() {
-		return code != null && !code.isEmpty();
-	}
+    @Override
+    public boolean isLocked() {
+        return code != null && !code.isEmpty();
+    }
 
-	@Override
-	public LockCode getLockCode() {
-		return code;
-	}
+    @Override
+    public LockCode getLockCode() {
+        return code;
+    }
 
-	@Override
-	public void setLockCode(LockCode code) {
-		this.code = code;
-	}
+    @Override
+    public void setLockCode(LockCode code) {
+        this.code = code;
+    }
 
-	@Override
-	public IChatComponent getDisplayName() {
-		return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
-	}
+    @Override
+    public IChatComponent getDisplayName() {
+        return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+    }
 }

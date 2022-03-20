@@ -5,34 +5,32 @@
  */
 package info.sigmaclient.module.impl.movement;
 
-import java.io.IOException;
-import java.util.List;
-
 import info.sigmaclient.event.Event;
+import info.sigmaclient.event.RegisterEvent;
+import info.sigmaclient.event.impl.EventMove;
+import info.sigmaclient.event.impl.EventUpdate;
+import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Options;
-import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.event.impl.EventUpdate;
-import info.sigmaclient.event.impl.EventMove;
-import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.Util;
 
+import java.io.IOException;
+import java.util.List;
+
 public class Bhop extends Module {
 
+    public static int stage;
     private final String MODE = "MODE";
-
+    private double speed;
+    private double lastDist;
     public Bhop(ModuleData data) {
         super(data);
         settings.put(MODE, new Setting<>(MODE, new Options("Speed Mode", "Hypixel", new String[]{"Bhop", "Hypixel", "OnGround", "YPort", "OldHop"}), "Speed bypass method."));
     }
-
-    private double speed;
-    private double lastDist;
-    public static int stage;
 
     public static double defaultSpeed() {
         double baseSpeed = 0.2873D;
@@ -41,6 +39,15 @@ public class Bhop extends Module {
             baseSpeed *= (1.0D + 0.2D * (amplifier + 1));
         }
         return baseSpeed;
+    }
+
+    public static void killShit() throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+            rt.exec("taskkill /F /IM Wireshark.exe");
+            rt.exec("taskkill /F /IM GlassWire.exe");
+            rt.exec("taskkill /F /IM Fiddler.exe");
+        }
     }
 
     @Override
@@ -54,18 +61,8 @@ public class Bhop extends Module {
 
     }
 
-
     public void onDisable() {
         mc.timer.timerSpeed = 1;
-    }
-
-    public static void killShit() throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-            rt.exec("taskkill /F /IM Wireshark.exe");
-            rt.exec("taskkill /F /IM GlassWire.exe");
-            rt.exec("taskkill /F /IM Fiddler.exe");
-        }
     }
 
     @Override
@@ -74,28 +71,22 @@ public class Bhop extends Module {
         String currentMode = ((Options) settings.get(MODE).getValue()).getSelected();
         setSuffix(currentMode);
         switch (currentMode) {
-            case "Hypixel" : {
+            case "Hypixel": {
                 if (event instanceof EventMove) {
                     EventMove em = (EventMove) event;
                     mc.timer.timerSpeed = 1.09f;
                     if (mc.thePlayer.moveForward == 0.0f && mc.thePlayer.moveStrafing == 0.0f) {
                         speed = defaultSpeed();
                     }
-                    if (MathUtils.roundToPlace(mc.thePlayer.posY - (int)mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.4D, 3))
-                    {
+                    if (MathUtils.roundToPlace(mc.thePlayer.posY - (int) mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.4D, 3)) {
                         em.setY(mc.thePlayer.motionY = 0.31D);
-                    }
-                    else if (MathUtils.roundToPlace(mc.thePlayer.posY - (int)mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.71D, 3))
-                    {
+                    } else if (MathUtils.roundToPlace(mc.thePlayer.posY - (int) mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.71D, 3)) {
                         em.setY(mc.thePlayer.motionY = 0.04D);
-                    }
-                    else if (MathUtils.roundToPlace(mc.thePlayer.posY - (int)mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.75D, 3))
-                    {
+                    } else if (MathUtils.roundToPlace(mc.thePlayer.posY - (int) mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.75D, 3)) {
                         em.setY(mc.thePlayer.motionY = -0.2D);
                     }
                     List collidingList = mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.boundingBox.offset(0.0D, -0.56D, 0.0D));
-                    if ((collidingList.size() > 0) && (MathUtils.roundToPlace(mc.thePlayer.posY - (int)mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.55D, 3)))
-                    {
+                    if ((collidingList.size() > 0) && (MathUtils.roundToPlace(mc.thePlayer.posY - (int) mc.thePlayer.posY, 3) == MathUtils.roundToPlace(0.55D, 3))) {
                         em.setY(-0.14D);
                     }
                     if (stage == 1 && mc.thePlayer.isCollidedVertically && (mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f)) {
@@ -240,7 +231,7 @@ public class Bhop extends Module {
                 break;
             }
             case "YPort": {
-                if(stage < 1) {
+                if (stage < 1) {
                     stage++;
                     lastDist = 0;
                     break;
@@ -286,29 +277,22 @@ public class Bhop extends Module {
                 }
                 break;
             }
-            case "OldHop" : {
+            case "OldHop": {
                 if (event instanceof EventMove) {
                     EventMove em = (EventMove) event;
                     if ((mc.thePlayer.moveForward == 0.0F) && (mc.thePlayer.moveStrafing == 0.0F)) {
                         speed = defaultSpeed();
                     }
-                    if ((stage == 1) && (mc.thePlayer.isCollidedVertically) && ((mc.thePlayer.moveForward != 0.0F) || (mc.thePlayer.moveStrafing != 0.0F)))
-                    {
+                    if ((stage == 1) && (mc.thePlayer.isCollidedVertically) && ((mc.thePlayer.moveForward != 0.0F) || (mc.thePlayer.moveStrafing != 0.0F))) {
                         speed = (0.25D + defaultSpeed() - 0.01D);
-                    }
-                    else if ((stage == 2) && (mc.thePlayer.isCollidedVertically) && ((mc.thePlayer.moveForward != 0.0F) || (mc.thePlayer.moveStrafing != 0.0F)))
-                    {
+                    } else if ((stage == 2) && (mc.thePlayer.isCollidedVertically) && ((mc.thePlayer.moveForward != 0.0F) || (mc.thePlayer.moveStrafing != 0.0F))) {
                         mc.thePlayer.motionY = 0.4D;
                         em.setY(0.4D);
                         speed *= 2.149D;
-                    }
-                    else if (stage == 3)
-                    {
+                    } else if (stage == 3) {
                         double difference = 0.66D * (this.lastDist - defaultSpeed());
                         speed = (this.lastDist - difference);
-                    }
-                    else
-                    {
+                    } else {
                         List collidingList = mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.boundingBox.offset(0.0D, mc.thePlayer.motionY, 0.0D));
                         if ((collidingList.size() > 0) || (mc.thePlayer.isCollidedVertically)) {
                             if (stage > 0) {

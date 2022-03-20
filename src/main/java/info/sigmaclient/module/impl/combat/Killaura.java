@@ -42,6 +42,10 @@ public class Killaura extends Module {
     private static final String ANIMALS = "OTHERS";
     private static final String ARM = "ARMOR";
     private static final String TEAMS = "TEAMS";
+    public static EntityLivingBase target;
+    public static EntityLivingBase vip;
+    static boolean allowCrits;
+    private static boolean canJump;
     private final String INVISIBLES = "INVISIBLES";
     private String TICK = "EXISTED";
     private String MAX = "MAXAPS";
@@ -56,12 +60,7 @@ public class Killaura extends Module {
     private Timer switchTimer = new Timer();
     private List<EntityLivingBase> loaded = new CopyOnWriteArrayList<>();
     private int index;
-    private static boolean canJump;
-
-    public static boolean isSetupTick() {
-        return canJump;
-    }
-
+    private boolean disabled;
     public Killaura(ModuleData data) {
         super(data);
         settings.put(FOVCHECK, new Setting<>(FOVCHECK, 360, "Targets must be in FOV.", 15, 45, 360));
@@ -81,13 +80,13 @@ public class Killaura extends Module {
         settings.put(AURAMODE, new Setting<>(AURAMODE, new Options("Mode", "Switch", new String[]{"Tick2", "Tick", "Switch", "Single", "Vanilla"}), "Attack method for the aura."));
     }
 
+    public static boolean isSetupTick() {
+        return canJump;
+    }
+
     public static int randomNumber(int max, int min) {
         return (int) (Math.random() * (max - min)) + min;
     }
-
-    public static EntityLivingBase target;
-    public static EntityLivingBase vip;
-    static boolean allowCrits;
 
     @Override
     public void onDisable() {
@@ -108,8 +107,6 @@ public class Killaura extends Module {
         allowCrits = true;
     }
 
-    private boolean disabled;
-
     @Override
     @RegisterEvent(events = {EventUpdate.class, EventPacket.class})
     public void onEvent(Event event) {
@@ -117,7 +114,7 @@ public class Killaura extends Module {
         allowCrits = !(getSuffix().contains("Tick") || getSuffix().equals("Single"));
         int min = ((Number) settings.get(MIN).getValue()).intValue();
         int max = ((Number) settings.get(MAX).getValue()).intValue();
-        int delayValue = (20 / randomNumber(min,max)) * 50;
+        int delayValue = (20 / randomNumber(min, max)) * 50;
         boolean block = (Boolean) settings.get(AUTOBLOCK).getValue();
         if (event instanceof EventUpdate) {
             EventUpdate em = (EventUpdate) event;
@@ -290,7 +287,7 @@ public class Killaura extends Module {
                             }
                             EntityLivingBase target = loaded.get(index);
                             if (target != null) {
-                                if(!validEntity(target)) {
+                                if (!validEntity(target)) {
                                     loaded = getTargets();
                                     incrementIndex();
                                     return;
@@ -305,7 +302,7 @@ public class Killaura extends Module {
                         }
                     } else if (em.isPost() && delay.delay(delayValue) && (loaded.size() > 0) && (loaded.get(index) != null)) {
                         EntityLivingBase target = loaded.get(index);
-                        if(!validEntity(target)) {
+                        if (!validEntity(target)) {
                             loaded = getTargets();
                             incrementIndex();
                             return;

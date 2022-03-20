@@ -1,7 +1,7 @@
 package info.sigmaclient.gui.click.components;
 
-import info.sigmaclient.gui.click.ui.UI;
 import info.sigmaclient.Client;
+import info.sigmaclient.gui.click.ui.UI;
 
 /**
  * Created by cool1 on 1/21/2017.
@@ -24,19 +24,19 @@ public class CategoryButton {
     }
 
     public void draw(final float x, final float y) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.categoryButtonDraw(this, x, y);
         }
     }
 
     public void mouseClicked(final int x, final int y, final int button) {
-        for(UI theme : Client.getClickGui().getThemes()) {
-                theme.categoryButtonMouseClicked(this, this.panel, x, y, button);
+        for (UI theme : Client.getClickGui().getThemes()) {
+            theme.categoryButtonMouseClicked(this, this.panel, x, y, button);
         }
     }
 
     public void mouseReleased(final int x, final int y, final int button) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.categoryButtonMouseReleased(this, x, y, button);
         }
     }

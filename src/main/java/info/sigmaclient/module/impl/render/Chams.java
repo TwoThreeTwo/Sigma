@@ -23,7 +23,7 @@ public class Chams extends Module {
             if (er.isPre() && er.getEntity() instanceof EntityPlayer) {
                 GL11.glEnable(32823);
                 GL11.glPolygonOffset(1.0f, -1100000.0f);
-            } else if(er.isPost() && er.getEntity() instanceof EntityPlayer) {
+            } else if (er.isPost() && er.getEntity() instanceof EntityPlayer) {
                 GL11.glDisable(32823);
                 GL11.glPolygonOffset(1.0f, 1100000.0f);
             }

@@ -442,8 +442,8 @@ public class RenderingUtil {
         glBegin(GL_LINE_STRIP);
 
         //you will want to modify these offsets.
-        glVertex2d(x,y);
-        glVertex2d(x1,y1);
+        glVertex2d(x, y);
+        glVertex2d(x1, y1);
 
         glEnd();
         disableGL2D();
@@ -588,9 +588,9 @@ public class RenderingUtil {
         r *= 2.0F;
         cx *= 2.0F;
         cy *= 2.0F;
-        float theta = (float)(6.2831852D / 32);
-        float p = (float)Math.cos(theta);
-        float s = (float)Math.sin(theta);
+        float theta = (float) (6.2831852D / 32);
+        float p = (float) Math.cos(theta);
+        float s = (float) Math.sin(theta);
 
         float x = r;
         float y = 0.0F;
@@ -601,8 +601,7 @@ public class RenderingUtil {
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         glColor(c);
         GL11.glBegin(9);
-        for (int ii = 0; ii < 32; ii++)
-        {
+        for (int ii = 0; ii < 32; ii++) {
             GL11.glVertex2f(x + cx, y + cy);
             float t = x;
             x = p * x - s * y;
@@ -610,7 +609,7 @@ public class RenderingUtil {
         }
         GL11.glEnd();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        GlStateManager.color(1,1,1,1);
+        GlStateManager.color(1, 1, 1, 1);
         disableGL2D();
     }
 

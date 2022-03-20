@@ -6,5 +6,4 @@ package info.sigmaclient.gui.click.components;
 public class BindButton {
 
 
-
 }

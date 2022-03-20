@@ -5,20 +5,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 
 public interface IBlockSource extends ILocatableSource {
-	@Override
-	double getX();
+    @Override
+    double getX();
 
-	@Override
-	double getY();
+    @Override
+    double getY();
 
-	@Override
-	double getZ();
+    @Override
+    double getZ();
 
-	BlockPos getBlockPos();
+    BlockPos getBlockPos();
 
-	Block getBlock();
+    Block getBlock();
 
-	int getBlockMetadata();
+    int getBlockMetadata();
 
-	TileEntity getBlockTileEntity();
+    TileEntity getBlockTileEntity();
 }

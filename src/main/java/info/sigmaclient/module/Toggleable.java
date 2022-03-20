@@ -2,13 +2,13 @@ package info.sigmaclient.module;
 
 public interface Toggleable {
 
-	void checkBypass();
+    void checkBypass();
 
-	void toggle();
+    void toggle();
 
-	void onEnable();
+    void onEnable();
 
-	void onDisable();
+    void onDisable();
 
-	boolean isEnabled();
+    boolean isEnabled();
 }

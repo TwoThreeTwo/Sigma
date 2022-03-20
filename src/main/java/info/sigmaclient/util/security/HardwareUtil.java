@@ -9,6 +9,8 @@ import java.util.Scanner;
  */
 public class HardwareUtil {
 
+    private static String sn = null;
+
     public static String getSerial() throws IOException {
         String initialHWID = "";
         switch (Crypto.getOSType()) {
@@ -31,8 +33,6 @@ public class HardwareUtil {
         return initialHWID;
     }
 
-    private static String sn = null;
-
     public static String getOLDWINDOWS() throws IOException {
         String sn1 = null;
         OutputStream os = null;
@@ -40,7 +40,7 @@ public class HardwareUtil {
         Runtime runtime = Runtime.getRuntime();
         Process process = null;
         try {
-            process = runtime.exec(new String[] { "wmic", "bios", "get", "serialnumber" });
+            process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
         } catch (IOException e) {
             sn1 = "IOEXCEPTION";
         }
@@ -78,7 +78,7 @@ public class HardwareUtil {
         Runtime runtime = Runtime.getRuntime();
         Process process = null;
         try {
-            process = runtime.exec(new String[] { "wmic", "bios", "get", "serialnumber" });
+            process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
         } catch (IOException e) {
             sn = "IOEXCEPTION";
         }
@@ -119,7 +119,7 @@ public class HardwareUtil {
         Runtime runtime = Runtime.getRuntime();
         Process process = null;
         try {
-            process = runtime.exec(new String[] { "/usr/sbin/system_profiler", "SPHardwareDataType" });
+            process = runtime.exec(new String[]{"/usr/sbin/system_profiler", "SPHardwareDataType"});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

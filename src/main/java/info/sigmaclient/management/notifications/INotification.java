@@ -1,35 +1,35 @@
 package info.sigmaclient.management.notifications;
 
 public interface INotification {
-	
-	String getHeader();
-	
-	String getSubtext();
-	
-	long getStart();
 
-	long getDisplayTime();
+    String getHeader();
 
-	Notifications.Type getType();
+    String getSubtext();
 
-	float getX();
+    long getStart();
 
-	float getTarX();
+    long getDisplayTime();
 
-	float getTarY();
-	
-	void setX(int x);
-	
-	void setTarX(int x);
+    Notifications.Type getType();
 
-	void setY(int y);
+    float getX();
 
-	long checkTime();
+    void setX(int x);
 
-	float getY();
+    float getTarX();
 
-	long getLast();
+    void setTarX(int x);
 
-	void setLast(long last);
-	
+    float getTarY();
+
+    long checkTime();
+
+    float getY();
+
+    void setY(int y);
+
+    long getLast();
+
+    void setLast(long last);
+
 }

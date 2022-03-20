@@ -37,13 +37,15 @@ import java.util.Map;
 public class ESP2D extends Module {
 
     public static String TEAM = "TEAM";
+    public static Map<EntityLivingBase, double[]> entityPositionstop = new HashMap();
+    public static Map<EntityLivingBase, double[]> entityPositionsbottom = new HashMap();
     private final String INVISIBLES = "INVISIBLES";
     private String CUSTOMTAG = "ITEMTAG";
     private String ITEMS = "ITEMS";
     private String HEALTH = "HEALTH";
     private String ARMOR = "ARMOR";
     private String NAME = "NAMES";
-
+    private double gradualFOVModifier;
     public ESP2D(ModuleData data) {
         super(data);
         settings.put(NAME, new Setting<>(NAME, false, "Renders player name."));
@@ -53,159 +55,6 @@ public class ESP2D extends Module {
         settings.put(ITEMS, new Setting<>(ITEMS, true, "Shows player's current item."));
         settings.put(CUSTOMTAG, new Setting<>(CUSTOMTAG, false, "Shows the custom name the item has."));
         settings.put(ARMOR, new Setting<>(ARMOR, false, "Shows a Aimware like armor bar(s) on the left."));
-    }
-
-    private double gradualFOVModifier;
-    public static Map<EntityLivingBase, double[]> entityPositionstop = new HashMap();
-    public static Map<EntityLivingBase, double[]> entityPositionsbottom = new HashMap();
-
-    @Override
-    @RegisterEvent(events = {EventRender3D.class, EventRenderGui.class, EventNametagRender.class})
-    public void onEvent(Event event) {
-        if (event instanceof EventNametagRender) {
-            event.setCancelled(true);
-        }
-        if (event instanceof EventRender3D) {
-            try {
-                updatePositions();
-            } catch (Exception e) {
-            }
-        }
-        if (event instanceof EventRenderGui) {
-            EventRenderGui er = (EventRenderGui) event;
-            GlStateManager.pushMatrix();
-            ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-            double twoDscale = scaledRes.getScaleFactor() / Math.pow(scaledRes.getScaleFactor(), 2.0D);
-            GlStateManager.scale(twoDscale, twoDscale, twoDscale);
-            for (Entity ent : entityPositionstop.keySet()) {
-                double[] renderPositions = entityPositionstop.get(ent);
-                double[] renderPositionsBottom = entityPositionsbottom.get(ent);
-                if ((renderPositions[3] > 0.0D) || (renderPositions[3] <= 1.0D)) {
-                    GlStateManager.pushMatrix();
-                    if ((((Boolean)settings.get(INVISIBLES).getValue()) || !ent.isInvisible()) && ent instanceof EntityPlayer && !(ent instanceof EntityPlayerSP)) {
-                        scale(ent);
-                        try {
-                            float y = (float) renderPositions[1];
-                            float endy = (float) renderPositionsBottom[1];
-                            float meme = endy - y;
-                            float x = (float) renderPositions[0] - (meme / 4f);
-                            float endx = (float) renderPositionsBottom[0] + (meme / 4f);
-                            if (x > endx) {
-                                endx = x;
-                                x = (float) renderPositionsBottom[0] + (meme / 4f);
-                            }
-                            GlStateManager.pushMatrix();
-                            GlStateManager.scale(2, 2, 2);
-                            GlStateManager.popMatrix();
-                            GL11.glEnable(GL11.GL_BLEND);
-                            GL11.glDisable(GL11.GL_TEXTURE_2D);
-                            int color = Colors.getColor(255,0,0);
-                            if (FriendManager.isFriend(ent.getName())) {
-                                color =  Colors.getColor(0,255,0);
-                            } else if (!mc.thePlayer.canEntityBeSeen(ent)) {
-                                color = Colors.getColor(255,255,0);
-                            }
-                            if (((Boolean) settings.get(TEAM).getValue())) {
-                                String text = ent.getDisplayName().getFormattedText();
-                                for (int i = 0; i < text.length(); i++)
-                                    if ((text.charAt(i) == (char) 0x00A7) && (i + 1 < text.length())) {
-                                        char oneMore = Character.toLowerCase(text.charAt(i + 1));
-                                        int colorCode = "0123456789abcdefklmnorg".indexOf(oneMore);
-                                        if (colorCode < 16) {
-                                            try {
-                                                Color axd = new Color(mc.fontRendererObj.colorCode[colorCode]);
-                                                color = Colors.getColor(axd.getRed(),axd.getGreen(), axd.getBlue(),255);
-                                            } catch (ArrayIndexOutOfBoundsException exception) {
-                                            }
-                                        }
-                                    }
-                            }
-                            if(((EntityPlayer)ent).isMurderer) {
-                                color = Colors.getColor(189, 44, 221);
-                            }
-                            RenderingUtil.rectangleBordered(x, y, endx, endy, 2.25, Colors.getColor(0, 0, 0, 0), color);
-                            RenderingUtil.rectangleBordered(x - 0.5, y - 0.5, endx + 0.5, endy + 0.5, 0.9, Colors.getColor(0, 0), Colors.getColor(0));
-                            RenderingUtil.rectangleBordered(x + 2.5, y + 2.5, endx - 2.5, endy - 2.5, 0.9, Colors.getColor(0, 0), Colors.getColor(0));
-                            RenderingUtil.rectangleBordered(x - 5, y - 1, x - 1, endy, 1, Colors.getColor(0, 100), Colors.getColor(0, 255));
-                            if (!Client.getModuleManager().get(Nametags.class).isEnabled() && ((Boolean)settings.get(NAME).getValue())) {
-                                GlStateManager.pushMatrix();
-                                String renderName = FriendManager.isFriend(ent.getName()) ? FriendManager.getAlias(ent.getName()) : ent.getName();
-                                TTFFontRenderer font = Client.fm.getFont("Verdana Bold 16");
-                                float meme2 = ((endx - x) / 2 - (font.getWidth(renderName) / 2f));
-                                font.drawStringWithShadow(renderName + " " + (int) mc.thePlayer.getDistanceToEntity(ent) + "m", (x + meme2), (y - font.getHeight(renderName) - 5), FriendManager.isFriend(ent.getName()) ? Colors.getColor(192,80,64) : -1);
-                                GlStateManager.popMatrix();
-                            }
-                            if (((EntityPlayer) ent).getCurrentEquippedItem() != null && ((Boolean) settings.get(ITEMS).getValue())) {
-                                GlStateManager.pushMatrix();
-                                GlStateManager.scale(2, 2, 2);
-                                ItemStack stack = ((EntityPlayer) ent).getCurrentEquippedItem();
-                                String customName = ((Boolean) settings.get(CUSTOMTAG).getValue()) ? ((EntityPlayer) ent).getCurrentEquippedItem().getDisplayName() : ((EntityPlayer) ent).getCurrentEquippedItem().getItem().getItemStackDisplayName(stack);
-                                TTFFontRenderer font = Client.fm.getFont("Verdana 12");
-                                float meme2 = ((endx - x) / 2 - (font.getWidth(customName) / 1f));
-                                font.drawStringWithShadow(customName, (x + meme2) / 2f, (endy + font.getHeight(customName) / 2 * 2f) / 2f, -1);
-                                GlStateManager.popMatrix();
-                            }
-                            if ((Boolean) settings.get(ARMOR).getValue()) {
-                                float var1 = (endy - y) / 4;
-                                ItemStack stack = ((EntityPlayer) ent).getEquipmentInSlot(4);
-                                if (stack != null) {
-                                    RenderingUtil.rectangleBordered(endx + 1, y + 1, endx + 6, y + var1, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
-                                    float diff1 = (y + var1 - 1) - (y + 2);
-                                    double percent = 1 - (double) stack.getItemDamage() / (double) stack.getMaxDamage();
-                                    RenderingUtil.rectangle(endx + 2, y + var1 - 1, endx + 5, y + var1 - 1 - (diff1 * percent), Colors.getColor(78, 206, 229));
-                                    mc.fontRendererObj.drawStringWithShadow(stack.getMaxDamage() - stack.getItemDamage() + "", endx + 7, (y + var1 - 1 - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT/2), -1);
-                                }
-                                ItemStack stack2 = ((EntityPlayer) ent).getEquipmentInSlot(3);
-                                if (stack2 != null) {
-                                    RenderingUtil.rectangleBordered(endx + 1, y + var1, endx + 6, y + var1 * 2, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
-                                    float diff1 = (y + var1 * 2) - (y + var1 + 2);
-                                    double percent = 1 - (double) stack2.getItemDamage() * 1 / (double) stack2.getMaxDamage();
-                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 2), endx + 5, (y + var1 * 2) - (diff1 * percent), Colors.getColor(78, 206, 229));
-                                    mc.fontRendererObj.drawStringWithShadow(stack2.getMaxDamage() - stack2.getItemDamage() + "", endx + 7, ((y + var1 * 2) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT/2), -1);
-                                }
-                                ItemStack stack3 = ((EntityPlayer) ent).getEquipmentInSlot(2);
-                                if (stack3 != null) {
-                                    RenderingUtil.rectangleBordered(endx + 1, y + var1 * 2, endx + 6, y + var1 * 3, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
-                                    float diff1 = (y + var1 * 3) - (y + var1 * 2 + 2);
-                                    double percent = 1 - (double) stack3.getItemDamage() * 1 / (double) stack3.getMaxDamage();
-                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 3), endx + 5, (y + var1 * 3) - (diff1 * percent), Colors.getColor(78, 206, 229));
-                                    mc.fontRendererObj.drawStringWithShadow(stack3.getMaxDamage() - stack3.getItemDamage() + "", endx + 7, ((y + var1 * 3) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT/2), -1);
-                                }
-                                ItemStack stack4 = ((EntityPlayer) ent).getEquipmentInSlot(1);
-                                if (stack4 != null) {
-                                    RenderingUtil.rectangleBordered(endx + 1, y + var1 * 3, endx + 6, y + var1 * 4, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
-                                    float diff1 = (y + var1 * 4) - (y + var1 * 3 + 2);
-                                    double percent = 1 - (double) stack4.getItemDamage() * 1 / (double) stack4.getMaxDamage();
-                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 4) - 1, endx + 5, (y + var1 * 4) - (diff1 * percent), Colors.getColor(78, 206, 229));
-                                    mc.fontRendererObj.drawStringWithShadow(stack4.getMaxDamage() - stack4.getItemDamage() + "", endx + 7, ((y + var1 * 4) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT/2), -1);
-                                }
-                            }
-                            float health = ((EntityPlayer) ent).getHealth();
-                            float[] fractions = new float[]{0f, 0.5f, 1f};
-                            Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN};
-                            float progress = (health * 5) * 0.01f;
-                            Color customColor = blendColors(fractions, colors, progress).brighter();
-                            double healthLocation = endy + (y - endy) * ((health * 5) * 0.01f);
-                            RenderingUtil.rectangle(x - 4, endy - 1, x - 2, healthLocation, customColor.getRGB());
-                            if ((int) MathUtils.getIncremental(health * 5, 1) != 100 && ((Boolean) settings.get(HEALTH).getValue())) {
-                                GlStateManager.pushMatrix();
-                                GlStateManager.scale(2, 2, 2);
-                                String nigger = (int) MathUtils.getIncremental(health * 5, 1) + "HP";
-                                TTFFontRenderer font = Client.fm.getFont("Verdana 12");
-                                font.drawStringWithShadow(nigger, (x - 5 - font.getWidth(nigger) * 2) / 2, ((float) ((int) healthLocation) + font.getHeight(nigger) / 2) / 2, -1);
-                                GlStateManager.popMatrix();
-                            }
-                        } catch (Exception e) {
-                        }
-                    }
-                    GlStateManager.popMatrix();
-                    GL11.glColor4f(1, 1, 1, 1);
-                }
-            }
-            GL11.glScalef(1, 1, 1);
-            GL11.glColor4f(1, 1, 1, 1);
-            GlStateManager.popMatrix();
-        }
     }
 
     public static Color blendColors(float[] fractions, Color[] colors, float progress) {
@@ -294,6 +143,155 @@ public class ESP2D extends Module {
         return color;
     }
 
+    @Override
+    @RegisterEvent(events = {EventRender3D.class, EventRenderGui.class, EventNametagRender.class})
+    public void onEvent(Event event) {
+        if (event instanceof EventNametagRender) {
+            event.setCancelled(true);
+        }
+        if (event instanceof EventRender3D) {
+            try {
+                updatePositions();
+            } catch (Exception e) {
+            }
+        }
+        if (event instanceof EventRenderGui) {
+            EventRenderGui er = (EventRenderGui) event;
+            GlStateManager.pushMatrix();
+            ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+            double twoDscale = scaledRes.getScaleFactor() / Math.pow(scaledRes.getScaleFactor(), 2.0D);
+            GlStateManager.scale(twoDscale, twoDscale, twoDscale);
+            for (Entity ent : entityPositionstop.keySet()) {
+                double[] renderPositions = entityPositionstop.get(ent);
+                double[] renderPositionsBottom = entityPositionsbottom.get(ent);
+                if ((renderPositions[3] > 0.0D) || (renderPositions[3] <= 1.0D)) {
+                    GlStateManager.pushMatrix();
+                    if ((((Boolean) settings.get(INVISIBLES).getValue()) || !ent.isInvisible()) && ent instanceof EntityPlayer && !(ent instanceof EntityPlayerSP)) {
+                        scale(ent);
+                        try {
+                            float y = (float) renderPositions[1];
+                            float endy = (float) renderPositionsBottom[1];
+                            float meme = endy - y;
+                            float x = (float) renderPositions[0] - (meme / 4f);
+                            float endx = (float) renderPositionsBottom[0] + (meme / 4f);
+                            if (x > endx) {
+                                endx = x;
+                                x = (float) renderPositionsBottom[0] + (meme / 4f);
+                            }
+                            GlStateManager.pushMatrix();
+                            GlStateManager.scale(2, 2, 2);
+                            GlStateManager.popMatrix();
+                            GL11.glEnable(GL11.GL_BLEND);
+                            GL11.glDisable(GL11.GL_TEXTURE_2D);
+                            int color = Colors.getColor(255, 0, 0);
+                            if (FriendManager.isFriend(ent.getName())) {
+                                color = Colors.getColor(0, 255, 0);
+                            } else if (!mc.thePlayer.canEntityBeSeen(ent)) {
+                                color = Colors.getColor(255, 255, 0);
+                            }
+                            if (((Boolean) settings.get(TEAM).getValue())) {
+                                String text = ent.getDisplayName().getFormattedText();
+                                for (int i = 0; i < text.length(); i++)
+                                    if ((text.charAt(i) == (char) 0x00A7) && (i + 1 < text.length())) {
+                                        char oneMore = Character.toLowerCase(text.charAt(i + 1));
+                                        int colorCode = "0123456789abcdefklmnorg".indexOf(oneMore);
+                                        if (colorCode < 16) {
+                                            try {
+                                                Color axd = new Color(mc.fontRendererObj.colorCode[colorCode]);
+                                                color = Colors.getColor(axd.getRed(), axd.getGreen(), axd.getBlue(), 255);
+                                            } catch (ArrayIndexOutOfBoundsException exception) {
+                                            }
+                                        }
+                                    }
+                            }
+                            if (((EntityPlayer) ent).isMurderer) {
+                                color = Colors.getColor(189, 44, 221);
+                            }
+                            RenderingUtil.rectangleBordered(x, y, endx, endy, 2.25, Colors.getColor(0, 0, 0, 0), color);
+                            RenderingUtil.rectangleBordered(x - 0.5, y - 0.5, endx + 0.5, endy + 0.5, 0.9, Colors.getColor(0, 0), Colors.getColor(0));
+                            RenderingUtil.rectangleBordered(x + 2.5, y + 2.5, endx - 2.5, endy - 2.5, 0.9, Colors.getColor(0, 0), Colors.getColor(0));
+                            RenderingUtil.rectangleBordered(x - 5, y - 1, x - 1, endy, 1, Colors.getColor(0, 100), Colors.getColor(0, 255));
+                            if (!Client.getModuleManager().get(Nametags.class).isEnabled() && ((Boolean) settings.get(NAME).getValue())) {
+                                GlStateManager.pushMatrix();
+                                String renderName = FriendManager.isFriend(ent.getName()) ? FriendManager.getAlias(ent.getName()) : ent.getName();
+                                TTFFontRenderer font = Client.fm.getFont("Verdana Bold 16");
+                                float meme2 = ((endx - x) / 2 - (font.getWidth(renderName) / 2f));
+                                font.drawStringWithShadow(renderName + " " + (int) mc.thePlayer.getDistanceToEntity(ent) + "m", (x + meme2), (y - font.getHeight(renderName) - 5), FriendManager.isFriend(ent.getName()) ? Colors.getColor(192, 80, 64) : -1);
+                                GlStateManager.popMatrix();
+                            }
+                            if (((EntityPlayer) ent).getCurrentEquippedItem() != null && ((Boolean) settings.get(ITEMS).getValue())) {
+                                GlStateManager.pushMatrix();
+                                GlStateManager.scale(2, 2, 2);
+                                ItemStack stack = ((EntityPlayer) ent).getCurrentEquippedItem();
+                                String customName = ((Boolean) settings.get(CUSTOMTAG).getValue()) ? ((EntityPlayer) ent).getCurrentEquippedItem().getDisplayName() : ((EntityPlayer) ent).getCurrentEquippedItem().getItem().getItemStackDisplayName(stack);
+                                TTFFontRenderer font = Client.fm.getFont("Verdana 12");
+                                float meme2 = ((endx - x) / 2 - (font.getWidth(customName) / 1f));
+                                font.drawStringWithShadow(customName, (x + meme2) / 2f, (endy + font.getHeight(customName) / 2 * 2f) / 2f, -1);
+                                GlStateManager.popMatrix();
+                            }
+                            if ((Boolean) settings.get(ARMOR).getValue()) {
+                                float var1 = (endy - y) / 4;
+                                ItemStack stack = ((EntityPlayer) ent).getEquipmentInSlot(4);
+                                if (stack != null) {
+                                    RenderingUtil.rectangleBordered(endx + 1, y + 1, endx + 6, y + var1, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
+                                    float diff1 = (y + var1 - 1) - (y + 2);
+                                    double percent = 1 - (double) stack.getItemDamage() / (double) stack.getMaxDamage();
+                                    RenderingUtil.rectangle(endx + 2, y + var1 - 1, endx + 5, y + var1 - 1 - (diff1 * percent), Colors.getColor(78, 206, 229));
+                                    mc.fontRendererObj.drawStringWithShadow(stack.getMaxDamage() - stack.getItemDamage() + "", endx + 7, (y + var1 - 1 - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
+                                }
+                                ItemStack stack2 = ((EntityPlayer) ent).getEquipmentInSlot(3);
+                                if (stack2 != null) {
+                                    RenderingUtil.rectangleBordered(endx + 1, y + var1, endx + 6, y + var1 * 2, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
+                                    float diff1 = (y + var1 * 2) - (y + var1 + 2);
+                                    double percent = 1 - (double) stack2.getItemDamage() * 1 / (double) stack2.getMaxDamage();
+                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 2), endx + 5, (y + var1 * 2) - (diff1 * percent), Colors.getColor(78, 206, 229));
+                                    mc.fontRendererObj.drawStringWithShadow(stack2.getMaxDamage() - stack2.getItemDamage() + "", endx + 7, ((y + var1 * 2) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
+                                }
+                                ItemStack stack3 = ((EntityPlayer) ent).getEquipmentInSlot(2);
+                                if (stack3 != null) {
+                                    RenderingUtil.rectangleBordered(endx + 1, y + var1 * 2, endx + 6, y + var1 * 3, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
+                                    float diff1 = (y + var1 * 3) - (y + var1 * 2 + 2);
+                                    double percent = 1 - (double) stack3.getItemDamage() * 1 / (double) stack3.getMaxDamage();
+                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 3), endx + 5, (y + var1 * 3) - (diff1 * percent), Colors.getColor(78, 206, 229));
+                                    mc.fontRendererObj.drawStringWithShadow(stack3.getMaxDamage() - stack3.getItemDamage() + "", endx + 7, ((y + var1 * 3) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
+                                }
+                                ItemStack stack4 = ((EntityPlayer) ent).getEquipmentInSlot(1);
+                                if (stack4 != null) {
+                                    RenderingUtil.rectangleBordered(endx + 1, y + var1 * 3, endx + 6, y + var1 * 4, 1, Colors.getColor(28, 156, 179, 100), Colors.getColor(0, 255));
+                                    float diff1 = (y + var1 * 4) - (y + var1 * 3 + 2);
+                                    double percent = 1 - (double) stack4.getItemDamage() * 1 / (double) stack4.getMaxDamage();
+                                    RenderingUtil.rectangle(endx + 2, (y + var1 * 4) - 1, endx + 5, (y + var1 * 4) - (diff1 * percent), Colors.getColor(78, 206, 229));
+                                    mc.fontRendererObj.drawStringWithShadow(stack4.getMaxDamage() - stack4.getItemDamage() + "", endx + 7, ((y + var1 * 4) - (diff1 / 2)) - (mc.fontRendererObj.FONT_HEIGHT / 2), -1);
+                                }
+                            }
+                            float health = ((EntityPlayer) ent).getHealth();
+                            float[] fractions = new float[]{0f, 0.5f, 1f};
+                            Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN};
+                            float progress = (health * 5) * 0.01f;
+                            Color customColor = blendColors(fractions, colors, progress).brighter();
+                            double healthLocation = endy + (y - endy) * ((health * 5) * 0.01f);
+                            RenderingUtil.rectangle(x - 4, endy - 1, x - 2, healthLocation, customColor.getRGB());
+                            if ((int) MathUtils.getIncremental(health * 5, 1) != 100 && ((Boolean) settings.get(HEALTH).getValue())) {
+                                GlStateManager.pushMatrix();
+                                GlStateManager.scale(2, 2, 2);
+                                String nigger = (int) MathUtils.getIncremental(health * 5, 1) + "HP";
+                                TTFFontRenderer font = Client.fm.getFont("Verdana 12");
+                                font.drawStringWithShadow(nigger, (x - 5 - font.getWidth(nigger) * 2) / 2, ((float) ((int) healthLocation) + font.getHeight(nigger) / 2) / 2, -1);
+                                GlStateManager.popMatrix();
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+                    GlStateManager.popMatrix();
+                    GL11.glColor4f(1, 1, 1, 1);
+                }
+            }
+            GL11.glScalef(1, 1, 1);
+            GL11.glColor4f(1, 1, 1, 1);
+            GlStateManager.popMatrix();
+        }
+    }
+
     private void updatePositions() {
         entityPositionstop.clear();
         entityPositionsbottom.clear();
@@ -327,9 +325,9 @@ public class ESP2D extends Module {
         float scale = (float) 1;
         float target = scale * (mc.gameSettings.fovSetting
                 / (mc.gameSettings.fovSetting/*
-                                                 * *
-												 * mc.thePlayer.getFovModifier()
-												 *//* .func_175156_o() */));
+         * *
+         * mc.thePlayer.getFovModifier()
+         *//* .func_175156_o() */));
         if ((this.gradualFOVModifier == 0.0D) || (Double.isNaN(this.gradualFOVModifier))) {
             this.gradualFOVModifier = target;
         }

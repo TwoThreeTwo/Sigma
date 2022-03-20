@@ -16,56 +16,56 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 
 public class BlockWorkbench extends Block {
-	private static final String __OBFID = "CL_00000221";
+    private static final String __OBFID = "CL_00000221";
 
-	protected BlockWorkbench() {
-		super(Material.wood);
-		setCreativeTab(CreativeTabs.tabDecorations);
-	}
+    protected BlockWorkbench() {
+        super(Material.wood);
+        setCreativeTab(CreativeTabs.tabDecorations);
+    }
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (worldIn.isRemote) {
-			return true;
-		} else {
-			playerIn.displayGui(new BlockWorkbench.InterfaceCraftingTable(worldIn, pos));
-			return true;
-		}
-	}
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote) {
+            return true;
+        } else {
+            playerIn.displayGui(new BlockWorkbench.InterfaceCraftingTable(worldIn, pos));
+            return true;
+        }
+    }
 
-	public static class InterfaceCraftingTable implements IInteractionObject {
-		private final World world;
-		private final BlockPos position;
-		private static final String __OBFID = "CL_00002127";
+    public static class InterfaceCraftingTable implements IInteractionObject {
+        private static final String __OBFID = "CL_00002127";
+        private final World world;
+        private final BlockPos position;
 
-		public InterfaceCraftingTable(World worldIn, BlockPos p_i45730_2_) {
-			world = worldIn;
-			position = p_i45730_2_;
-		}
+        public InterfaceCraftingTable(World worldIn, BlockPos p_i45730_2_) {
+            world = worldIn;
+            position = p_i45730_2_;
+        }
 
-		@Override
-		public String getName() {
-			return null;
-		}
+        @Override
+        public String getName() {
+            return null;
+        }
 
-		@Override
-		public boolean hasCustomName() {
-			return false;
-		}
+        @Override
+        public boolean hasCustomName() {
+            return false;
+        }
 
-		@Override
-		public IChatComponent getDisplayName() {
-			return new ChatComponentTranslation(Blocks.crafting_table.getUnlocalizedName() + ".name", new Object[0]);
-		}
+        @Override
+        public IChatComponent getDisplayName() {
+            return new ChatComponentTranslation(Blocks.crafting_table.getUnlocalizedName() + ".name", new Object[0]);
+        }
 
-		@Override
-		public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-			return new ContainerWorkbench(playerInventory, world, position);
-		}
+        @Override
+        public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+            return new ContainerWorkbench(playerInventory, world, position);
+        }
 
-		@Override
-		public String getGuiID() {
-			return "minecraft:crafting_table";
-		}
-	}
+        @Override
+        public String getGuiID() {
+            return "minecraft:crafting_table";
+        }
+    }
 }

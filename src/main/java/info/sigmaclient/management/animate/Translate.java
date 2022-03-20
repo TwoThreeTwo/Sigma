@@ -19,8 +19,8 @@ public class Translate {
         long currentMS = System.currentTimeMillis();
         long delta = currentMS - lastMS;//16.66666
         lastMS = currentMS;
-        int deltaX = (int) (Math.abs(targetX - x)*0.51f);
-        int deltaY = (int) (Math.abs(targetY - y)*0.51f);
+        int deltaX = (int) (Math.abs(targetX - x) * 0.51f);
+        int deltaY = (int) (Math.abs(targetY - y) * 0.51f);
         x = AnimationUtil.calculateCompensation(targetX, x, delta, deltaX);
         y = AnimationUtil.calculateCompensation(targetY, y, delta, deltaY);
     }
@@ -29,8 +29,8 @@ public class Translate {
         long currentMS = System.currentTimeMillis();
         long delta = currentMS - lastMS;//16.66666
         lastMS = currentMS;
-        int deltaX = (int) (Math.abs(targetX - x)*0.35f);
-        int deltaY = (int) (Math.abs(targetY - y)*0.35f);
+        int deltaX = (int) (Math.abs(targetX - x) * 0.35f);
+        int deltaY = (int) (Math.abs(targetY - y) * 0.35f);
         x = AnimationUtil.calculateCompensation(targetX, x, delta, deltaX);
         y = AnimationUtil.calculateCompensation(targetY, y, delta, deltaY);
     }

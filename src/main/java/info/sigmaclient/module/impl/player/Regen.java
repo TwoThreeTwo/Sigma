@@ -1,11 +1,11 @@
 package info.sigmaclient.module.impl.player;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
+import info.sigmaclient.module.data.Setting;
 import net.minecraft.block.material.Material;
 import net.minecraft.network.play.client.C03PacketPlayer;
 

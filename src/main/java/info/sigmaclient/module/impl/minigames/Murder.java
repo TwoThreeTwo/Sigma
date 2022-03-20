@@ -4,7 +4,6 @@ import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventTick;
 import info.sigmaclient.management.command.Command;
-import info.sigmaclient.management.command.CommandManager;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.module.data.Options;
@@ -18,16 +17,15 @@ import net.minecraft.item.ItemSword;
  */
 public class Murder extends Module {
 
+    private String MESSAGE = "MESSAGE";
+    private String MODE = "MODE";
+    private info.sigmaclient.util.Timer timer = new info.sigmaclient.util.Timer();
+
     public Murder(ModuleData data) {
         super(data);
         settings.put(MESSAGE, new Setting<>(MESSAGE, "{P} is trying to kill me!", "Sends a chat message. {P} = Murderer"));
         settings.put(MODE, new Setting<>(MODE, new Options("Chat Mode", "Client", new String[]{"Client", "Server"}), "Chat mesage mode."));
     }
-
-    private String MESSAGE = "MESSAGE";
-    private String MODE = "MODE";
-
-    private info.sigmaclient.util.Timer timer = new info.sigmaclient.util.Timer();
 
     @Override
     @RegisterEvent(events = EventTick.class)

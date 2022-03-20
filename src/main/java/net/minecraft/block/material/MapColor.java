@@ -1,7 +1,6 @@
 package net.minecraft.block.material;
 
-public class MapColor
-{
+public class MapColor {
     /**
      * Holds all the 16 colors used on maps, very similar of a pallete system.
      */
@@ -42,49 +41,42 @@ public class MapColor
     public static final MapColor emeraldColor = new MapColor(33, 55610);
     public static final MapColor obsidianColor = new MapColor(34, 1381407);
     public static final MapColor netherrackColor = new MapColor(35, 7340544);
-
-    /** Holds the color in RGB value that will be rendered on maps. */
-    public final int colorValue;
-
-    /** Holds the index of the color used on map. */
-    public final int colorIndex;
     private static final String __OBFID = "CL_00000544";
+    /**
+     * Holds the color in RGB value that will be rendered on maps.
+     */
+    public final int colorValue;
+    /**
+     * Holds the index of the color used on map.
+     */
+    public final int colorIndex;
 
-    private MapColor(int p_i2117_1_, int p_i2117_2_)
-    {
-        if (p_i2117_1_ >= 0 && p_i2117_1_ <= 63)
-        {
+    private MapColor(int p_i2117_1_, int p_i2117_2_) {
+        if (p_i2117_1_ >= 0 && p_i2117_1_ <= 63) {
             this.colorIndex = p_i2117_1_;
             this.colorValue = p_i2117_2_;
             mapColorArray[p_i2117_1_] = this;
-        }
-        else
-        {
+        } else {
             throw new IndexOutOfBoundsException("Map colour ID must be between 0 and 63 (inclusive)");
         }
     }
 
-    public int func_151643_b(int p_151643_1_)
-    {
+    public int func_151643_b(int p_151643_1_) {
         short var2 = 220;
 
-        if (p_151643_1_ == 3)
-        {
+        if (p_151643_1_ == 3) {
             var2 = 135;
         }
 
-        if (p_151643_1_ == 2)
-        {
+        if (p_151643_1_ == 2) {
             var2 = 255;
         }
 
-        if (p_151643_1_ == 1)
-        {
+        if (p_151643_1_ == 1) {
             var2 = 220;
         }
 
-        if (p_151643_1_ == 0)
-        {
+        if (p_151643_1_ == 0) {
             var2 = 180;
         }
 

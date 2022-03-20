@@ -9,12 +9,12 @@ import java.util.Random;
  * Created by Arithmo on 5/10/2017 at 9:01 PM.
  */
 public class Particle {
+    public Minecraft mc = Minecraft.getMinecraft();
     private float posX;
     private float posY;
     private float alpha;
     private float size;
     private float speed;
-    public Minecraft mc = Minecraft.getMinecraft();
 
     public Particle(float posX, float posY, float size, float speed, float alpha) {
         setPosX(posX);
@@ -34,8 +34,8 @@ public class Particle {
     }
 
     public void render(ParticleManager p) {
-        if(!(getAlpha() - 0.5F < 0))
-        setAlpha(getAlpha() - 0.5F);
+        if (!(getAlpha() - 0.5F < 0))
+            setAlpha(getAlpha() - 0.5F);
     }
 
     public float getPosX() {

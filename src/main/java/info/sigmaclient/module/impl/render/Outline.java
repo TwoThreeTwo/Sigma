@@ -1,16 +1,16 @@
 package info.sigmaclient.module.impl.render;
 
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventRender3D;
 import info.sigmaclient.event.impl.EventRenderEntity;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.module.data.Setting;
-import info.sigmaclient.util.render.Stencil;
-import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
+import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.util.RenderingUtil;
 import info.sigmaclient.util.render.Colors;
 import info.sigmaclient.util.render.MCStencil;
+import info.sigmaclient.util.render.Stencil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

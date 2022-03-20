@@ -7,34 +7,34 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BlockContainer extends Block implements ITileEntityProvider {
-	private static final String __OBFID = "CL_00000193";
+    private static final String __OBFID = "CL_00000193";
 
-	protected BlockContainer(Material materialIn) {
-		super(materialIn);
-		isBlockContainer = true;
-	}
+    protected BlockContainer(Material materialIn) {
+        super(materialIn);
+        isBlockContainer = true;
+    }
 
-	/**
-	 * The type of render function that is called for this block
-	 */
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+    /**
+     * The type of render function that is called for this block
+     */
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
 
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
-	}
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
+    }
 
-	/**
-	 * Called on both Client and Server when World#addBlockEvent is called
-	 */
-	@Override
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-		TileEntity var6 = worldIn.getTileEntity(pos);
-		return var6 == null ? false : var6.receiveClientEvent(eventID, eventParam);
-	}
+    /**
+     * Called on both Client and Server when World#addBlockEvent is called
+     */
+    @Override
+    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
+        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+        TileEntity var6 = worldIn.getTileEntity(pos);
+        return var6 == null ? false : var6.receiveClientEvent(eventID, eventParam);
+    }
 }

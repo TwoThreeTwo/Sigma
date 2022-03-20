@@ -29,7 +29,7 @@ public class AutoSword extends Module {
     @RegisterEvent(events = {EventUpdate.class})
     public void onEvent(Event event) {
         EventUpdate em = (EventUpdate) event;
-        if(Client.getModuleManager().get(InventoryCleaner.class).isEnabled() && InventoryCleaner.isCleaning())
+        if (Client.getModuleManager().get(InventoryCleaner.class).isEnabled() && InventoryCleaner.isCleaning())
             return;
         if (em.isPre() && (mc.currentScreen instanceof GuiInventory || mc.currentScreen == null)) {
             if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemSword && timer.delay(100)) {
@@ -56,10 +56,10 @@ public class AutoSword extends Module {
     }
 
     private float getAttackDamage(ItemStack stack) {
-        if(!(stack.getItem() instanceof ItemSword)) {
+        if (!(stack.getItem() instanceof ItemSword)) {
             return 0;
         }
-        return EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, stack) * 1.25f + ((ItemSword)stack.getItem()).getAttackDamage()
+        return EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, stack) * 1.25f + ((ItemSword) stack.getItem()).getAttackDamage()
                 + EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, stack) * 0.01f;
     }
 

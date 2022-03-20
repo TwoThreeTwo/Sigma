@@ -7,8 +7,8 @@ package info.sigmaclient.module.impl.combat;
 
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
-import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.event.impl.EventPacket;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.management.command.Command;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
@@ -28,8 +28,8 @@ import java.util.List;
 public class AntiBot extends Module {
 
     public static String MODE = "MODE";
+    private static List<EntityPlayer> invalid = new ArrayList<>();
     private String DEAD = "DEAD";
-
     private info.sigmaclient.util.Timer timer = new info.sigmaclient.util.Timer();
 
     public AntiBot(ModuleData data) {
@@ -42,7 +42,19 @@ public class AntiBot extends Module {
         return invalid;
     }
 
-    private static List<EntityPlayer> invalid = new ArrayList<>();
+    public static List<EntityPlayer> getTabPlayerList() {
+        final NetHandlerPlayClient var4 = mc.thePlayer.sendQueue;
+        final List<EntityPlayer> list = new ArrayList<>();
+        final List players = GuiPlayerTabOverlay.field_175252_a.sortedCopy(var4.func_175106_d());
+        for (final Object o : players) {
+            final NetworkPlayerInfo info = (NetworkPlayerInfo) o;
+            if (info == null) {
+                continue;
+            }
+            list.add(mc.theWorld.getPlayerEntityByName(info.getGameProfile().getName()));
+        }
+        return list;
+    }
 
     public void onEnable() {
         invalid.clear();
@@ -147,20 +159,6 @@ public class AntiBot extends Module {
 
             }
         }
-    }
-
-    public static List<EntityPlayer> getTabPlayerList() {
-        final NetHandlerPlayClient var4 = mc.thePlayer.sendQueue;
-        final List<EntityPlayer> list = new ArrayList<>();
-        final List players = GuiPlayerTabOverlay.field_175252_a.sortedCopy(var4.func_175106_d());
-        for (final Object o : players) {
-            final NetworkPlayerInfo info = (NetworkPlayerInfo) o;
-            if (info == null) {
-                continue;
-            }
-            list.add(mc.theWorld.getPlayerEntityByName(info.getGameProfile().getName()));
-        }
-        return list;
     }
 
 }

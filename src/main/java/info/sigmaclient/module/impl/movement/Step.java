@@ -6,21 +6,21 @@
 package info.sigmaclient.module.impl.movement;
 
 import info.sigmaclient.event.Event;
+import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventStep;
 import info.sigmaclient.event.impl.EventTick;
-import info.sigmaclient.module.data.ModuleData;
-import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class Step extends Module {
+
+    private boolean resetNextTick;
 
     public Step(ModuleData data) {
         super(data);
 
     }
-
-    private boolean resetNextTick;
 
     @Override
     @RegisterEvent(events = {EventStep.class, EventTick.class})
@@ -40,11 +40,10 @@ public class Step extends Module {
                 mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + height2, mc.thePlayer.posZ, mc.thePlayer.onGround));
                 mc.timer.timerSpeed = 0.37F;
                 new Thread(() -> {
-                    try
-                    {
+                    try {
                         Thread.sleep(150L);
+                    } catch (InterruptedException localInterruptedException) {
                     }
-                    catch (InterruptedException localInterruptedException) {}
                     mc.timer.timerSpeed = 1.0F;
                 }).start();
             }

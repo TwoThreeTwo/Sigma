@@ -14,12 +14,12 @@ public class EventGetMouseOver extends Event {
         return this.extraReach;
     }
 
-    public double getHitboxExpansion() {
-        return this.hitboxExpansion;
-    }
-
     public void setExtraReach(double extraReach) {
         this.extraReach = extraReach;
+    }
+
+    public double getHitboxExpansion() {
+        return this.hitboxExpansion;
     }
 
     public void setHitboxExpansion(double hitboxExpansion) {

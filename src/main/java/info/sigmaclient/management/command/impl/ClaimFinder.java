@@ -19,20 +19,20 @@ public class ClaimFinder extends Command {
 
     @Override
     public void fire(String[] args) {
-        if(args == null) {
+        if (args == null) {
             return;
         }
         assert args.length == 1 && StringConversions.isNumeric(args[0]);
-        if(mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity instanceof EntityBoat) {
+        if (mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity instanceof EntityBoat) {
             int chunks = Integer.parseInt(args[0]) * 8;
             double topLeftX = mc.thePlayer.posX - chunks;
             double topLeftZ = mc.thePlayer.posY - chunks;
-            for(int i = 0; i < Integer.parseInt(args[0]); i++) {
+            for (int i = 0; i < Integer.parseInt(args[0]); i++) {
                 int chunk = 16 + (i * 16);
                 mc.getNetHandler().getNetworkManager().sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(topLeftX + chunk, mc.thePlayer.posY, topLeftZ + chunk, false));
                 mc.getNetHandler().getNetworkManager().sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(topLeftX + chunk, mc.thePlayer.posY, topLeftZ + chunk, true));
             }
-            for(int i = 0; i < 17; i++) {
+            for (int i = 0; i < 17; i++) {
                 mc.getNetHandler().getNetworkManager().sendPacketNoEvent(new C02PacketUseEntity(mc.thePlayer.ridingEntity, C02PacketUseEntity.Action.ATTACK));
             }
 

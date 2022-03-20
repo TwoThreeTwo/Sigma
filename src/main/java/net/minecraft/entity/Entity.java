@@ -1,11 +1,5 @@
 package net.minecraft.entity;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-
 import info.sigmaclient.Client;
 import info.sigmaclient.event.EventSystem;
 import info.sigmaclient.event.impl.EventStep;
@@ -15,11 +9,7 @@ import info.sigmaclient.module.impl.movement.NoSlowdown;
 import info.sigmaclient.module.impl.player.Scaffold;
 import info.sigmaclient.module.impl.render.Freecam;
 import info.sigmaclient.util.PlayerUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -47,29 +37,32 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+
 public abstract class Entity implements ICommandSender {
     private static final AxisAlignedBB field_174836_a = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+    private static final String __OBFID = "CL_00001533";
     private static int nextEntityID;
-    private int entityId;
+    private final CommandResultStats field_174837_as;
     public double renderDistanceWeight;
-
     /**
      * Blocks entities from spawning when they do their AABB check to make sure
      * the spot is clear of entities that can prevent spawning.
      */
     public boolean preventEntitySpawning;
-
     /**
      * The entity that is riding this entity
      */
     public Entity riddenByEntity;
-
     /**
      * The entity we are currently riding
      */
     public Entity ridingEntity;
     public boolean forceSpawn;
-
     /**
      * Reference to the World object.
      */
@@ -77,176 +70,128 @@ public abstract class Entity implements ICommandSender {
     public double prevPosX;
     public double prevPosY;
     public double prevPosZ;
-
     /**
      * Entity position X
      */
     public double posX;
-
     /**
      * Entity position Y
      */
     public double posY;
-
     /**
      * Entity position Z
      */
     public double posZ;
-
     /**
      * Entity motion X
      */
     public double motionX;
-
     /**
      * Entity motion Y
      */
     public double motionY;
-
     /**
      * Entity motion Z
      */
     public double motionZ;
-
     /**
      * Entity rotation Yaw
      */
     public float rotationYaw;
-
     /**
      * Entity rotation Pitch
      */
     public float rotationPitch;
     public float prevRotationYaw;
     public float prevRotationPitch;
-
     /**
      * Axis aligned bounding box.
      */
     public AxisAlignedBB boundingBox;
     public boolean onGround;
-
     /**
      * True if after a move this entity has collided with something on X- or
      * Z-axis
      */
     public boolean isCollidedHorizontally;
-
     /**
      * True if after a move this entity has collided with something on Y-axis
      */
     public boolean isCollidedVertically;
-
     /**
      * True if after a move this entity has collided with something either
      * vertically or horizontally
      */
     public boolean isCollided;
     public boolean velocityChanged;
-    protected boolean isInWeb;
-    private boolean isOutsideBorder;
-
     /**
      * gets set by setEntityDead, so this must be the flag whether an Entity is
      * dead (inactive may be better term)
      */
     public boolean isDead;
-
     /**
      * How wide this entity is considered to be
      */
     public float width;
-
     /**
      * How high this entity is considered to be
      */
     public float height;
-
     /**
      * The previous ticks distance walked multiplied by 0.6
      */
     public float prevDistanceWalkedModified;
-
     /**
      * The distance walked multiplied by 0.6
      */
     public float distanceWalkedModified;
     public float distanceWalkedOnStepModified;
     public float fallDistance;
-
-    /**
-     * The distance that has to be exceeded in order to triger a new step sound
-     * and an onEntityWalking event on a block
-     */
-    private int nextStepDistance;
-
     /**
      * The entity's X coordinate at the previous tick, used to calculate
      * position during rendering routines
      */
     public double lastTickPosX;
-
     /**
      * The entity's Y coordinate at the previous tick, used to calculate
      * position during rendering routines
      */
     public double lastTickPosY;
-
     /**
      * The entity's Z coordinate at the previous tick, used to calculate
      * position during rendering routines
      */
     public double lastTickPosZ;
-
     /**
      * How high this entity can step up when running into a block to try to get
      * over it (currently make note the entity will always step up this amount
      * and not just the amount needed)
      */
     public float stepHeight;
-
     /**
      * Whether this entity won't clip with collision or not (make note it won't
      * disable gravity)
      */
     public boolean noClip;
-
     /**
      * Reduces the velocity applied by entity collisions by the specified
      * percent.
      */
     public float entityCollisionReduction;
-    protected Random rand;
-
     /**
      * How many ticks has this entity had ran since being alive
      */
     public int ticksExisted;
-
     /**
      * The amount of ticks you have to stand inside of fire before be set on
      * fire
      */
     public int fireResistance;
-    private int fire;
-
-    /**
-     * Whether this entity is currently inside of water (if it handles water
-     * movement that is)
-     */
-    protected boolean inWater;
-
     /**
      * Remaining time an entity will be "immune" to further damage after being
      * hurt.
      */
     public int hurtResistantTime;
-    protected boolean firstUpdate;
-    protected boolean isImmuneToFire;
-    protected DataWatcher dataWatcher;
-    private double entityRiderPitchDelta;
-    private double entityRiderYawDelta;
-
     /**
      * Has this entity been added to the chunk its within
      */
@@ -257,7 +202,6 @@ public abstract class Entity implements ICommandSender {
     public int serverPosX;
     public int serverPosY;
     public int serverPosZ;
-
     /**
      * Render entity even if it is outside the camera frustum. Only true in
      * EntityFish for now. Used in RenderGlobal: render if ignoreFrustumCheck or
@@ -266,34 +210,38 @@ public abstract class Entity implements ICommandSender {
     public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
     public int timeUntilPortal;
-
+    /**
+     * Which dimension the player is in (-1 = the Nether, 0 = normal world)
+     */
+    public int dimension;
+    protected boolean isInWeb;
+    protected Random rand;
+    /**
+     * Whether this entity is currently inside of water (if it handles water
+     * movement that is)
+     */
+    protected boolean inWater;
+    protected boolean firstUpdate;
+    protected boolean isImmuneToFire;
+    protected DataWatcher dataWatcher;
     /**
      * Whether the entity is inside a Portal
      */
     protected boolean inPortal;
     protected int portalCounter;
-
-    /**
-     * Which dimension the player is in (-1 = the Nether, 0 = normal world)
-     */
-    public int dimension;
     protected int teleportDirection;
-    private boolean invulnerable;
     protected UUID entityUniqueID;
-    private final CommandResultStats field_174837_as;
-    private static final String __OBFID = "CL_00001533";
-
-    public int getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(int id) {
-        entityId = id;
-    }
-
-    public void func_174812_G() {
-        setDead();
-    }
+    private int entityId;
+    private boolean isOutsideBorder;
+    /**
+     * The distance that has to be exceeded in order to triger a new step sound
+     * and an onEntityWalking event on a block
+     */
+    private int nextStepDistance;
+    private int fire;
+    private double entityRiderPitchDelta;
+    private double entityRiderYawDelta;
+    private boolean invulnerable;
 
     public Entity(World worldIn) {
         entityId = Entity.nextEntityID++;
@@ -321,6 +269,18 @@ public abstract class Entity implements ICommandSender {
         dataWatcher.addObject(2, "");
         dataWatcher.addObject(4, Byte.valueOf((byte) 0));
         entityInit();
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(int id) {
+        entityId = id;
+    }
+
+    public void func_174812_G() {
+        setDead();
     }
 
     protected abstract void entityInit();
@@ -794,7 +754,7 @@ public abstract class Entity implements ICommandSender {
             func_174829_m();
             isCollidedHorizontally = var13 != x || var17 != z;
             isCollidedVertically = var15 != y;
-            onGround = (Client.getModuleManager().get(Fly.class).isEnabled() && !((Options)Client.getModuleManager().get(Fly.class).getSetting(Fly.MODE).getValue()).getSelected().equalsIgnoreCase("Vanilla")) && (this == Minecraft.getMinecraft().thePlayer) || ((this.isCollidedVertically) && (var15 < 0.0D));
+            onGround = (Client.getModuleManager().get(Fly.class).isEnabled() && !((Options) Client.getModuleManager().get(Fly.class).getSetting(Fly.MODE).getValue()).getSelected().equalsIgnoreCase("Vanilla")) && (this == Minecraft.getMinecraft().thePlayer) || ((this.isCollidedVertically) && (var15 < 0.0D));
             isCollided = isCollidedHorizontally || isCollidedVertically;
             int var57 = MathHelper.floor_double(posX);
             int var58 = MathHelper.floor_double(posY - 0.20000000298023224D);
@@ -1971,6 +1931,10 @@ public abstract class Entity implements ICommandSender {
         return getFlag(5);
     }
 
+    public void setInvisible(boolean invisible) {
+        setFlag(5, invisible);
+    }
+
     /**
      * Only used by renderer in EntityLivingBase subclasses. Determines if an
      * entity is visible or not to a specfic player, if the entity is normally
@@ -1979,10 +1943,6 @@ public abstract class Entity implements ICommandSender {
      */
     public boolean isInvisibleToPlayer(EntityPlayer playerIn) {
         return playerIn.func_175149_v() ? false : isInvisible();
-    }
-
-    public void setInvisible(boolean invisible) {
-        setFlag(5, invisible);
     }
 
     public boolean isEating() {
@@ -2351,15 +2311,15 @@ public abstract class Entity implements ICommandSender {
         return var1;
     }
 
+    public String getCustomNameTag() {
+        return dataWatcher.getWatchableObjectString(2);
+    }
+
     /**
      * Sets the custom name tag for this entity
      */
     public void setCustomNameTag(String p_96094_1_) {
         dataWatcher.updateObject(2, p_96094_1_);
-    }
-
-    public String getCustomNameTag() {
-        return dataWatcher.getWatchableObjectString(2);
     }
 
     /**
@@ -2369,12 +2329,12 @@ public abstract class Entity implements ICommandSender {
         return dataWatcher.getWatchableObjectString(2).length() > 0;
     }
 
-    public void setAlwaysRenderNameTag(boolean p_174805_1_) {
-        dataWatcher.updateObject(3, Byte.valueOf((byte) (p_174805_1_ ? 1 : 0)));
-    }
-
     public boolean getAlwaysRenderNameTag() {
         return dataWatcher.getWatchableObjectByte(3) == 1;
+    }
+
+    public void setAlwaysRenderNameTag(boolean p_174805_1_) {
+        dataWatcher.updateObject(3, Byte.valueOf((byte) (p_174805_1_ ? 1 : 0)));
     }
 
     /**

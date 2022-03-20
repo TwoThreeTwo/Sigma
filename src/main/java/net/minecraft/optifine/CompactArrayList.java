@@ -3,122 +3,122 @@ package net.minecraft.optifine;
 import java.util.ArrayList;
 
 public class CompactArrayList {
-	private ArrayList list;
-	private int initialCapacity;
-	private float loadFactor;
-	private int countValid;
+    private ArrayList list;
+    private int initialCapacity;
+    private float loadFactor;
+    private int countValid;
 
-	public CompactArrayList() {
-		this(10, 0.75F);
-	}
+    public CompactArrayList() {
+        this(10, 0.75F);
+    }
 
-	public CompactArrayList(int initialCapacity) {
-		this(initialCapacity, 0.75F);
-	}
+    public CompactArrayList(int initialCapacity) {
+        this(initialCapacity, 0.75F);
+    }
 
-	public CompactArrayList(int initialCapacity, float loadFactor) {
-		list = null;
-		this.initialCapacity = 0;
-		this.loadFactor = 1.0F;
-		countValid = 0;
-		list = new ArrayList(initialCapacity);
-		this.initialCapacity = initialCapacity;
-		this.loadFactor = loadFactor;
-	}
+    public CompactArrayList(int initialCapacity, float loadFactor) {
+        list = null;
+        this.initialCapacity = 0;
+        this.loadFactor = 1.0F;
+        countValid = 0;
+        list = new ArrayList(initialCapacity);
+        this.initialCapacity = initialCapacity;
+        this.loadFactor = loadFactor;
+    }
 
-	public void add(int index, Object element) {
-		if (element != null) {
-			++countValid;
-		}
+    public void add(int index, Object element) {
+        if (element != null) {
+            ++countValid;
+        }
 
-		list.add(index, element);
-	}
+        list.add(index, element);
+    }
 
-	public boolean add(Object element) {
-		if (element != null) {
-			++countValid;
-		}
+    public boolean add(Object element) {
+        if (element != null) {
+            ++countValid;
+        }
 
-		return list.add(element);
-	}
+        return list.add(element);
+    }
 
-	public Object set(int index, Object element) {
-		Object oldElement = list.set(index, element);
+    public Object set(int index, Object element) {
+        Object oldElement = list.set(index, element);
 
-		if (element != oldElement) {
-			if (oldElement == null) {
-				++countValid;
-			}
+        if (element != oldElement) {
+            if (oldElement == null) {
+                ++countValid;
+            }
 
-			if (element == null) {
-				--countValid;
-			}
-		}
+            if (element == null) {
+                --countValid;
+            }
+        }
 
-		return oldElement;
-	}
+        return oldElement;
+    }
 
-	public Object remove(int index) {
-		Object oldElement = list.remove(index);
+    public Object remove(int index) {
+        Object oldElement = list.remove(index);
 
-		if (oldElement != null) {
-			--countValid;
-		}
+        if (oldElement != null) {
+            --countValid;
+        }
 
-		return oldElement;
-	}
+        return oldElement;
+    }
 
-	public void clear() {
-		list.clear();
-		countValid = 0;
-	}
+    public void clear() {
+        list.clear();
+        countValid = 0;
+    }
 
-	public void compact() {
-		if (countValid <= 0 && list.size() <= 0) {
-			clear();
-		} else if (list.size() > initialCapacity) {
-			float currentLoadFactor = countValid * 1.0F / list.size();
+    public void compact() {
+        if (countValid <= 0 && list.size() <= 0) {
+            clear();
+        } else if (list.size() > initialCapacity) {
+            float currentLoadFactor = countValid * 1.0F / list.size();
 
-			if (currentLoadFactor <= loadFactor) {
-				int dstIndex = 0;
-				int i;
+            if (currentLoadFactor <= loadFactor) {
+                int dstIndex = 0;
+                int i;
 
-				for (i = 0; i < list.size(); ++i) {
-					Object wr = list.get(i);
+                for (i = 0; i < list.size(); ++i) {
+                    Object wr = list.get(i);
 
-					if (wr != null) {
-						if (i != dstIndex) {
-							list.set(dstIndex, wr);
-						}
+                    if (wr != null) {
+                        if (i != dstIndex) {
+                            list.set(dstIndex, wr);
+                        }
 
-						++dstIndex;
-					}
-				}
+                        ++dstIndex;
+                    }
+                }
 
-				for (i = list.size() - 1; i >= dstIndex; --i) {
-					list.remove(i);
-				}
-			}
-		}
-	}
+                for (i = list.size() - 1; i >= dstIndex; --i) {
+                    list.remove(i);
+                }
+            }
+        }
+    }
 
-	public boolean contains(Object elem) {
-		return list.contains(elem);
-	}
+    public boolean contains(Object elem) {
+        return list.contains(elem);
+    }
 
-	public Object get(int index) {
-		return list.get(index);
-	}
+    public Object get(int index) {
+        return list.get(index);
+    }
 
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
 
-	public int size() {
-		return list.size();
-	}
+    public int size() {
+        return list.size();
+    }
 
-	public int getCountValid() {
-		return countValid;
-	}
+    public int getCountValid() {
+        return countValid;
+    }
 }

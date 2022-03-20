@@ -30,26 +30,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TabGUI extends Module {
 
+    public static int opacity = 45;
+    private final String TOOLTIPS = "TOOLTIPS";
     private int selectedTypeX, moduleBoxY, currentSetting,
             settingBoxX, categoryBoxY, categoryBoxX, currentCategory, targetY, targetModY, targetSetY, moduleBoxX,
             targetX, targetSetX;
     private boolean inModules, inModSet, inSet;
     private Module selectedModule;
     private Timer timer = new Timer();
-    public static int opacity = 45;
     private int targetOpacity = 45;
     private boolean isActive;
-
-    private final String TOOLTIPS = "TOOLTIPS";
-
+    private Translate selectedType = new Translate(0, 14);
+    private Translate selectedModuleT = new Translate(0, 14);
+    private Translate selectedSettingT = new Translate(0, 14);
     public TabGUI(ModuleData data) {
         super(data);
         settings.put(TOOLTIPS, new Setting<>(TOOLTIPS, true, "Shows descriptions of features."));
     }
-
-    private Translate selectedType = new Translate(0, 14);
-    private Translate selectedModuleT = new Translate(0, 14);
-    private Translate selectedSettingT = new Translate(0, 14);
 
     @Override
     public void onEnable() {
@@ -333,8 +330,8 @@ public class TabGUI extends Module {
                                     Colors.getColor(255, opacity + 64));
                         }
                         boolean isSelected = Math.abs(y - selectedModuleT.getY()) < 6 || y - selectedModuleT.getY() == 6;
-                        if((Boolean)settings.get(TOOLTIPS).getValue() && !inModSet) {
-                            if(isSelected) {
+                        if ((Boolean) settings.get(TOOLTIPS).getValue() && !inModSet) {
+                            if (isSelected) {
                                 float width = Client.fm.getFont("SFM 8").getWidth(mod.getDescription());
                                 RenderingUtil.rectangle(moduleBoxX + 2, selectedModuleT.getY(), moduleBoxX + width + 2, selectedModuleT.getY() + 12,
                                         Colors.getColor(0, opacity));
@@ -372,8 +369,8 @@ public class TabGUI extends Module {
                         if (setting != null && diff5 == 0 && settingBoxX > moduleBoxX + 4) {
 
                             boolean isSelected = Math.abs(y1 - selectedSettingT.getY()) < 6 || y1 - selectedSettingT.getY() == 6;
-                            if((Boolean)settings.get(TOOLTIPS).getValue() && !inSet) {
-                                if(isSelected) {
+                            if ((Boolean) settings.get(TOOLTIPS).getValue() && !inSet) {
+                                if (isSelected) {
                                     float width = Client.fm.getFont("SFM 8").getWidth(setting.getDesc());
                                     RenderingUtil.rectangle(settingBoxX + 2, selectedSettingT.getY(), settingBoxX + width + 2, selectedSettingT.getY() + 12,
                                             Colors.getColor(0, opacity));

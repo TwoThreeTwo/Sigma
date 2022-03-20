@@ -1,14 +1,5 @@
 package info.sigmaclient.module.impl.render;
 
-import java.awt.Color;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import info.sigmaclient.Client;
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.EventSystem;
@@ -24,12 +15,6 @@ import info.sigmaclient.util.RenderingUtil;
 import info.sigmaclient.util.RotationUtils;
 import info.sigmaclient.util.render.Colors;
 import info.sigmaclient.util.render.TTFFontRenderer;
-import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,23 +30,48 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import org.apache.commons.lang3.StringUtils;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
+
+import java.awt.*;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Nametags extends Module {
 
-    private boolean hideInvisibles;
-    private double gradualFOVModifier;
-    private Character formatChar = new Character('\247');
     public static Map<EntityLivingBase, double[]> entityPositions = new HashMap();
     public static String ARMOR = "ARMOR";
     public static String HEALTH = "HEALTH";
     public static String IMASPECIALCUNT = "SCALE";
     private final String INVISIBLES = "INVISIBLES";
+    private boolean hideInvisibles;
+    private double gradualFOVModifier;
+    private Character formatChar = new Character('\247');
 
     public Nametags(ModuleData data) {
         super(data);
         settings.put(ARMOR, new Setting<>(ARMOR, true, "Show armor when not hovering."));
         settings.put(HEALTH, new Setting<>(HEALTH, false, "Show health when not hovering."));
         settings.put(INVISIBLES, new Setting<>(INVISIBLES, false, "Show invisibles."));
+    }
+
+    private static void drawEnchantTag(String text, int x, int y) {
+        GlStateManager.pushMatrix();
+        GlStateManager.disableDepth();
+        x = (int) (x * 1.75D);
+        y -= 4;
+        GL11.glScalef(0.57F, 0.57F, 0.57F);
+        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text, x, -30 - y, Colors.getColor(255));
+        GlStateManager.enableDepth();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -99,7 +109,7 @@ public class Nametags extends Module {
 
                         TTFFontRenderer font = Client.fm.getFont("SFB 8");
 
-                        GlStateManager.translate(renderPositions[0]/scaledRes.getScaleFactor(), renderPositions[1]/scaledRes.getScaleFactor(), 0.0D);
+                        GlStateManager.translate(renderPositions[0] / scaledRes.getScaleFactor(), renderPositions[1] / scaledRes.getScaleFactor(), 0.0D);
                         scale();
                         String healthInfo = (int) ((EntityLivingBase) ent).getHealth() + "";
                         GlStateManager.translate(0.0D, -2.5D, 0.0D);
@@ -255,17 +265,6 @@ public class Nametags extends Module {
             return "\2476";
         }
         return "\247f";
-    }
-
-    private static void drawEnchantTag(String text, int x, int y) {
-        GlStateManager.pushMatrix();
-        GlStateManager.disableDepth();
-        x = (int) (x * 1.75D);
-        y -= 4;
-        GL11.glScalef(0.57F, 0.57F, 0.57F);
-        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text, x, -30 - y, Colors.getColor(255));
-        GlStateManager.enableDepth();
-        GlStateManager.popMatrix();
     }
 
     private void scale() {

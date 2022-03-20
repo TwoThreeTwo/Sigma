@@ -24,7 +24,7 @@ public class SLButton {
 
     public void draw(final float x, final float y) {
         for (final UI theme : Client.getClickGui().getThemes()) {
-                theme.slButtonDraw(this, x, y, this.panel);
+            theme.slButtonDraw(this, x, y, this.panel);
         }
     }
 

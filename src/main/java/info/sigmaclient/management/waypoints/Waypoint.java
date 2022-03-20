@@ -25,12 +25,12 @@ public class Waypoint {
         return name;
     }
 
-    public Vec3 getVec3() {
-        return vec3;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Vec3 getVec3() {
+        return vec3;
     }
 
     public void setVec3(Vec3 vec3) {
@@ -38,7 +38,7 @@ public class Waypoint {
     }
 
     public void setVec3(double x, double y, double z) {
-        this.vec3 = new Vec3(x,y,z);
+        this.vec3 = new Vec3(x, y, z);
     }
 
     public int getColor() {

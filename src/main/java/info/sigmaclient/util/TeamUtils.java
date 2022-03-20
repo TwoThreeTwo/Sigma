@@ -1,6 +1,7 @@
 package info.sigmaclient.util;
 
 import net.minecraft.entity.player.EntityPlayer;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 public class TeamUtils {
 
     public static boolean isTeam(final EntityPlayer e, final EntityPlayer e2) {
-       // ChatUtil.printChat(e2.getDisplayName().getFormattedText().contains("§" + isTeam(e)) + " " + isTeam(e));
+        // ChatUtil.printChat(e2.getDisplayName().getFormattedText().contains("§" + isTeam(e)) + " " + isTeam(e));
         return e.getDisplayName().getFormattedText().contains("§" + isTeam(e)) && e2.getDisplayName().getFormattedText().contains("§" + isTeam(e));
     }
 

@@ -3,8 +3,8 @@ package info.sigmaclient.module.impl.movement;
 import info.sigmaclient.event.Event;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventLiquidCollide;
-import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.event.impl.EventPacket;
+import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.util.PlayerUtil;
@@ -17,12 +17,12 @@ import net.minecraft.util.BlockPos;
 public class Jesus extends Module {
 
 
+    int ticks;
+
     public Jesus(ModuleData data) {
         super(data);
         // TODO Auto-generated constructor stub
     }
-
-    int ticks;
 
     @Override
     public void onEnable() {

@@ -1,30 +1,27 @@
 package net.minecraft.client.gui.spectator;
 
 import com.google.common.collect.Lists;
-import java.util.List;
 import net.minecraft.client.gui.spectator.categories.TeleportToPlayer;
 import net.minecraft.client.gui.spectator.categories.TeleportToTeam;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-public class BaseSpectatorGroup implements ISpectatorMenuView
-{
-    private final List field_178671_a = Lists.newArrayList();
-    private static final String __OBFID = "CL_00001928";
+import java.util.List;
 
-    public BaseSpectatorGroup()
-    {
+public class BaseSpectatorGroup implements ISpectatorMenuView {
+    private static final String __OBFID = "CL_00001928";
+    private final List field_178671_a = Lists.newArrayList();
+
+    public BaseSpectatorGroup() {
         this.field_178671_a.add(new TeleportToPlayer());
         this.field_178671_a.add(new TeleportToTeam());
     }
 
-    public List func_178669_a()
-    {
+    public List func_178669_a() {
         return this.field_178671_a;
     }
 
-    public IChatComponent func_178670_b()
-    {
+    public IChatComponent func_178670_b() {
         return new ChatComponentText("Press a key to select a command, and again to use it.");
     }
 }

@@ -13,9 +13,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientMainMenu extends PanoramaScreen {
-    private static int key = Keyboard.KEY_GRAVE;
     private static final GuiVanillaMainMenu menuVanilla = new GuiVanillaMainMenu();
     private static final GuiModdedMainMenu menuModded = new GuiModdedMainMenu();
+    private static int key = Keyboard.KEY_GRAVE;
+
+    public static void save() {
+        List<String> fileContent = new ArrayList<>();
+        fileContent.add(String.format("%s:%s", "key", key));
+        fileContent.add(String.format("%s:%s", "setup", Client.hasSetup));
+        fileContent.add(String.format("%s:%s", "lowend", Client.isLowEndPC));
+        info.sigmaclient.util.FileUtils.write(getFile(), fileContent, true);
+    }
+
+    public static File getFile() {
+        File file = new File(getFolder().getAbsolutePath() + File.separator + "MainMenu.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+
+    public static File getFolder() {
+        File folder = new File(Client.getDataDir().getAbsolutePath() + File.separator + SubFolder.Other.getFolderName());
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder;
+    }
 
     public void initGui() {
         load();
@@ -87,33 +115,5 @@ public class ClientMainMenu extends PanoramaScreen {
     public void toggleVanilla() {
         Client.setHidden(!Client.isHidden());
         save();
-    }
-
-    public static void save() {
-        List<String> fileContent = new ArrayList<>();
-        fileContent.add(String.format("%s:%s", "key", key));
-        fileContent.add(String.format("%s:%s", "setup", Client.hasSetup));
-        fileContent.add(String.format("%s:%s", "lowend", Client.isLowEndPC));
-        info.sigmaclient.util.FileUtils.write(getFile(), fileContent, true);
-    }
-
-    public static File getFile() {
-        File file = new File(getFolder().getAbsolutePath() + File.separator + "MainMenu.txt");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return file;
-    }
-
-    public static File getFolder() {
-        File folder = new File(Client.getDataDir().getAbsolutePath() + File.separator + SubFolder.Other.getFolderName());
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        return folder;
     }
 }

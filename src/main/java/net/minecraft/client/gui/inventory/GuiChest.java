@@ -6,20 +6,17 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiChest extends GuiContainer
-{
+public class GuiChest extends GuiContainer {
     private static final ResourceLocation field_147017_u = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final String __OBFID = "CL_00000749";
     public IInventory upperChestInventory;
     public IInventory lowerChestInventory;
-
     /**
      * window height is calculated with these values; the more rows, the heigher
      */
     private int inventoryRows;
-    private static final String __OBFID = "CL_00000749";
 
-    public GuiChest(IInventory p_i46315_1_, IInventory p_i46315_2_)
-    {
+    public GuiChest(IInventory p_i46315_1_, IInventory p_i46315_2_) {
         super(new ContainerChest(p_i46315_1_, p_i46315_2_, Minecraft.getMinecraft().thePlayer));
         this.upperChestInventory = p_i46315_1_;
         this.lowerChestInventory = p_i46315_2_;
@@ -33,8 +30,7 @@ public class GuiChest extends GuiContainer
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items). Args : mouseX, mouseY
      */
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString(this.lowerChestInventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
         this.fontRendererObj.drawString(this.upperChestInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
@@ -42,8 +38,7 @@ public class GuiChest extends GuiContainer
     /**
      * Args : renderPartialTicks, mouseX, mouseY
      */
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_147017_u);
         int var4 = (this.width - this.xSize) / 2;

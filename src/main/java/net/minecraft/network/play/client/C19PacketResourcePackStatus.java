@@ -1,23 +1,22 @@
 package net.minecraft.network.play.client;
 
-import java.io.IOException;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
-public class C19PacketResourcePackStatus implements Packet
-{
+import java.io.IOException;
+
+public class C19PacketResourcePackStatus implements Packet {
+    private static final String __OBFID = "CL_00002282";
     public String field_179720_a;
     public C19PacketResourcePackStatus.Action field_179719_b;
-    private static final String __OBFID = "CL_00002282";
 
-    public C19PacketResourcePackStatus() {}
+    public C19PacketResourcePackStatus() {
+    }
 
-    public C19PacketResourcePackStatus(String p_i45935_1_, C19PacketResourcePackStatus.Action p_i45935_2_)
-    {
-        if (p_i45935_1_.length() > 40)
-        {
+    public C19PacketResourcePackStatus(String p_i45935_1_, C19PacketResourcePackStatus.Action p_i45935_2_) {
+        if (p_i45935_1_.length() > 40) {
             p_i45935_1_ = p_i45935_1_.substring(0, 40);
         }
 
@@ -28,36 +27,31 @@ public class C19PacketResourcePackStatus implements Packet
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer data) throws IOException
-    {
+    public void readPacketData(PacketBuffer data) throws IOException {
         this.field_179720_a = data.readStringFromBuffer(40);
-        this.field_179719_b = (C19PacketResourcePackStatus.Action)data.readEnumValue(C19PacketResourcePackStatus.Action.class);
+        this.field_179719_b = (C19PacketResourcePackStatus.Action) data.readEnumValue(C19PacketResourcePackStatus.Action.class);
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer data) throws IOException
-    {
+    public void writePacketData(PacketBuffer data) throws IOException {
         data.writeString(this.field_179720_a);
         data.writeEnumValue(this.field_179719_b);
     }
 
-    public void func_179718_a(INetHandlerPlayServer p_179718_1_)
-    {
+    public void func_179718_a(INetHandlerPlayServer p_179718_1_) {
         p_179718_1_.func_175086_a(this);
     }
 
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandler handler)
-    {
-        this.func_179718_a((INetHandlerPlayServer)handler);
+    public void processPacket(INetHandler handler) {
+        this.func_179718_a((INetHandlerPlayServer) handler);
     }
 
-    public static enum Action
-    {
+    public static enum Action {
         SUCCESSFULLY_LOADED("SUCCESSFULLY_LOADED", 0),
         DECLINED("DECLINED", 1),
         FAILED_DOWNLOAD("FAILED_DOWNLOAD", 2),
@@ -66,6 +60,7 @@ public class C19PacketResourcePackStatus implements Packet
         private static final C19PacketResourcePackStatus.Action[] $VALUES = new C19PacketResourcePackStatus.Action[]{SUCCESSFULLY_LOADED, DECLINED, FAILED_DOWNLOAD, ACCEPTED};
         private static final String __OBFID = "CL_00002281";
 
-        private Action(String p_i45934_1_, int p_i45934_2_) {}
+        private Action(String p_i45934_1_, int p_i45934_2_) {
+        }
     }
 }

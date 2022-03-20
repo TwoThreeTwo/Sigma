@@ -12,9 +12,9 @@ import net.minecraft.client.resources.I18n;
 import java.io.IOException;
 
 public class GuiIngameMenu extends GuiScreen {
+    private static final String __OBFID = "CL_00000703";
     private int field_146445_a;
     private int field_146444_f;
-    private static final String __OBFID = "CL_00000703";
 
     /**
      * Adds the buttons (and other controls) to the screen in question.

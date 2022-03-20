@@ -15,7 +15,7 @@ public class Sprint extends Module {
     @Override
     @RegisterEvent(events = {EventUpdate.class})
     public void onEvent(Event event) {
-        EventUpdate em = (EventUpdate)event;
+        EventUpdate em = (EventUpdate) event;
         if (em.isPre() && canSprint()) {
             mc.thePlayer.setSprinting(true);
         }

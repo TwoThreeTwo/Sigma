@@ -26,12 +26,12 @@ public class AutoPot extends Module {
 
     private static final String DELAY = "DELAY";
     private static final String HEALTH = "HEALTH";
+    public static int haltTicks;
+    public static boolean potting;
     private final String PREDICT = "PREDICT";
     private String REGEN = "REGEN";
     private String OVERPOT = "OVERPOT";
     private Timer timer = new Timer();
-    public static int haltTicks;
-    public static boolean potting;
     private boolean send;
 
     public AutoPot(ModuleData data) {
@@ -55,7 +55,7 @@ public class AutoPot extends Module {
                     potting = false;
                 }
                 float health = ((Number) settings.get(HEALTH).getValue()).floatValue() * 2;
-                if(mc.thePlayer.getEquipmentInSlot(4) == null && hasArmor(mc.thePlayer) && ((Boolean)settings.get(OVERPOT).getValue())) {
+                if (mc.thePlayer.getEquipmentInSlot(4) == null && hasArmor(mc.thePlayer) && ((Boolean) settings.get(OVERPOT).getValue())) {
                     health += mc.thePlayer.getEquipmentInSlot(1) == null ? 6 : 3;
                 }
                 if (PlayerUtil.isMoving()) {
@@ -63,8 +63,7 @@ public class AutoPot extends Module {
                         haltTicks = 6;
                         swap(getPotionFromInv(), 6);
                         e.setPitch(120);
-                        if ((Boolean)settings.get(PREDICT).getValue())
-                        {
+                        if ((Boolean) settings.get(PREDICT).getValue()) {
                             double movedPosX = mc.thePlayer.posX + mc.thePlayer.motionX * 16.0D;
                             double movedPosY = mc.thePlayer.boundingBox.minY - 3.6D;
                             double movedPosZ = mc.thePlayer.posZ + mc.thePlayer.motionZ * 16.0D;
@@ -76,7 +75,7 @@ public class AutoPot extends Module {
                         timer.reset();
                     }
                 } else if (mc.thePlayer.getHealth() <= health && getPotionFromInv() != -1 && timer.delay(delay) && haltTicks < 0 && mc.thePlayer.isCollidedVertically) {
-                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ,mc.thePlayer.rotationYaw, -90, true));
+                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, -90, true));
                     swap(getPotionFromInv(), 6);
                     mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(6));
                     mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
@@ -89,7 +88,7 @@ public class AutoPot extends Module {
             }
             if (e.isPost()) {
                 if (potting) {
-                    if(PlayerUtil.isMoving()) {
+                    if (PlayerUtil.isMoving()) {
                         mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(6));
                         mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
                         mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
@@ -142,7 +141,7 @@ public class AutoPot extends Module {
                     if (potion.getEffects(is) != null) {
                         for (Object o : potion.getEffects(is)) {
                             PotionEffect effect = (PotionEffect) o;
-                            if ((effect.getPotionID() == Potion.heal.id || (effect.getPotionID() == Potion.regeneration.id && (Boolean)settings.get(REGEN).getValue() && !mc.thePlayer.isPotionActive(Potion.regeneration))) && (ItemPotion.isSplash(is.getItemDamage()))) {
+                            if ((effect.getPotionID() == Potion.heal.id || (effect.getPotionID() == Potion.regeneration.id && (Boolean) settings.get(REGEN).getValue() && !mc.thePlayer.isPotionActive(Potion.regeneration))) && (ItemPotion.isSplash(is.getItemDamage()))) {
                                 pot = i;
                             }
                         }

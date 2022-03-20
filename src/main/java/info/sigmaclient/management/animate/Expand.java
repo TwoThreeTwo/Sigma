@@ -30,12 +30,12 @@ public class Expand {
     public void interpolate(float targetX, float targetY, int xSpeed, int ySpeed) {
         long currentMS = System.currentTimeMillis();
         long delta = currentMS - lastMS;//16.66666
-        if(delta > 60) {
+        if (delta > 60) {
             delta = 16;
         }
         lastMS = currentMS;
-        int deltaX = (int) (Math.abs(targetX - expandX)*0.3f);
-        int deltaY = (int) (Math.abs(targetY - expandY)*0.3f);
+        int deltaX = (int) (Math.abs(targetX - expandX) * 0.3f);
+        int deltaY = (int) (Math.abs(targetY - expandY) * 0.3f);
         expandX = AnimationUtil.calculateCompensation(targetX, expandX, delta, deltaX);
         expandY = AnimationUtil.calculateCompensation(targetY, expandY, delta, deltaY);
     }
@@ -44,12 +44,12 @@ public class Expand {
         return expandX;
     }
 
-    public float getExpandY() {
-        return expandY;
-    }
-
     public void setExpandX(float expandX) {
         this.expandX = expandX;
+    }
+
+    public float getExpandY() {
+        return expandY;
     }
 
     public void setExpandY(float expandY) {

@@ -1,10 +1,10 @@
 package info.sigmaclient.util.render;
 
 
-import java.util.Stack;
-
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Stack;
 
 //Thanks to Valk for this good meme.
 

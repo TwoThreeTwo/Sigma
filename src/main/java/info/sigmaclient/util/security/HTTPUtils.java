@@ -1,16 +1,10 @@
 package info.sigmaclient.util.security;
 
-import com.sun.net.ssl.internal.ssl.Provider;
-import info.sigmaclient.management.Authentication;
-import info.sigmaclient.util.FileUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.security.Security;
 
 /**
  * Created by Arithmo on 5/29/2017 at 3:43 PM.

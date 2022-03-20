@@ -1,15 +1,15 @@
 package info.sigmaclient.management.command.impl;
 
+import info.sigmaclient.Client;
 import info.sigmaclient.event.Event;
+import info.sigmaclient.management.command.Command;
+import info.sigmaclient.module.Module;
 import info.sigmaclient.module.data.Options;
 import info.sigmaclient.module.data.Setting;
 import info.sigmaclient.module.data.SettingsMap;
-import info.sigmaclient.util.misc.ChatUtil;
-import info.sigmaclient.Client;
-import info.sigmaclient.management.command.Command;
-import info.sigmaclient.module.Module;
 import info.sigmaclient.util.MathUtils;
 import info.sigmaclient.util.StringConversions;
+import info.sigmaclient.util.misc.ChatUtil;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Arrays;
@@ -72,10 +72,10 @@ public class Settings extends Command {
                         if (newValue != null) {
                             ChatUtil.printChat(chatPrefix + module.getName() + "'s " + setting.getName().toLowerCase()
                                     + " has been changed to: " + EnumChatFormatting.DARK_AQUA + newValue);
-                            if(((Number)newValue).doubleValue() < setting.getMin()) {
-                                newValue = (MathUtils.isInteger(setting.getMax()) ? (int)setting.getMin() : setting.getMin());
-                            } else if(((Number)newValue).doubleValue() > setting.getMax()) {
-                                newValue = (MathUtils.isInteger(setting.getMax()) ? (int)setting.getMax() : setting.getMax());
+                            if (((Number) newValue).doubleValue() < setting.getMin()) {
+                                newValue = (MathUtils.isInteger(setting.getMax()) ? (int) setting.getMin() : setting.getMin());
+                            } else if (((Number) newValue).doubleValue() > setting.getMax()) {
+                                newValue = (MathUtils.isInteger(setting.getMax()) ? (int) setting.getMax() : setting.getMax());
                             }
                             setting.setValue(newValue);
                             module.getSettings();
@@ -86,8 +86,8 @@ public class Settings extends Command {
                     else if (setting.getValue().getClass().equals(String.class)) {
                         String str = objText;
 
-                        if(args.length > 3) {
-                            for(int i = 3; i < args.length; i++) {
+                        if (args.length > 3) {
+                            for (int i = 3; i < args.length; i++) {
                                 str = str + " " + args[i];
                             }
                         }
@@ -105,9 +105,9 @@ public class Settings extends Command {
                         module.getSettings();
                         module.save();
                         return;
-                    } else if(setting.getValue() instanceof Options) {
-                        for(String string : ((Options) setting.getValue()).getOptions()) {
-                            if(string.toLowerCase().equalsIgnoreCase(objText)) {
+                    } else if (setting.getValue() instanceof Options) {
+                        for (String string : ((Options) setting.getValue()).getOptions()) {
+                            if (string.toLowerCase().equalsIgnoreCase(objText)) {
                                 ChatUtil.printChat(chatPrefix + module.getName() + "'s " + ((Options) setting.getValue()).getName()
                                         + " has been changed to: " + EnumChatFormatting.DARK_RED + string);
                                 ((Options) setting.getValue()).setSelected(string);
@@ -169,7 +169,7 @@ public class Settings extends Command {
 
         String settingText = EnumChatFormatting.GRAY + setting.getName().toLowerCase() + "\2478: "
                 + EnumChatFormatting.RESET + EnumChatFormatting.RED + setting.getValue();
-        if(setting.getValue().getClass().equals(Boolean.class)) {
+        if (setting.getValue().getClass().equals(Boolean.class)) {
             settingText = EnumChatFormatting.GRAY + setting.getName().toLowerCase() + "\2478: "
                     + EnumChatFormatting.RESET + EnumChatFormatting.RED + (Boolean.parseBoolean(setting.getValue().toString()) ? "True" : "False");
         }

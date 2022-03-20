@@ -3,25 +3,12 @@
  */
 package info.sigmaclient.gui.altmanager;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.Security;
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.sun.net.ssl.internal.ssl.Provider;
 import info.sigmaclient.Client;
-import info.sigmaclient.management.notifications.Notifications;
-import info.sigmaclient.util.security.HTTPUtils;
-import info.sigmaclient.util.security.SSLUtilities;
 import net.minecraft.client.Minecraft;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class FileManager {
     public static ArrayList<CustomFile> Files = new ArrayList();

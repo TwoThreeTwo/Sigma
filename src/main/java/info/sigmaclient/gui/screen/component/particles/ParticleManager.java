@@ -1,28 +1,25 @@
 package info.sigmaclient.gui.screen.component.particles;
 
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
-public class ParticleManager
-{
-    private List<Particle> particles = new CopyOnWriteArrayList<>();
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class ParticleManager {
     public Minecraft mc = Minecraft.getMinecraft();
+    private List<Particle> particles = new CopyOnWriteArrayList<>();
     private boolean rightClicked;
 
-    public ParticleManager()
-    {
+    public ParticleManager() {
         getParticles().clear();
     }
 
-    public void render(int x, int y)
-    {
+    public void render(int x, int y) {
         int rand;
         if (getParticles().size() <= 5000) {
-            for (int i = 0; i < 5; i++)
-            {
+            for (int i = 0; i < 5; i++) {
                 rand = random(0, 6);
                 if (rand == 1) {
                     getParticles().add(new TopLeftParticle(centerWidth() + random(-getRes().getScaledWidth(), getRes().getScaledWidth()), centerHeight() + random(-getRes().getScaledHeight(), getRes().getScaledHeight()), random(1, 2), 0.35f, random(40, 200)));
@@ -41,8 +38,7 @@ public class ParticleManager
                 }
             }
         }
-        for (Particle p : getParticles())
-        {
+        for (Particle p : getParticles()) {
             if (p.getAlpha() <= 0.0F) {
                 getParticles().remove(p);
             }
@@ -50,29 +46,24 @@ public class ParticleManager
         }
     }
 
-    public int random(int low, int high)
-    {
+    public int random(int low, int high) {
         Random r = new Random();
         return r.nextInt(high - low) + low;
     }
 
-    public ScaledResolution getRes()
-    {
+    public ScaledResolution getRes() {
         return new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
     }
 
-    public int centerWidth()
-    {
+    public int centerWidth() {
         return getRes().getScaledWidth() / 2;
     }
 
-    public int centerHeight()
-    {
+    public int centerHeight() {
         return getRes().getScaledHeight() / 2;
     }
 
-    public List<Particle> getParticles()
-    {
+    public List<Particle> getParticles() {
         return particles;
     }
 

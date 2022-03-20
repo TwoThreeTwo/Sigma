@@ -31,7 +31,7 @@ public class DropdownBox {
 
     public void draw(final float x, final float y) {
         for (final UI theme : Client.getClickGui().getThemes()) {
-            if(panel.visible) {
+            if (panel.visible) {
                 theme.dropDownDraw(this, x, y, this.panel);
             }
         }

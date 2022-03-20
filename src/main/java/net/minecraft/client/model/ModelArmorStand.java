@@ -4,21 +4,18 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 
-public class ModelArmorStand extends ModelArmorStandArmor
-{
+public class ModelArmorStand extends ModelArmorStandArmor {
+    private static final String __OBFID = "CL_00002631";
     public ModelRenderer standRightSide;
     public ModelRenderer standLeftSide;
     public ModelRenderer standWaist;
     public ModelRenderer standBase;
-    private static final String __OBFID = "CL_00002631";
 
-    public ModelArmorStand()
-    {
+    public ModelArmorStand() {
         this(0.0F);
     }
 
-    public ModelArmorStand(float p_i46306_1_)
-    {
+    public ModelArmorStand(float p_i46306_1_) {
         super(p_i46306_1_, 64, 64);
         this.bipedHead = new ModelRenderer(this, 0, 0);
         this.bipedHead.addBox(-1.0F, -7.0F, -1.0F, 2, 7, 2, p_i46306_1_);
@@ -60,13 +57,11 @@ public class ModelArmorStand extends ModelArmorStandArmor
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
-    {
+    public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_) {
         super.setRotationAngles(p_78087_1_, p_78087_2_, p_78087_3_, p_78087_4_, p_78087_5_, p_78087_6_, p_78087_7_);
 
-        if (p_78087_7_ instanceof EntityArmorStand)
-        {
-            EntityArmorStand var8 = (EntityArmorStand)p_78087_7_;
+        if (p_78087_7_ instanceof EntityArmorStand) {
+            EntityArmorStand var8 = (EntityArmorStand) p_78087_7_;
             this.bipedLeftArm.showModel = var8.getShowArms();
             this.bipedRightArm.showModel = var8.getShowArms();
             this.standBase.showModel = !var8.hasNoBasePlate();
@@ -93,13 +88,11 @@ public class ModelArmorStand extends ModelArmorStandArmor
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_)
-    {
+    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
         super.render(p_78088_1_, p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_);
         GlStateManager.pushMatrix();
 
-        if (this.isChild)
-        {
+        if (this.isChild) {
             float var8 = 2.0F;
             GlStateManager.scale(1.0F / var8, 1.0F / var8, 1.0F / var8);
             GlStateManager.translate(0.0F, 24.0F * p_78088_7_, 0.0F);
@@ -107,11 +100,8 @@ public class ModelArmorStand extends ModelArmorStandArmor
             this.standLeftSide.render(p_78088_7_);
             this.standWaist.render(p_78088_7_);
             this.standBase.render(p_78088_7_);
-        }
-        else
-        {
-            if (p_78088_1_.isSneaking())
-            {
+        } else {
+            if (p_78088_1_.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
 
@@ -124,8 +114,7 @@ public class ModelArmorStand extends ModelArmorStandArmor
         GlStateManager.popMatrix();
     }
 
-    public void postRenderHiddenArm(float p_178718_1_)
-    {
+    public void postRenderHiddenArm(float p_178718_1_) {
         boolean var2 = this.bipedRightArm.showModel;
         this.bipedRightArm.showModel = true;
         super.postRenderHiddenArm(p_178718_1_);

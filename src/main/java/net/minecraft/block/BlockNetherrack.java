@@ -6,18 +6,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class BlockNetherrack extends Block {
-	private static final String __OBFID = "CL_00000275";
+    private static final String __OBFID = "CL_00000275";
 
-	public BlockNetherrack() {
-		super(Material.rock);
-		setCreativeTab(CreativeTabs.tabBlock);
-	}
+    public BlockNetherrack() {
+        super(Material.rock);
+        setCreativeTab(CreativeTabs.tabBlock);
+    }
 
-	/**
-	 * Get the MapColor for this Block and the given BlockState
-	 */
-	@Override
-	public MapColor getMapColor(IBlockState state) {
-		return MapColor.netherrackColor;
-	}
+    /**
+     * Get the MapColor for this Block and the given BlockState
+     */
+    @Override
+    public MapColor getMapColor(IBlockState state) {
+        return MapColor.netherrackColor;
+    }
 }

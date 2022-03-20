@@ -1,7 +1,5 @@
 package net.minecraft.optifine;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,60 +7,63 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 public class RenderPlayerOF extends RenderPlayer {
-	public RenderPlayerOF(RenderManager renderManager, boolean slimArms) {
-		super(renderManager, slimArms);
-	}
+    public RenderPlayerOF(RenderManager renderManager, boolean slimArms) {
+        super(renderManager, slimArms);
+    }
 
-	@Override
-	protected void func_177093_a(EntityLivingBase entityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ticksExisted, float headYaw, float rotationPitch, float scale) {
-		super.func_177093_a(entityLiving, limbSwing, limbSwingAmount, partialTicks, ticksExisted, headYaw, rotationPitch, scale);
-		renderEquippedItems(entityLiving, scale, partialTicks);
-	}
+    public static void register() {
+        RenderManager rm = Config.getMinecraft().getRenderManager();
+        Map mapRenderTypes = RenderPlayerOF.getMapRenderTypes(rm);
 
-	protected void renderEquippedItems(EntityLivingBase entityLiving, float scale, float partialTicks) {
-		if (entityLiving instanceof AbstractClientPlayer) {
-			AbstractClientPlayer player = (AbstractClientPlayer) entityLiving;
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableRescaleNormal();
-			ModelBiped modelBipedMain = (ModelBiped) mainModel;
-			PlayerConfigurations.renderPlayerItems(modelBipedMain, player, scale, partialTicks);
-		}
-	}
+        if (mapRenderTypes == null) {
+            Config.warn("RenderPlayerOF init() failed: RenderManager.MapRenderTypes not found");
+        } else {
+            mapRenderTypes.put("default", new RenderPlayerOF(rm, false));
+            mapRenderTypes.put("slim", new RenderPlayerOF(rm, true));
+        }
+    }
 
-	public static void register() {
-		RenderManager rm = Config.getMinecraft().getRenderManager();
-		Map mapRenderTypes = RenderPlayerOF.getMapRenderTypes(rm);
+    private static Map getMapRenderTypes(RenderManager rm) {
+        try {
+            Field[] e = Reflector.getFields(RenderManager.class, Map.class);
 
-		if (mapRenderTypes == null) {
-			Config.warn("RenderPlayerOF init() failed: RenderManager.MapRenderTypes not found");
-		} else {
-			mapRenderTypes.put("default", new RenderPlayerOF(rm, false));
-			mapRenderTypes.put("slim", new RenderPlayerOF(rm, true));
-		}
-	}
+            for (Field field : e) {
+                Map map = (Map) field.get(rm);
 
-	private static Map getMapRenderTypes(RenderManager rm) {
-		try {
-			Field[] e = Reflector.getFields(RenderManager.class, Map.class);
+                if (map != null) {
+                    Object renderSteve = map.get("default");
 
-			for (Field field : e) {
-				Map map = (Map) field.get(rm);
+                    if (renderSteve instanceof RenderPlayer) {
+                        return map;
+                    }
+                }
+            }
 
-				if (map != null) {
-					Object renderSteve = map.get("default");
+            return null;
+        } catch (Exception var6) {
+            Config.warn("Error getting RenderManager.mapRenderTypes");
+            Config.warn(var6.getClass().getName() + ": " + var6.getMessage());
+            return null;
+        }
+    }
 
-					if (renderSteve instanceof RenderPlayer) {
-						return map;
-					}
-				}
-			}
+    @Override
+    protected void func_177093_a(EntityLivingBase entityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ticksExisted, float headYaw, float rotationPitch, float scale) {
+        super.func_177093_a(entityLiving, limbSwing, limbSwingAmount, partialTicks, ticksExisted, headYaw, rotationPitch, scale);
+        renderEquippedItems(entityLiving, scale, partialTicks);
+    }
 
-			return null;
-		} catch (Exception var6) {
-			Config.warn("Error getting RenderManager.mapRenderTypes");
-			Config.warn(var6.getClass().getName() + ": " + var6.getMessage());
-			return null;
-		}
-	}
+    protected void renderEquippedItems(EntityLivingBase entityLiving, float scale, float partialTicks) {
+        if (entityLiving instanceof AbstractClientPlayer) {
+            AbstractClientPlayer player = (AbstractClientPlayer) entityLiving;
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableRescaleNormal();
+            ModelBiped modelBipedMain = (ModelBiped) mainModel;
+            PlayerConfigurations.renderPlayerItems(modelBipedMain, player, scale, partialTicks);
+        }
+    }
 }

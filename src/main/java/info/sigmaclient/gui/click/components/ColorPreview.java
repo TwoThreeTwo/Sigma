@@ -25,12 +25,12 @@ public class ColorPreview {
         this.colorName = colorName;
         this.x = x;
         this.y = y;
-        categoryPanel.panel.theme.colorConstructor(this,x,y);
+        categoryPanel.panel.theme.colorConstructor(this, x, y);
     }
 
     public void draw(final float x, final float y) {
         for (final UI theme : Client.getClickGui().getThemes()) {
-                theme.colorPrewviewDraw(this, x, y);
+            theme.colorPrewviewDraw(this, x, y);
         }
     }
 

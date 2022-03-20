@@ -1,8 +1,6 @@
 package net.minecraft.tileentity;
 
 import com.google.common.collect.Lists;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -12,201 +10,207 @@ import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class TileEntityPiston extends TileEntity implements IUpdatePlayerListBox {
-	private IBlockState field_174932_a;
-	private EnumFacing field_174931_f;
+    private static final String __OBFID = "CL_00000369";
+    private IBlockState field_174932_a;
+    private EnumFacing field_174931_f;
+    /**
+     * if this piston is extending or not
+     */
+    private boolean extending;
+    private boolean shouldHeadBeRendered;
+    private float progress;
+    /**
+     * the progress in (de)extending
+     */
+    private float lastProgress;
+    private List field_174933_k = Lists.newArrayList();
 
-	/** if this piston is extending or not */
-	private boolean extending;
-	private boolean shouldHeadBeRendered;
-	private float progress;
+    public TileEntityPiston() {
+    }
 
-	/** the progress in (de)extending */
-	private float lastProgress;
-	private List field_174933_k = Lists.newArrayList();
-	private static final String __OBFID = "CL_00000369";
+    public TileEntityPiston(IBlockState p_i45665_1_, EnumFacing p_i45665_2_, boolean p_i45665_3_, boolean p_i45665_4_) {
+        field_174932_a = p_i45665_1_;
+        field_174931_f = p_i45665_2_;
+        extending = p_i45665_3_;
+        shouldHeadBeRendered = p_i45665_4_;
+    }
 
-	public TileEntityPiston() {}
+    public IBlockState func_174927_b() {
+        return field_174932_a;
+    }
 
-	public TileEntityPiston(IBlockState p_i45665_1_, EnumFacing p_i45665_2_, boolean p_i45665_3_, boolean p_i45665_4_) {
-		field_174932_a = p_i45665_1_;
-		field_174931_f = p_i45665_2_;
-		extending = p_i45665_3_;
-		shouldHeadBeRendered = p_i45665_4_;
-	}
+    @Override
+    public int getBlockMetadata() {
+        return 0;
+    }
 
-	public IBlockState func_174927_b() {
-		return field_174932_a;
-	}
+    /**
+     * Returns true if a piston is extending
+     */
+    public boolean isExtending() {
+        return extending;
+    }
 
-	@Override
-	public int getBlockMetadata() {
-		return 0;
-	}
+    public EnumFacing func_174930_e() {
+        return field_174931_f;
+    }
 
-	/**
-	 * Returns true if a piston is extending
-	 */
-	public boolean isExtending() {
-		return extending;
-	}
+    public boolean shouldPistonHeadBeRendered() {
+        return shouldHeadBeRendered;
+    }
 
-	public EnumFacing func_174930_e() {
-		return field_174931_f;
-	}
+    public float func_145860_a(float p_145860_1_) {
+        if (p_145860_1_ > 1.0F) {
+            p_145860_1_ = 1.0F;
+        }
 
-	public boolean shouldPistonHeadBeRendered() {
-		return shouldHeadBeRendered;
-	}
+        return lastProgress + (progress - lastProgress) * p_145860_1_;
+    }
 
-	public float func_145860_a(float p_145860_1_) {
-		if (p_145860_1_ > 1.0F) {
-			p_145860_1_ = 1.0F;
-		}
+    public float func_174929_b(float p_174929_1_) {
+        return extending ? (func_145860_a(p_174929_1_) - 1.0F) * field_174931_f.getFrontOffsetX() : (1.0F - func_145860_a(p_174929_1_)) * field_174931_f.getFrontOffsetX();
+    }
 
-		return lastProgress + (progress - lastProgress) * p_145860_1_;
-	}
+    public float func_174928_c(float p_174928_1_) {
+        return extending ? (func_145860_a(p_174928_1_) - 1.0F) * field_174931_f.getFrontOffsetY() : (1.0F - func_145860_a(p_174928_1_)) * field_174931_f.getFrontOffsetY();
+    }
 
-	public float func_174929_b(float p_174929_1_) {
-		return extending ? (func_145860_a(p_174929_1_) - 1.0F) * field_174931_f.getFrontOffsetX() : (1.0F - func_145860_a(p_174929_1_)) * field_174931_f.getFrontOffsetX();
-	}
+    public float func_174926_d(float p_174926_1_) {
+        return extending ? (func_145860_a(p_174926_1_) - 1.0F) * field_174931_f.getFrontOffsetZ() : (1.0F - func_145860_a(p_174926_1_)) * field_174931_f.getFrontOffsetZ();
+    }
 
-	public float func_174928_c(float p_174928_1_) {
-		return extending ? (func_145860_a(p_174928_1_) - 1.0F) * field_174931_f.getFrontOffsetY() : (1.0F - func_145860_a(p_174928_1_)) * field_174931_f.getFrontOffsetY();
-	}
+    private void func_145863_a(float p_145863_1_, float p_145863_2_) {
+        if (extending) {
+            p_145863_1_ = 1.0F - p_145863_1_;
+        } else {
+            --p_145863_1_;
+        }
 
-	public float func_174926_d(float p_174926_1_) {
-		return extending ? (func_145860_a(p_174926_1_) - 1.0F) * field_174931_f.getFrontOffsetZ() : (1.0F - func_145860_a(p_174926_1_)) * field_174931_f.getFrontOffsetZ();
-	}
+        AxisAlignedBB var3 = Blocks.piston_extension.func_176424_a(worldObj, pos, field_174932_a, p_145863_1_, field_174931_f);
 
-	private void func_145863_a(float p_145863_1_, float p_145863_2_) {
-		if (extending) {
-			p_145863_1_ = 1.0F - p_145863_1_;
-		} else {
-			--p_145863_1_;
-		}
+        if (var3 != null) {
+            List var4 = worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, var3);
 
-		AxisAlignedBB var3 = Blocks.piston_extension.func_176424_a(worldObj, pos, field_174932_a, p_145863_1_, field_174931_f);
+            if (!var4.isEmpty()) {
+                field_174933_k.addAll(var4);
+                Iterator var5 = field_174933_k.iterator();
 
-		if (var3 != null) {
-			List var4 = worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, var3);
+                while (var5.hasNext()) {
+                    Entity var6 = (Entity) var5.next();
 
-			if (!var4.isEmpty()) {
-				field_174933_k.addAll(var4);
-				Iterator var5 = field_174933_k.iterator();
+                    if (field_174932_a.getBlock() == Blocks.slime_block && extending) {
+                        switch (TileEntityPiston.SwitchAxis.field_177248_a[field_174931_f.getAxis().ordinal()]) {
+                            case 1:
+                                var6.motionX = field_174931_f.getFrontOffsetX();
+                                break;
 
-				while (var5.hasNext()) {
-					Entity var6 = (Entity) var5.next();
+                            case 2:
+                                var6.motionY = field_174931_f.getFrontOffsetY();
+                                break;
 
-					if (field_174932_a.getBlock() == Blocks.slime_block && extending) {
-						switch (TileEntityPiston.SwitchAxis.field_177248_a[field_174931_f.getAxis().ordinal()]) {
-						case 1:
-							var6.motionX = field_174931_f.getFrontOffsetX();
-							break;
+                            case 3:
+                                var6.motionZ = field_174931_f.getFrontOffsetZ();
+                        }
+                    } else {
+                        var6.moveEntity(p_145863_2_ * field_174931_f.getFrontOffsetX(), p_145863_2_ * field_174931_f.getFrontOffsetY(), p_145863_2_ * field_174931_f.getFrontOffsetZ());
+                    }
+                }
 
-						case 2:
-							var6.motionY = field_174931_f.getFrontOffsetY();
-							break;
+                field_174933_k.clear();
+            }
+        }
+    }
 
-						case 3:
-							var6.motionZ = field_174931_f.getFrontOffsetZ();
-						}
-					} else {
-						var6.moveEntity(p_145863_2_ * field_174931_f.getFrontOffsetX(), p_145863_2_ * field_174931_f.getFrontOffsetY(), p_145863_2_ * field_174931_f.getFrontOffsetZ());
-					}
-				}
+    /**
+     * removes a piston's tile entity (and if the piston is moving, stops it)
+     */
+    public void clearPistonTileEntity() {
+        if (lastProgress < 1.0F && worldObj != null) {
+            lastProgress = progress = 1.0F;
+            worldObj.removeTileEntity(pos);
+            invalidate();
 
-				field_174933_k.clear();
-			}
-		}
-	}
+            if (worldObj.getBlockState(pos).getBlock() == Blocks.piston_extension) {
+                worldObj.setBlockState(pos, field_174932_a, 3);
+                worldObj.notifyBlockOfStateChange(pos, field_174932_a.getBlock());
+            }
+        }
+    }
 
-	/**
-	 * removes a piston's tile entity (and if the piston is moving, stops it)
-	 */
-	public void clearPistonTileEntity() {
-		if (lastProgress < 1.0F && worldObj != null) {
-			lastProgress = progress = 1.0F;
-			worldObj.removeTileEntity(pos);
-			invalidate();
+    /**
+     * Updates the JList with a new model.
+     */
+    @Override
+    public void update() {
+        lastProgress = progress;
 
-			if (worldObj.getBlockState(pos).getBlock() == Blocks.piston_extension) {
-				worldObj.setBlockState(pos, field_174932_a, 3);
-				worldObj.notifyBlockOfStateChange(pos, field_174932_a.getBlock());
-			}
-		}
-	}
+        if (lastProgress >= 1.0F) {
+            func_145863_a(1.0F, 0.25F);
+            worldObj.removeTileEntity(pos);
+            invalidate();
 
-	/**
-	 * Updates the JList with a new model.
-	 */
-	@Override
-	public void update() {
-		lastProgress = progress;
+            if (worldObj.getBlockState(pos).getBlock() == Blocks.piston_extension) {
+                worldObj.setBlockState(pos, field_174932_a, 3);
+                worldObj.notifyBlockOfStateChange(pos, field_174932_a.getBlock());
+            }
+        } else {
+            progress += 0.5F;
 
-		if (lastProgress >= 1.0F) {
-			func_145863_a(1.0F, 0.25F);
-			worldObj.removeTileEntity(pos);
-			invalidate();
+            if (progress >= 1.0F) {
+                progress = 1.0F;
+            }
 
-			if (worldObj.getBlockState(pos).getBlock() == Blocks.piston_extension) {
-				worldObj.setBlockState(pos, field_174932_a, 3);
-				worldObj.notifyBlockOfStateChange(pos, field_174932_a.getBlock());
-			}
-		} else {
-			progress += 0.5F;
+            if (extending) {
+                func_145863_a(progress, progress - lastProgress + 0.0625F);
+            }
+        }
+    }
 
-			if (progress >= 1.0F) {
-				progress = 1.0F;
-			}
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        field_174932_a = Block.getBlockById(compound.getInteger("blockId")).getStateFromMeta(compound.getInteger("blockData"));
+        field_174931_f = EnumFacing.getFront(compound.getInteger("facing"));
+        lastProgress = progress = compound.getFloat("progress");
+        extending = compound.getBoolean("extending");
+    }
 
-			if (extending) {
-				func_145863_a(progress, progress - lastProgress + 0.0625F);
-			}
-		}
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("blockId", Block.getIdFromBlock(field_174932_a.getBlock()));
+        compound.setInteger("blockData", field_174932_a.getBlock().getMetaFromState(field_174932_a));
+        compound.setInteger("facing", field_174931_f.getIndex());
+        compound.setFloat("progress", lastProgress);
+        compound.setBoolean("extending", extending);
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		field_174932_a = Block.getBlockById(compound.getInteger("blockId")).getStateFromMeta(compound.getInteger("blockData"));
-		field_174931_f = EnumFacing.getFront(compound.getInteger("facing"));
-		lastProgress = progress = compound.getFloat("progress");
-		extending = compound.getBoolean("extending");
-	}
+    static final class SwitchAxis {
+        static final int[] field_177248_a = new int[EnumFacing.Axis.values().length];
+        private static final String __OBFID = "CL_00002034";
 
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setInteger("blockId", Block.getIdFromBlock(field_174932_a.getBlock()));
-		compound.setInteger("blockData", field_174932_a.getBlock().getMetaFromState(field_174932_a));
-		compound.setInteger("facing", field_174931_f.getIndex());
-		compound.setFloat("progress", lastProgress);
-		compound.setBoolean("extending", extending);
-	}
+        static {
+            try {
+                SwitchAxis.field_177248_a[EnumFacing.Axis.X.ordinal()] = 1;
+            } catch (NoSuchFieldError var3) {
+                ;
+            }
 
-	static final class SwitchAxis {
-		static final int[] field_177248_a = new int[EnumFacing.Axis.values().length];
-		private static final String __OBFID = "CL_00002034";
+            try {
+                SwitchAxis.field_177248_a[EnumFacing.Axis.Y.ordinal()] = 2;
+            } catch (NoSuchFieldError var2) {
+                ;
+            }
 
-		static {
-			try {
-				SwitchAxis.field_177248_a[EnumFacing.Axis.X.ordinal()] = 1;
-			} catch (NoSuchFieldError var3) {
-				;
-			}
-
-			try {
-				SwitchAxis.field_177248_a[EnumFacing.Axis.Y.ordinal()] = 2;
-			} catch (NoSuchFieldError var2) {
-				;
-			}
-
-			try {
-				SwitchAxis.field_177248_a[EnumFacing.Axis.Z.ordinal()] = 3;
-			} catch (NoSuchFieldError var1) {
-				;
-			}
-		}
-	}
+            try {
+                SwitchAxis.field_177248_a[EnumFacing.Axis.Z.ordinal()] = 3;
+            } catch (NoSuchFieldError var1) {
+                ;
+            }
+        }
+    }
 }

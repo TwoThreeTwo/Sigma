@@ -1,19 +1,18 @@
 package net.minecraft.world.biome;
 
 import com.google.common.collect.Lists;
-import java.util.Random;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
-public class BiomeGenMutated extends BiomeGenBase
-{
-    protected BiomeGenBase baseBiome;
-    private static final String __OBFID = "CL_00000178";
+import java.util.Random;
 
-    public BiomeGenMutated(int p_i45381_1_, BiomeGenBase p_i45381_2_)
-    {
+public class BiomeGenMutated extends BiomeGenBase {
+    private static final String __OBFID = "CL_00000178";
+    protected BiomeGenBase baseBiome;
+
+    public BiomeGenMutated(int p_i45381_1_, BiomeGenBase p_i45381_2_) {
         super(p_i45381_1_);
         this.baseBiome = p_i45381_2_;
         this.func_150557_a(p_i45381_2_.color, true);
@@ -38,54 +37,45 @@ public class BiomeGenMutated extends BiomeGenBase
         this.maxHeight = p_i45381_2_.maxHeight + 0.2F;
     }
 
-    public void func_180624_a(World worldIn, Random p_180624_2_, BlockPos p_180624_3_)
-    {
+    public void func_180624_a(World worldIn, Random p_180624_2_, BlockPos p_180624_3_) {
         this.baseBiome.theBiomeDecorator.func_180292_a(worldIn, p_180624_2_, this, p_180624_3_);
     }
 
-    public void genTerrainBlocks(World worldIn, Random p_180622_2_, ChunkPrimer p_180622_3_, int p_180622_4_, int p_180622_5_, double p_180622_6_)
-    {
+    public void genTerrainBlocks(World worldIn, Random p_180622_2_, ChunkPrimer p_180622_3_, int p_180622_4_, int p_180622_5_, double p_180622_6_) {
         this.baseBiome.genTerrainBlocks(worldIn, p_180622_2_, p_180622_3_, p_180622_4_, p_180622_5_, p_180622_6_);
     }
 
     /**
      * returns the chance a creature has to spawn.
      */
-    public float getSpawningChance()
-    {
+    public float getSpawningChance() {
         return this.baseBiome.getSpawningChance();
     }
 
-    public WorldGenAbstractTree genBigTreeChance(Random p_150567_1_)
-    {
+    public WorldGenAbstractTree genBigTreeChance(Random p_150567_1_) {
         return this.baseBiome.genBigTreeChance(p_150567_1_);
     }
 
-    public int func_180625_c(BlockPos p_180625_1_)
-    {
+    public int func_180625_c(BlockPos p_180625_1_) {
         return this.baseBiome.func_180625_c(p_180625_1_);
     }
 
-    public int func_180627_b(BlockPos p_180627_1_)
-    {
+    public int func_180627_b(BlockPos p_180627_1_) {
         return this.baseBiome.func_180627_b(p_180627_1_);
     }
 
-    public Class getBiomeClass()
-    {
+    public Class getBiomeClass() {
         return this.baseBiome.getBiomeClass();
     }
 
     /**
      * returns true if the biome specified is equal to this biome
      */
-    public boolean isEqualTo(BiomeGenBase p_150569_1_)
-    {
+    public boolean isEqualTo(BiomeGenBase p_150569_1_) {
         return this.baseBiome.isEqualTo(p_150569_1_);
     }
 
-    public BiomeGenBase.TempCategory getTempCategory()
-    {
+    public BiomeGenBase.TempCategory getTempCategory() {
         return this.baseBiome.getTempCategory();
     }
 }

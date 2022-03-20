@@ -6,5 +6,4 @@ package info.sigmaclient.gui.tabui;
 public abstract class tabui {
 
 
-
 }

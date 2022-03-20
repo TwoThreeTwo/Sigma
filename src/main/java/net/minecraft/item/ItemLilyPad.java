@@ -12,54 +12,54 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class ItemLilyPad extends ItemColored {
-	private static final String __OBFID = "CL_00000074";
+    private static final String __OBFID = "CL_00000074";
 
-	public ItemLilyPad(Block p_i45357_1_) {
-		super(p_i45357_1_, false);
-	}
+    public ItemLilyPad(Block p_i45357_1_) {
+        super(p_i45357_1_, false);
+    }
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is
-	 * pressed. Args: itemStack, world, entityPlayer
-	 */
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		MovingObjectPosition var4 = getMovingObjectPositionFromPlayer(worldIn, playerIn, true);
+    /**
+     * Called whenever this item is equipped and the right mouse button is
+     * pressed. Args: itemStack, world, entityPlayer
+     */
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+        MovingObjectPosition var4 = getMovingObjectPositionFromPlayer(worldIn, playerIn, true);
 
-		if (var4 == null) {
-			return itemStackIn;
-		} else {
-			if (var4.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-				BlockPos var5 = var4.getBlockPos();
+        if (var4 == null) {
+            return itemStackIn;
+        } else {
+            if (var4.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                BlockPos var5 = var4.getBlockPos();
 
-				if (!worldIn.isBlockModifiable(playerIn, var5)) {
-					return itemStackIn;
-				}
+                if (!worldIn.isBlockModifiable(playerIn, var5)) {
+                    return itemStackIn;
+                }
 
-				if (!playerIn.func_175151_a(var5.offset(var4.facing), var4.facing, itemStackIn)) {
-					return itemStackIn;
-				}
+                if (!playerIn.func_175151_a(var5.offset(var4.facing), var4.facing, itemStackIn)) {
+                    return itemStackIn;
+                }
 
-				BlockPos var6 = var5.offsetUp();
-				IBlockState var7 = worldIn.getBlockState(var5);
+                BlockPos var6 = var5.offsetUp();
+                IBlockState var7 = worldIn.getBlockState(var5);
 
-				if (var7.getBlock().getMaterial() == Material.water && ((Integer) var7.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(var6)) {
-					worldIn.setBlockState(var6, Blocks.waterlily.getDefaultState());
+                if (var7.getBlock().getMaterial() == Material.water && ((Integer) var7.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(var6)) {
+                    worldIn.setBlockState(var6, Blocks.waterlily.getDefaultState());
 
-					if (!playerIn.capabilities.isCreativeMode) {
-						--itemStackIn.stackSize;
-					}
+                    if (!playerIn.capabilities.isCreativeMode) {
+                        --itemStackIn.stackSize;
+                    }
 
-					playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-				}
-			}
+                    playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                }
+            }
 
-			return itemStackIn;
-		}
-	}
+            return itemStackIn;
+        }
+    }
 
-	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		return Blocks.waterlily.getRenderColor(Blocks.waterlily.getStateFromMeta(stack.getMetadata()));
-	}
+    @Override
+    public int getColorFromItemStack(ItemStack stack, int renderPass) {
+        return Blocks.waterlily.getRenderColor(Blocks.waterlily.getStateFromMeta(stack.getMetadata()));
+    }
 }

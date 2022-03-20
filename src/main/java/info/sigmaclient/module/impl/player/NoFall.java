@@ -6,10 +6,10 @@
 package info.sigmaclient.module.impl.player;
 
 import info.sigmaclient.event.Event;
-import info.sigmaclient.module.data.ModuleData;
 import info.sigmaclient.event.RegisterEvent;
 import info.sigmaclient.event.impl.EventUpdate;
 import info.sigmaclient.module.Module;
+import info.sigmaclient.module.data.ModuleData;
 
 /**
  * @author cool1
@@ -33,8 +33,8 @@ public class NoFall extends Module {
     @RegisterEvent(events = {EventUpdate.class})
     public void onEvent(Event event) {
         if (event instanceof EventUpdate) {
-            EventUpdate em = (EventUpdate)event;
-            if(em.isPre() && mc.thePlayer.fallDistance >= 1) {
+            EventUpdate em = (EventUpdate) event;
+            if (em.isPre() && mc.thePlayer.fallDistance >= 1) {
                 em.setGround(true);
             }
         }

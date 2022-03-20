@@ -21,11 +21,18 @@ public class Criticals extends Module {
 
     private static String PACKET = "MODE";
     private static String HURTTIME = "HURTTIME";
+
     //0.0625101D
     public Criticals(ModuleData data) {
         super(data);
         settings.put(PACKET, new Setting<>(PACKET, new Options("Mode", "Packet", new String[]{"Packet", "Jump"}), "Critical attack method."));
         settings.put(HURTTIME, new Setting<>(HURTTIME, 15, "The hurtTime tick to crit at.", 1, 0, 20));
+    }
+
+    static void doCrits() {
+        for (double offset : new double[]{0.06, 0, 0.03, 0})
+            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
+                    mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
     }
 
     @Override
@@ -36,22 +43,22 @@ public class Criticals extends Module {
         }
         if (event instanceof EventPacket) {
             EventPacket ep = (EventPacket) event;
-            if(ep.getPacket() instanceof S2APacketParticles || ep.getPacket().toString().contains("S2APacketParticles")) {
+            if (ep.getPacket() instanceof S2APacketParticles || ep.getPacket().toString().contains("S2APacketParticles")) {
                 return;
             }
             try {
                 if (ep.isOutgoing() && ep.getPacket() instanceof C02PacketUseEntity && !(ep.getPacket() instanceof S2APacketParticles) && !(ep.getPacket() instanceof C0APacketAnimation)) {
                     C02PacketUseEntity packet = (C02PacketUseEntity) ep.getPacket();
                     if (packet.getAction() == C02PacketUseEntity.Action.ATTACK && mc.thePlayer.isCollidedVertically && Killaura.allowCrits && hurtTimeCheck(packet.getEntityFromWorld(mc.theWorld))) {
-                        if(Client.getModuleManager().isEnabled(LongJump.class) || Client.getModuleManager().isEnabled(Bhop.class))
+                        if (Client.getModuleManager().isEnabled(LongJump.class) || Client.getModuleManager().isEnabled(Bhop.class))
                             return;
                         switch (((Options) settings.get(PACKET).getValue()).getSelected()) {
                             case "Packet":
                                 doCrits();
                                 break;
                             case "Jump":
-                                if(!mc.thePlayer.isJumping)
-                                mc.thePlayer.jump();
+                                if (!mc.thePlayer.isJumping)
+                                    mc.thePlayer.jump();
                                 break;
                         }
                     }
@@ -64,12 +71,6 @@ public class Criticals extends Module {
 
     private boolean hurtTimeCheck(Entity entity) {
         return entity != null && entity.hurtResistantTime <= ((Number) settings.get(HURTTIME).getValue()).intValue();
-    }
-
-    static void doCrits() {
-        for (double offset : new double[]{0.06, 0, 0.03, 0})
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
-                    mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
     }
 
 }

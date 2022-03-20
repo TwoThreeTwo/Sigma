@@ -13,8 +13,8 @@ import info.sigmaclient.module.data.Setting;
 public class Checkbox {
 
 
-    public Translate translate = new Translate(0,0);
-    public Expand expand = new Expand(0,0,0,0);
+    public Translate translate = new Translate(0, 0);
+    public Expand expand = new Expand(0, 0, 0, 0);
     public CategoryPanel panel;
     public Module module;
     public boolean enabled;
@@ -29,7 +29,7 @@ public class Checkbox {
         this.x = x;
         this.y = y;
         this.setting = setting;
-        this.enabled = ((Boolean)setting.getValue());
+        this.enabled = ((Boolean) setting.getValue());
     }
 
     public Checkbox(CategoryPanel panel, String name, float x, float y, Setting setting, Module module) {
@@ -38,13 +38,13 @@ public class Checkbox {
         this.x = x;
         this.y = y;
         this.setting = setting;
-        this.enabled = ((Boolean)setting.getValue());
+        this.enabled = ((Boolean) setting.getValue());
         this.module = module;
     }
 
     public void draw(final float x, final float y) {
         for (final UI theme : Client.getClickGui().getThemes()) {
-            if(panel.visible) {
+            if (panel.visible) {
                 theme.checkBoxDraw(this, x, y, this.panel);
             }
         }

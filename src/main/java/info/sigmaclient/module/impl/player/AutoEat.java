@@ -23,7 +23,7 @@ public class AutoEat extends Module {
     @RegisterEvent(events = {EventUpdate.class})
     public void onEvent(Event event) {
         int foodSlot = getFoodSlotInHotbar();
-        int eatFood = ((Number)settings.get(FOODLEVEL).getValue()).intValue();
+        int eatFood = ((Number) settings.get(FOODLEVEL).getValue()).intValue();
         if ((foodSlot != -1) && (mc.thePlayer.getFoodStats().getFoodLevel() < eatFood * 2.0D) && (mc.thePlayer.isCollidedVertically)) {
             mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(foodSlot));
             mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.mainInventory[foodSlot]));

@@ -12,7 +12,7 @@ import info.sigmaclient.module.Module;
 public class Button {
 
     public Rotate rotate = new Rotate(0);
-    public Translate translate = new Translate(0,0);
+    public Translate translate = new Translate(0, 0);
     public float x;
     public float y;
     public String name;
@@ -33,7 +33,7 @@ public class Button {
 
     public void draw(final float x, final float y) {
         for (final UI theme : Client.getClickGui().getThemes()) {
-            if(panel.visible) {
+            if (panel.visible) {
                 theme.buttonDraw(this, x, y, this.panel);
             }
         }
@@ -46,7 +46,7 @@ public class Button {
     }
 
     public void keyPressed(int key) {
-        for(UI theme : Client.getClickGui().getThemes()) {
+        for (UI theme : Client.getClickGui().getThemes()) {
             theme.buttonKeyPressed(this, key);
         }
     }

@@ -4,22 +4,22 @@
 
 package info.sigmaclient.gui.altmanager;
 
+import info.sigmaclient.util.RenderingUtil;
+import info.sigmaclient.util.render.Colors;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.EnumChatFormatting;
+import org.lwjgl.input.Keyboard;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 
-import info.sigmaclient.util.RenderingUtil;
-import info.sigmaclient.util.render.Colors;
-import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.input.Keyboard;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.GuiScreen;
-
 public final class GuiAltLogin extends GuiScreen {
-    private PasswordField password;
     private final GuiScreen previousScreen;
+    private PasswordField password;
     private AltLoginThread thread;
     private GuiTextField username;
 

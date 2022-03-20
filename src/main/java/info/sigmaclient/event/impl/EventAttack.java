@@ -4,24 +4,24 @@ import info.sigmaclient.event.Event;
 import net.minecraft.entity.Entity;
 
 public class EventAttack extends Event {
-	private Entity entity;
-	private boolean preAttack;
+    private Entity entity;
+    private boolean preAttack;
 
-	public void fire(Entity targetEntity, boolean preAttack) {
-		this.entity = targetEntity;
-		this.preAttack = preAttack;
-		super.fire();
-	}
+    public void fire(Entity targetEntity, boolean preAttack) {
+        this.entity = targetEntity;
+        this.preAttack = preAttack;
+        super.fire();
+    }
 
-	public Entity getEntity() {
-		return entity;
-	}
+    public Entity getEntity() {
+        return entity;
+    }
 
-	public boolean isPreAttack() {
-		return preAttack;
-	}
+    public boolean isPreAttack() {
+        return preAttack;
+    }
 
-	public boolean isPostAttack() {
-		return !preAttack;
-	}
+    public boolean isPostAttack() {
+        return !preAttack;
+    }
 }

@@ -26,7 +26,7 @@ public class AutoArmor extends Module {
     @Override
     @RegisterEvent(events = {EventTick.class})
     public void onEvent(Event event) {
-        if(Client.getModuleManager().get(InventoryCleaner.class).isEnabled() && InventoryCleaner.isCleaning())
+        if (Client.getModuleManager().get(InventoryCleaner.class).isEnabled() && InventoryCleaner.isCleaning())
             return;
         if (mc.thePlayer != null && (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory)) {
             int slotID = -1;

@@ -58,7 +58,7 @@ public class RGBSlider {
     }
 
     public enum Colors {
-        RED,GREEN,BLUE,ALPHA
+        RED, GREEN, BLUE, ALPHA
     }
 
 }

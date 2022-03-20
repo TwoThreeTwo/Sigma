@@ -13,7 +13,7 @@ import net.minecraft.util.MathHelper;
 public class PlayerUtil implements MinecraftUtil {
 
     public static boolean isInLiquid() {
-        if(mc.thePlayer == null) {
+        if (mc.thePlayer == null) {
             return false;
         }
         for (int x = MathHelper.floor_double(mc.thePlayer.boundingBox.minX); x < MathHelper.floor_double(mc.thePlayer.boundingBox.maxX) + 1; x++) {

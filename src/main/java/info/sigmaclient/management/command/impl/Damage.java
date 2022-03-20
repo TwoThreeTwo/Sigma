@@ -12,47 +12,47 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 /**
  * @author cool1
- *
  */
 public class Damage extends Command {
 
-	static Minecraft mc = Minecraft.getMinecraft();
-	/**
-	 * @param names
-	 * @param description
-	 */
-	public Damage(String[] names, String description) {
-		super(names, description);
-		// TODO Auto-generated constructor stub
-	}
+    static Minecraft mc = Minecraft.getMinecraft();
 
-	/* (non-Javadoc)
-	 * @see me.arithmo.command.Fireable#fire(java.lang.String[])
-	 */
-	@Override
-	public void fire(String[] args) {
-		damagePlayer();
-	}
-	
-	public static void damagePlayer() {
+    /**
+     * @param names
+     * @param description
+     */
+    public Damage(String[] names, String description) {
+        super(names, description);
+        // TODO Auto-generated constructor stub
+    }
+
+    public static void damagePlayer() {
         for (int index = 0; index < 70; index++) {
             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.06D, mc.thePlayer.posZ, false));
             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
         }
-		mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.1D, mc.thePlayer.posZ, false));
+        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.1D, mc.thePlayer.posZ, false));
     }
 
-	/* (non-Javadoc)
-	 * @see me.arithmo.command.Command#getUsage()
-	 */
-	@Override
-	public String getUsage() {
-		// TODO Auto-generated method stub
-		return "damage";
-	}
+    /* (non-Javadoc)
+     * @see me.arithmo.command.Fireable#fire(java.lang.String[])
+     */
+    @Override
+    public void fire(String[] args) {
+        damagePlayer();
+    }
 
-	@Override
-	public void onEvent(Event event) {
+    /* (non-Javadoc)
+     * @see me.arithmo.command.Command#getUsage()
+     */
+    @Override
+    public String getUsage() {
+        // TODO Auto-generated method stub
+        return "damage";
+    }
 
-	}
+    @Override
+    public void onEvent(Event event) {
+
+    }
 }
